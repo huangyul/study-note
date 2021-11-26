@@ -13,10 +13,21 @@
   <script>
     window.$docsify = {
       name: '',
-      repo: ''
+      repo: '',
+      // 自定义封面
+      coverpage: true,
+      // 自定义侧边菜单
+      loadSidebar: true,
+      // 开启侧边多级菜单
+      subMaxLevel: 2
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
+  <!-- 图片缩放 -->
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/zoom-image.min.js"></script>
+  <!-- 代码高亮 -->
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-bash.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-php.min.js"></script>
 </body>
 </html>

@@ -1,3 +1,3 @@
-# Headline
+# 简要
 
-> An awesome project.
+> 个人学习的笔记记录，不断学习，不断进步。
