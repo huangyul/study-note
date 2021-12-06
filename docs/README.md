@@ -5,3 +5,5 @@
 笔记目录：
 
 1. [webpack 学习笔记](/webpack/README.md ':target=_self')
+2. [javascript 学习笔记](/javascript/README.md ':target=_self')
+3. [gitlab 部署笔记](/gitlab/README.md ':target=_self')
