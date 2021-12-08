@@ -213,3 +213,319 @@ let s2 = s1.substring(2) // 调用实例的特定方法
 安全整数（是否会溢出）: `Number.isInterger()`
 
 #### String
+
+#### 字符串操作方法
+
+1. concat()：用于将一个或多个字符串拼接成一个新字符
+
+```javascript
+let str = '123'
+let str = str.concat('456') // 123456
+```
+
+2. slice()、substr()、substring()：截取字符串
+
+`slice()`和`substring()`第一个参数是开始截取的位置，第二个结束的位置（不包含）；`substr()`第一个参数是开始位置，第二个是要截取的个数；
+
+例如：
+
+```javascript
+let str = 'hello world'
+
+console.log(str.slice(3)) // lo world
+console.log(str.substring(3)) // lo world
+console.log(str.substr(3)) // lo world
+
+console.log(str.slice(3, 7)) // lo w
+console.log(str.substring(3, 7)) // lo w
+console.log(str.substr(3, 7)) // lo worl
+```
+
+!>`ECMAScript`没有对`substr()`方法进行标准化，因为尽量不要使用
+
+3. 字符串位置：indexOf()和 lastIndexOf()
+
+在字符串中查找子字符串，如果没有找到，就返回-1，如果找到，就返回字符位置
+
+4. 字符串包含方法：`includes()`、`startsWith()`、`endsWith()`
+
+检查是否包括子字符串，返回`boolean`值
+
+5. trim(): 去掉前后空格 trimStart()：只去前空格 trimEnd(): 只去后空格
+
+```javascript
+let str = ' hello world '
+
+console.log(str.trim())
+console.log(str.trimStart())
+console.log(str.trimEnd())
+```
+
+6. repeat(),repeatALl()：替代
+
+```javascript
+let str = 'hhhhh'
+
+console.log(str.replace('h', 's')) // shhhh
+console.log(str.replaceAll('h', 's')) // sssss
+```
+
+7. 解构
+
+```javascript
+let str = 'huang'
+
+console.log([...str]) // [ 'h', 'u', 'a', 'n', 'g' ]
+```
+
+8. 大小写转换: `toUpperCase()`，`toLowerCase()`
+
+```javascript
+let str = 'huang'
+
+console.log(str.toUpperCase()) // HUANG
+console.log(str.toLowerCase()) //huang
+```
+
+### 四、单例内置对象
+
+内置对象：由`ECMAScript`实现提供，并且在程序开始执行就存在的对象
+
+#### Global
+
+`Global`对象是一种兜底对象，也就是全局变量和方法挂载的对象（浏览器的为`window`对象）
+
+1. URL 编码
+
+encodeURI()和 encodeURIComponent()方法用于将 url 转换成浏览器可以理解的字符
+
+```javascript
+let url = 'http://www.wrox.com/illegal value.js#start'
+
+console.log(encodeURI(url)) // http://www.wrox.com/illegal%20value.js#start
+console.log(encodeURIComponent(url)) // http%3A%2F%2Fwww.wrox.com%2Fillegal%20value.js%23start
+```
+
+?> encodeURIComponent()更彻底，所有一般使用这个
+
+解码：`decodeURI` 对应 `encodeURI` ；`decodeURIComponent` 对应 `decodeURIComponent`
+
+#### Math
+
+提供一些辅助计算的属性和方法
+
+1. `min()`和`max()`
+
+```javascript
+console.log(Math.min(1, 2, 3)) // 1
+console.log(Math.max(1, 2, 3)) // 2
+const arr = [1, 2, 3]
+console.log(Math.max(...arr)) // 解构的使用方式
+```
+
+2. 数值取舍
+
+`Math.ceil()` 向上取整  
+`Math.floor()` 向下取整  
+`Math.round()` 四舍五入  
+`Math.fround()` 返回单精度（32）位显示
+
+3. 随机数 `random`
+
+返回 0-1 范围内的随机数，包含 0，不包含 1
+
+```javascript
+// 使用实例
+console.log(Math.floor(Math.random() * 10 + 1)) // 1 - 10 的随机数
+```
+
+## 集合引用类型
+
+- 对象
+- 数组
+- Map、WeakMap、Set 以及 WeakSet
+
+### Object
+
+创建 Object
+
+```javascript
+// 使用构造函数
+let persion = new Object()
+persion.name = 'xxx'
+
+// 使用对象字面量(推荐使用)
+let persion = { name: 'xxx' }
+```
+
+### Array
+
+#### 创建数组
+
+过去的创建方法都不太好，建议使用新增的`from()`和`of()`，`from()`将类数组结构转换为数组实例，`of()`将一组参数转换为数组实例
+
+```javascript
+// 所有可迭代的对象都可以使用from
+console.log(Array.from('123')) // [ '1', '2', '3' ]
+// 如果参数是数组，则原样返回
+console.log(Array.from([1, 2, 3])) // [ 1, 2, 3 ]
+// 使用第二个参数可以加工数据
+console.log(Array.from('123', (x) => x * x)) // [ 1, 4, 9 ]
+
+// 用于弥补new Array不好的创建方法
+console.log(Array.of(1)) // [1]
+```
+
+#### 检测数组
+
+`Array.isArray()`
+
+```javascript
+console.log(Array.isArray([])) // true
+```
+
+#### 迭代器
+
+`keys()`返回数组索引  
+`values()`返回数组元素
+`entries()`返回索引/值对
+
+#### 复制和填充
+
+copyWithin() fill()
+
+#### 操作数组方法
+
+`push()`数组末端推入
+`pop()`数组末端推出
+`shift()`数组首部推出
+`unshift()`数组首部推入
+
+#### 排序方法
+
+`reverse()`将数据反向排序  
+`sort()`按字符串排序
+
+```javascript
+const arr = [1, 2, 10, 15, 3, 32]
+
+console.log(arr.sort((a, b) => a - b))
+```
+
+#### 连接数组
+
+`concat()`或`[...arr, ...arr2]`
+
+#### 操作数据
+
+`slice()`与字符串的很像，不改变数组
+
+`splice()`会改变原来的数组
+
+```javascript
+const arr = [1, 2, 3]
+// 替换
+arr.splice(0, 1, 5) // [5, 2, 3]
+console.log(arr)
+// 删除
+arr.splice(0, 1)
+console.log(arr) // [2, 3]
+// 插入
+arr.splice(0, 0, 5) // [5, 2, 5]
+console.log(arr)
+```
+
+#### 数组搜索
+
+`indexOf()`找不到返回负 1，找到返回索引  
+`lastIndexOf()`从末尾开始找  
+`includes()` 返回 boolean
+
+#### 数组断言
+
+`find()`和`findIndex()`一个返回第一个元素（只会返回一个），一个返回元素的索引
+
+```javascript
+const arr = [1, 2, 3]
+
+console.log(arr.find((item, index, arr) => item === 2)) // 2
+```
+
+#### 迭代方法
+
+1. `every` 对数组的每一项都运行传入的函数，如果每一个函数都返回`true`，则这个方法返回`true`
+2. `filter` 对数组的每一个项都运行传入的函数，返回函数返回`true`的项的数组
+3. `forEach` 对数组每一项都运行传入的函数，没有返回值
+4. `map` 对数组每一项都运行传入的函数，返回每次函数调用的结果的数组
+5. `some` 对数组每一项都运行传入的函数，如果有一项返回`true`，则返回`true`
+
+#### 归并方法
+
+`reduce()`和`reduceRigth()`
+
+```javascript
+const arr = [1, 2, 3]
+
+console.log(arr.reduce((p, c) => p + c)) // 6
+```
+
+### Map
+
+键值对的数据结构
+
+#### 定义
+
+`const m = new Map([['key1', 'val1']])`
+
+```javascript
+const m = new Map([
+  [1, 1],
+  [2, 3],
+  [4, 5],
+])
+
+console.log(m) // Map(3) { 1 => 1, 2 => 3, 4 => 5 }
+```
+
+#### 增删改查
+
+?> 初始化后，只能通过方法增删改查
+
+1. 增 set() `m.set('key','val1')`
+2. 删 delete() `m.delete('key')` clear() 删除所有
+3. 查 get() `m.get('key')`
+4. 判断 has() `m.has()`
+
+#### Map 可以用任何数据结构作为 key
+
+```javascript
+const m = new Map()
+const funcKey = () => {}
+m.set(funcKey, 'function')
+console.log(m) // Map(1) { [Function: funcKey] => 'function' }
+```
+
+### Set
+
+值的集合，不含重复的值
+
+#### 初始化
+
+`const m = new Set([v1, v2, v3])`
+
+#### 基本操作
+
+1. add() 新增
+2. has() 查询
+3. delete() 删除 clear() 清空
+
+#### 常用方法：数组去重
+
+```javascript
+const arr = [1, 2, 2, 2]
+console.log([...new Set(arr)]) // [ 1, 2 ]
+const arr1 = [{ name: 1 }, { name: 1 }] // 对对象数组无效
+console.log([...new Set(arr1)]) // [ { name: 1 }, { name: 1 } ]
+```
+
+## 迭代器与生产器
