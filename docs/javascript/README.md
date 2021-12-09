@@ -529,3 +529,130 @@ console.log([...new Set(arr1)]) // [ { name: 1 }, { name: 1 } ]
 ```
 
 ## 迭代器与生产器
+
+### 迭代
+
+简单来说就是循环
+
+```javascript
+for (let i = 0; i < 10; i++) {
+  console.log(i)
+}
+```
+
+### 迭代器模式
+
+简单来说就是统一所有可迭代的数据结构，通过实现 Iterable 接口，可以统一使用`for..of`进行迭代
+
+#### 1. 可迭代协议
+
+迭代器必须暴露一个属性，用`Symbol.iterator`作为键，这个默认迭代器属性必须引用一个迭代器工厂函数，调用这个工厂函数必须返回一个新的迭代器
+
+检查时候存在默认迭代器属性的
+
+```javascript
+let arr = [],
+  num = 1
+
+console.log(arr[Symbol.iterator]) // [Function: values]
+console.log(num[Symbol.iterator]) // undefined
+```
+
+#### 2. 迭代器协议
+
+迭代器是一种一次性使用的对象，用于迭代与其关联的可迭代对象。迭代器 API 使用`next()`方法来遍历数据；每次成功调用`next()`，会返回一个`IteratorResult`对象，包含两个属性：`done`和`value`，`done：true`状态称为耗尽
+
+```javascript
+let arr = [1, 2, 3]
+
+// 取出迭代器
+const iterator = arr[Symbol.iterator]()
+
+console.log(iterator.next()) // { value: 1, done: false }
+console.log(iterator.next()) // { value: 2, done: false }
+console.log(iterator.next()) // { value: 3, done: false }
+console.log(iterator.next()) // { value: undefined, done: true }
+// 迭代器是一次性的，后续继续调用，也会返回doen：true
+console.log(iterator.next()) // { value: undefined, done: true }
+```
+
+#### 3. 自定义迭代器
+
+```javascript
+class Counter {
+  constructor(limit) {
+    this.limit = limit
+  }
+
+  [Symbol.iterator]() {
+    // 这样返回，可以每个迭代器都是独立的
+    let count = 1,
+      limit = this.limit
+    return {
+      next() {
+        if (count <= limit) {
+          return { value: count++, done: false }
+        } else {
+          return { value: undefined, done: true }
+        }
+      },
+    }
+  }
+}
+```
+
+### 生成器
+
+#### 生成器基础
+
+生成器的形式是一个函数，函数名前面加一个星号`*`表示它是一个生成器
+
+```javascript
+// 生成器函数声明
+function* genratorFn() {}
+```
+
+调用生成器函数会产生一个生成器对象，一开始处于暂停，内部实现了`Iterator`接口，调用`next()`方法可以让生成器开始或恢复
+
+```javascript
+// 定义一个生成器函数
+function* genratorFunc() {}
+
+let g = genratorFunc()
+
+console.log(g) // Object [Generator] {}
+console.log(g.next()) // { value: undefined, done: true }
+```
+
+#### 通过`yield`中断执行
+
+`yield`可以让生成器停止和开始执行，生成器函数在遇到`yeild`会暂停函数，并将`yeild`后面的值输出
+
+```javascript
+function* genratorFunc() {
+  yield 123
+  yield 3434
+  return 999
+}
+
+let g = genratorFunc()
+
+console.log(g.next()) // { value: 123, done: false }
+console.log(g.next()) // { value: 3434, done: false }
+console.log(g.next()) // { value: 999, done: true }
+```
+
+1. 生成器对象作为可迭代对象
+
+```javascript
+function* generatorFunc() {
+  yield 1
+  yield 2
+  yield 3
+}
+
+for (let i of generatorFunc()) {
+  console.log(i)
+}
+// 1 2 3
+```
