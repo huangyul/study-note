@@ -656,3 +656,458 @@ for (let i of generatorFunc()) {
 }
 // 1 2 3
 ```
+
+## 对象、类与面向对象编程
+
+### 1、理解对象
+
+对象是一组属性的无序集合。
+
+#### 1.1、属性的类型
+
+ECMAScript 使用一些内部特性来描述属性的特性；开发者不能在 Javascript 中直接访问这些特性；为了将某个特性标识为内部特性，规范会用两个中括号把特性的名称括起来
+
+###### 数据属性
+
+数据属性包含一个保存数据值的位置，大白话就是用来描述该属性的一些特性
+
+1. [[Configurable]]:表示属性是否可以通过`delete`删除并重新定义，是否可以修改它的特性，以及是否可以把它改为访问器属性，默认情况下都为`true`
+2. [[Enumerable]]:表示属性是否可以通过`for-in`循环返回，默认情况都是`true`
+3. [[Writable]]:表示属性的值是否可修改，默认都是`true`
+4. [[Value]]:包含属性实际的值，默认是`undefined`
+
+要修改属性的默认特性，必须使用`Object.defineProperty()`，该方法接受三个参数：要操作的对象，属性的名称，描述符对象
+
+```javascript
+// 定义一个空对象
+let person = {}
+
+// 添加一个name属性的值，并修改默认特性不能修改该值
+Object.defineProperty(person, 'name', {
+  value: 'hhh',
+  writable: false,
+})
+
+console.log(person.name) // hhh
+person.name = '123'
+console.log(person.name) // hhh
+```
+
+!> 正常情况下，很少使用`Object.defineProperty()`来修改这些特性
+
+###### 访问属性
+
+访问器属性不包含数据，它包含一个获取函数（`getter`）和设置函数（`setter`）；在读取访问器属性时，会调用获取函数，函数要返回一个有效的值；在写入访问器属性时，会调用设置函数并传入新值  
+访问器属性也是必须通过`Object.definedProperty()`来使用
+
+```javascript
+// 定义一个对象，有一个私有属性
+let obj = {
+  status: '大于零',
+  name: 'book1',
+}
+
+Object.defineProperty(obj, 'num', {
+  get() {
+    return this.status
+  },
+  set(value) {
+    if (value > 10) {
+      this.status = '大于零'
+    } else {
+      this.status = '小于零'
+    }
+  },
+})
+
+obj.num = 90
+console.log(obj.num)
+```
+
+#### 1.2、读取属性的特性
+
+使用`Object.getOwnPropertyDescriptor()`可以获取指定属性的属性描述符
+
+```javascript
+// 定义一个对象，有一个私有属性
+let obj = {}
+
+Object.defineProperty(obj, 'name', {
+  value: 'huang',
+  configurable: false,
+})
+
+console.log(Object.getOwnPropertyDescriptor(obj, 'name'))
+// {
+//   value: 'huang',
+//   writable: false,
+//   enumerable: false,
+//   configurable: false
+// }
+```
+
+#### 1.3、合并对象
+
+`Object.assign()`:接受一个目标对象和一个或多个源对象作为参数 **属于浅拷贝**
+
+```javascript
+let obj1 = { name: 123 }
+let obj2 = { name2: 123 }
+let obj3 = Object.assign(obj1, obj2)
+console.log(obj3) // {name: 123, name2: 123}
+```
+
+#### 1.4、相等判定
+
+`Object.is()`
+
+```javascript
+console.log(Object.is(true, 1)) // false
+console.log(Object.is({}, {})) // false
+console.log(Object.is('2', 2)) // false
+// 正确的 0、-0、+0 相等/不等判定
+console.log(Object.is(+0, -0)) // false
+console.log(Object.is(+0, 0)) // true
+console.log(Object.is(-0, 0)) // false
+// 正确的 NaN 相等判定
+console.log(Object.is(NaN, NaN)) // true
+```
+
+#### 1.5、增强的对象语法
+
+1. 属性值简写：当属性名和变量名一样时，可简写
+
+```javascript
+let name = 'xx'
+let person = { name } // 等于 {name: name}
+```
+
+2. 可计算属性
+
+```javascript
+let nameKey = 'name'
+let obj = {}
+obj[namekey] = 'xxx'
+```
+
+3. 简写方法名
+
+```javascript
+let person = {
+  say() {
+    // do something
+  },
+}
+```
+
+#### 1.6、对象解构
+
+```javascript
+let obj = {
+  myName: 'xxx',
+  age: 12,
+}
+// 变量名不一样时
+let { myName: newName, age: newAge } = obj
+console.log(newAge, newName)
+// 变量名一样时
+let { myName, age } = obj
+console.log(myName, age)
+```
+
+### 2、创建对象
+
+#### 工厂模式
+
+```javascript
+function createPerson(name, age) {
+  let o = new Object()
+  o.name = name
+  o.age = age
+  o.sayName = function () {
+    console.log('Hello,' + o.name)
+  }
+  return o
+}
+
+let p1 = createPerson('xxx', 12)
+console.log(p1)
+```
+
+虽然可以多次调用函数创建对象，但无法知道创建的是什么对象
+
+#### 构造函数
+
+```javascript
+function Person(name, age) {
+  this.name = name
+  this.age = age
+  this.sayName = function ()
+}
+
+let p1 = new Person('name', 12)
+console.log(p1) // Person { name: 'name', age: 12 }
+```
+
+**构造函数的特点：**
+
+1. 没有显式创建对象
+2. 属性和方法直接赋值给了`this`
+3. 没有`return`
+4. 函数名大写，是为了区分普通函数和构造函数
+
+**使用`new`创建对象的过程：**
+
+1. 在内存中创建一个新的对象
+2. 这个新的对象内部的`[[Prototype]]`特性被赋值为构造函数的`prototype`属性
+3. 构造函数内部的`this`被赋值为这个新对象（即 this 指向新对象）
+4. 执行构造函数内部的代码（为新对象添加属性）
+5. 如果构造函数返回非空对象，则返回该对象；否则返回刚创建的新对象
+
+###### 构造函数的问题
+
+构造函数内部定义的方法，都是新的函数实例
+
+```javascript
+function Person() {
+  this.sayName = function () {
+    console.log(123)
+  }
+}
+
+let p1 = new Person()
+let p2 = new Person()
+console.log(p1.sayName === p2.sayName) // false
+```
+
+#### 原型模式
+
+```javascript
+function Person(name, age) {
+  Person.prototype.name = name
+  Person.prototype.age = age
+  Person.prototype.sayName = function () {
+    console.log('Hello,' + this.name)
+  }
+}
+
+let p = new Person('hh', 12)
+p.sayName()
+```
+
+###### 对于原型的理解
+
+在构造函数定义时，构造函数就会有 prototype 属性，该属性也是一个对象，成为原型对象；原型对象有一个 constructor 属性，该属性指回构造函数
+
+```javascript
+function Person() {}
+// 就有prototype属性
+console.log(Person.prototype)
+// prototype的constructor指回Person构造函数
+console.log(Person.prototype.constructor == Person)
+```
+
+实例中的 prototype 指向构造函数的原型，所有将属性和方法定义在构造函数的原型上，就可以共享属性
+
+![](./images/prototype-1.png)
+
+###### 原型层级
+
+在通过对象访问属性时，首先会找对象实例本身，如果本身有，则返回，如果没有，则进入原型对象上找
+
+###### 对象的迭代
+
+`Object.keys()`和`Object.values()`
+
+### 3、继承
+
+`ECMAScript`的继承主要是通过原型链实现的
+
+#### 3.1、原型链
+
+一个原型对象指向另外一个类型的实例
+
+```javascript
+function SuperType() {
+  this.prototype = true
+}
+
+SuperType.prototype.getType = function () {
+  return this.prototype
+}
+
+function SubType() {
+  this.subprototype = false
+}
+
+// 继承
+SubType.prototype = new SuperType()
+
+SubType.prototype.getSubType = function () {
+  return this.subprototype
+}
+
+let ins = new SubType()
+console.log(ins.getSubType())
+console.log(ins.getType())
+```
+
+### 4、类
+
+#### 4.1、类的定义
+
+`class Person {}`
+
+###### 类的构成
+
+类可以包含**构造函数方法**、**实例方法**、**获取函数**、**设置函数**和**静态类方法**
+
+#### 4.2、类构造函数
+
+通过`new`关键字定义类时，会主动调用`constructor`构造方法
+
+```javascript
+class Person {
+  constructor() {
+    console.log(123)
+  }
+}
+
+let p = new Person() // 123
+```
+
+#### 4.3、实例、原型和类成员
+
+###### 实例
+
+1. 生成实例要使用`new`
+2. 实例的属性要显示定义到 this 上，否则都是定义到原型上
+
+```javascript
+class Poins {
+  constructor(x, y) {
+    this.x = x
+    this.y = y
+  }
+  toString() {
+    return this.x + this.y
+  }
+}
+
+const p = new Poins(1, 2)
+console.log(p.hasOwnProperty('x')) // true
+console.log(p.hasOwnProperty('toString')) // false,在原型对象上
+```
+
+3. 所有实例共享一个原型对象
+
+#### 取值函数和存值函数
+
+```javascript
+class Person {
+  constructor() {}
+
+  get age() {
+    return 'getter'
+  }
+
+  set age(value) {
+    console.log('setter' + value)
+  }
+}
+
+let p = new Person()
+p.age = 12 // setter12
+console.log(p.age) // getter
+```
+
+#### 静态方法
+
+类相当于实例的原型，所有在类中定义的方法，都会被实例继承，如果在一个方法前加上`static`，则该方法不会被实例继承，直接通过类来调用
+
+```javascript
+class Foo {
+  static func() {
+    console.log(123123)
+  }
+}
+
+Foo.func() // 123123
+```
+
+静态方法中有`this`，则指向类而不是实例
+
+父类的静态方法可以被子类继承
+
+```javascript
+class Foo {
+  static func() {
+    console.log(123)
+  }
+}
+
+class Bar extends Foo {}
+
+Bar.func()
+```
+
+#### 4.4、类的继承
+
+```javascript
+class Foo {
+  constructor() {
+    console.log('父类的构造函数')
+  }
+}
+
+class Bar extends Foo {
+  constructor() {
+    // 必须先调用super方法，才能使用this，相当于调用父类的构造函数
+    super()
+    this.name = 'xxx'
+  }
+}
+const bar = new Bar() // 父类的构造函数
+```
+
+###### super
+
+`super`可以作为函数和对象，作为函数时指向父类的构造函数，作为对象时指向父类的原型对象
+
+1. 作为函数时，必须在子类的构造函数中先调用
+2. 作为对象时，在普通函数指向父类的原型对象；在静态函数指向父类。
+
+```javascript
+class A {
+  constructor() {
+    this.p = 2
+  }
+  p() {
+    return 2
+  }
+}
+// 父类的原型属性
+A.prototype.name = 123
+class B extends A {
+  constructor() {
+    super()
+    console.log(super.p) // 访问不到实例方法
+    console.log(super.name) // 可以访问原型对象方法，因为普通函数的super指向父类的原型对象
+  }
+}
+let b = new B()
+```
+
+##### 混入
+
+```javascript
+const a = {}
+const b = {}
+{...a, ...b}
+```
+
+## 代理与反射
+
+### 1、代理基础
+
+###### 创建空代理
