@@ -1,6 +1,6 @@
 # Javascript
 
-?> 基于**Javascript 高级教程第四版**的深入学习
+?> 基于**Javascript 高级教程第四版**的学习笔记
 
 ## 变量、作用域与内存
 
