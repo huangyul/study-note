@@ -671,10 +671,10 @@ ECMAScript 使用一些内部特性来描述属性的特性；开发者不能在
 
 数据属性包含一个保存数据值的位置，大白话就是用来描述该属性的一些特性
 
-1. [[Configurable]]:表示属性是否可以通过`delete`删除并重新定义，是否可以修改它的特性，以及是否可以把它改为访问器属性，默认情况下都为`true`
-2. [[Enumerable]]:表示属性是否可以通过`for-in`循环返回，默认情况都是`true`
-3. [[Writable]]:表示属性的值是否可修改，默认都是`true`
-4. [[Value]]:包含属性实际的值，默认是`undefined`
+1. `[[Configurable]]`:表示属性是否可以通过`delete`删除并重新定义，是否可以修改它的特性，以及是否可以把它改为访问器属性，默认情况下都为`true`
+2. `[[Enumerable]]`:表示属性是否可以通过`for-in`循环返回，默认情况都是`true`
+3. `[[Writable]]`:表示属性的值是否可修改，默认都是`true`
+4. `[[Value]]`:包含属性实际的值，默认是`undefined`
 
 要修改属性的默认特性，必须使用`Object.defineProperty()`，该方法接受三个参数：要操作的对象，属性的名称，描述符对象
 
@@ -1110,4 +1110,248 @@ const b = {}
 
 ### 1、代理基础
 
+代理是目标对象的抽象，它可以用作目标对象的替身，又完全独立于目标对象
+
 ###### 创建空代理
+
+代理使用`Proxy`构造函数创建，主要接收两个参数：目标对象和处理程序对象（缺一不可）
+
+```javascript
+const target = {
+  id: 'target',
+}
+
+const handle = {}
+
+const proxy = new Proxy(target, handle)
+
+// 拥有一样的属性
+console.log(target.id)
+console.log(proxy.id)
+
+// 原对象添加属性，代理也会具备
+target.name = 'xxx'
+console.log(proxy.name)
+
+// 代理添加属性，原对象也具备
+proxy.name2 = 'eee'
+console.log(target.name2)
+```
+
+###### 捕获器
+
+```javascript
+const target = {
+  id: 'target',
+}
+
+const handle = {
+  get() {
+    console.log('捕获')
+  },
+}
+
+const proxy = new Proxy(target, handle)
+
+console.log(target.id) // target
+console.log(proxy.id) // 捕获，但没有实际返回 id 的值
+```
+
+###### 捕获器参数和反射 API
+
+捕获器接收到的三个参数：目标对象、要查询的属性和代理对象
+
+```javascript
+const target = {
+  id: 12,
+}
+
+const handle = {
+  get(target, propKey, receiver) {
+    return target[propKey]
+  },
+}
+
+const proxy = new Proxy(target, handle)
+
+console.log(proxy.id)
+```
+
+Reflect：反射，处理程序对象中所有可以捕获的方法都有对象的反射 API 方法，这些方法与捕获器拦截的方法具有相同的名称和函数签名，而且具有与被拦截方法相同的行为  
+简单来说就是方便处理捕获的数据
+
+```javascript
+const target = {
+  id: 12,
+}
+
+const handle = {
+  get(target, propKey, receiver) {
+    return Reflect.get(...arguments)
+  },
+  // 简写版
+  get: Reflect.get,
+}
+
+const proxy = new Proxy(target, handle)
+
+console.log(proxy.id)
+```
+
+```javascript
+const target = {
+  num: 123,
+  num2: 456,
+}
+
+const handle = {
+  get(target, propKey, receiver) {
+    let desc = ''
+    // 通过特殊情况处理
+    if (propKey === 'num2') {
+      desc = '999'
+    }
+    return Reflect.get(...arguments) + desc
+  },
+}
+
+const proxy = new Proxy(target, handle)
+
+console.log(proxy.num) // 123
+console.log(proxy.num2) // 456999
+```
+
+###### 可撤销代理
+
+```javascript
+const target = {
+  id: 123,
+}
+
+const handle = {
+  get() {
+    return 999
+  },
+}
+
+// 定义可撤销代理
+const { proxy, revoke } = Proxy.revocable(target, handle)
+
+console.log(proxy.id)
+console.log(target.id)
+
+// 撤销代理
+revoke()
+
+console.log(proxy.id) // 会报错
+```
+
+###### 代理另一个代理
+
+```javascript
+const target = {
+  id: 1,
+}
+
+const proxyFirst = new Proxy(target, {
+  get() {
+    console.log('第一次代理')
+    return Reflect.get(...arguments)
+  },
+})
+
+// 代理一个代理
+const proxySecond = new Proxy(proxyFirst, {
+  get() {
+    console.log('第二次代理')
+    return Reflect.get(...arguments)
+  },
+})
+
+console.log(proxySecond.id)
+// 第二次代理
+// 第一次代理
+// 1
+```
+
+### 2、代理捕获器与反射方法
+
+#### 2.1 get()
+
+在获取属性值的操作中被调用，返回值无限制
+
+```javascript
+const target = {
+  id: 1,
+}
+
+const proxy = new Proxy(target, {
+  get(target, propKey, receiver) {
+    console.log('get')
+    return Reflect.get(...arguments)
+  },
+})
+
+console.log(proxy.id) // get 1
+```
+
+#### set()
+
+在设置值的操作中被调用，返回 true 表示成功，返回 false 表示失败
+
+```javascript
+const target = {
+  id: 1,
+}
+
+const proxy = new Proxy(target, {
+  set() {
+    console.log('set')
+    return Reflect.set(...arguments)
+  },
+})
+
+proxy.id = 2 // set
+```
+
+#### has()
+
+在`in`操作符中被调用
+
+```javascript
+const target = {
+  id: 1,
+}
+
+const proxy = new Proxy(target, {
+  has() {
+    console.log('has')
+    return Reflect.has(...arguments)
+  },
+})
+
+console.log('id' in proxy) // has true
+```
+
+#### defineProperty()
+
+在`Object.defineProperty()`中被调用
+
+```javascript
+const target = {
+  id: 1,
+}
+
+const proxy = new Proxy(target, {
+  defineProperty() {
+    console.log('defineProperty')
+    return Reflect.defineProperty(...arguments)
+  },
+  get() {
+    console.log('get')
+    return Reflect.get(...arguments)
+  },
+})
+
+Object.defineProperty(proxy, 'name', { value: 'xxx' }) // defineProperty
+```
