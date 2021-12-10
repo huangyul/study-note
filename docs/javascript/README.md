@@ -1355,3 +1355,220 @@ const proxy = new Proxy(target, {
 
 Object.defineProperty(proxy, 'name', { value: 'xxx' }) // defineProperty
 ```
+
+## 函数
+
+- 函数表达式、函数声明及箭头函数
+- 默认参数及扩展操作符
+- 使用函数实现递归
+- 使用闭包实现私有变量
+
+函数实际上是对象，也有属性和方法，函数名是指向函数对象的指针
+
+```javascript
+// 函数声明式
+function func() {}
+// 函数表达式
+const func2 = function () {}
+// 箭头函数
+const func3 = function () {}
+```
+
+#### 箭头函数
+
+不能使用`arguments`、`super`、`new.target`，也不能作为构造函数
+
+### 函数名
+
+函数名就是指向函数的指针
+
+```javascript
+function func() {
+  console.log('13')
+}
+
+// 不使用括号，只是简单调用函数的指针
+const func2 = func
+// 使用括号，就是调用函数
+func() // 13
+```
+
+### 函数参数
+
+- 函数参数在内部是一个数组的形式接收，所以多传，少传都可以
+- 使用`arguments`对象可以获取全部传入的参数
+
+```javascript
+function func(name) {
+  console.log(name)
+  console.log(...arguments)
+}
+
+func(1, 2, 2, 3, 3) // 1           1 2 2 3 3
+```
+
+- 可以使用`arguments[n]`获取第 n 个参数
+
+### 没有重载
+
+当函数名被重写，就等于覆盖
+
+```javascript
+function func() {
+  console.log(1)
+}
+func = () => {
+  console.log(2)
+}
+func() // 2
+```
+
+### 默认参数值
+
+`function func(name = 'xx') {}`
+
+### 参数扩展与收集
+
+#### 扩展参数
+
+```javascript
+let arr = [1, 2]
+function sum() {
+  let sum = 0
+  for (let i = 0; i < arguments.length; i++) {
+    sum += arguments[i]
+  }
+  return sum
+}
+
+// 扩展参数
+console.log(sum(...arr))
+```
+
+#### 收集参数
+
+```javascript
+function sum(...value) {
+  // do something
+}
+```
+
+### 函数声明与函数表达式
+
+- 函数声明有函数声明提升，韩式表达没有
+
+```javascript
+sum()
+
+function sum() {
+  console.log('sum')
+}
+
+sum2()
+
+const sum2 = () => {
+  // 报错
+  console.log('sum2')
+}
+```
+
+### 函数作为值
+
+因为函数名是指向函数的变量，所以函数也可以作为另一个函数的参数
+
+```javascript
+function sum(a) {
+  return a + 10
+}
+
+function sum2(func, n) {
+  return func(n)
+}
+
+console.log(sum2(sum, 3)) // 13
+```
+
+### 函数内部
+
+函数内部存在三个特殊的对象：`arguments`、`this`、`new.target`
+
+#### this
+
+在标准函数中，this 引用调用方法的上下文对象；在箭头函数中，this 引用定义时的上下文对象
+
+```javascript
+// 要在浏览器环境下
+color = 'color'
+
+let o = {
+  // color: 'hhh',
+}
+
+function func() {
+  console.log(this.color)
+}
+
+func() // color 全局环境中调用
+o.func = func
+o.func() // hhh 在对象内调用，上下文是对象
+
+let func2 = () => {
+  console.log(this.color)
+}
+
+func2() // hhh
+o.func2 = func2
+o.func2() // hhh
+```
+
+#### new.target
+
+检测函数是否用`new`调用
+
+```javascript
+function func() {
+  if (new.target) {
+    console.log('使用new调用')
+  } else {
+    console.log('没有使用new调用')
+  }
+}
+
+new func() // 使用new调用
+func() // 没有使用new调用
+```
+
+### 函数的属性和方法
+
+- 因为函数也是对象，所有也有属性和方法
+- 每个函数都有两个属性：`length`和`prototype`
+- 函数有三个方法：`apply`、`call`、`bind`，都是用来指定`this`的
+
+### 递归
+
+函数通过函数名调用自己
+
+```javascript
+function fac(n) {
+  if (n == 1) {
+    return 1
+  }
+  return n * fac(n - 1)
+}
+
+console.log(fac(10))
+
+// 优化
+function fac2(n) {
+  if (n == 1) {
+    return 1
+  }
+  return n * arguments.callee(n - 1)
+}
+```
+
+### 闭包
+
+闭包指那些引用了另一个**函数作用域中变量**的函数
+
+###### this 对象
