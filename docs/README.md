@@ -6,6 +6,5 @@
 
 1. [webpack 学习笔记](/webpack/README.md ':target=_self')
 2. [javascript 学习笔记](/javascript/README.md ':target=_self')
-3. [vue3](/vue3/README.md ':target=_self')
-4. [gitlab 部署笔记](/gitlab/README.md ':target=_self')
-5. [实战项目--后台管理系统](/vue3-admin/README.md ':target=_self')
+3. [gitlab 部署笔记](/gitlab/README.md ':target=_self')
+4. [实战项目--后台管理系统](/vue3-admin/README.md ':target=_self')

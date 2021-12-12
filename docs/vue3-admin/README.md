@@ -68,3 +68,33 @@ vue create app-name
   {{ count }}
 </template>
 ```
+
+## 安装必要配置
+
+### element-plus
+
+[安装教程链接](https://element-plus.gitee.io/zh-CN/guide/installation.html)
+
+```bash
+npm i element-plus -s
+```
+
+### sass
+
+```bash
+npm install sass sass-loader -d
+```
+
+### 常用文件路径映射
+
+```javascript
+// vite.config.js
+// 路径映射
+alias: {
+  '/@/': path.resolve(__dirname, './src'),
+  '/@assets/': path.resolve(__dirname, './src/assets'),
+  '/@views/': path.resolve(__dirname, './src/views'),
+  '/@components/': path.resolve(__diranme, './src/components'),
+  '/@utils/': path.resolve(__dirname, './src/utils'),
+},
+```
