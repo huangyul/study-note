@@ -65,27 +65,82 @@ module.exports = {
 
 ## 安装 element-plus
 
-需要同时安装`icon`库，[参考文档](https://element-plus.gitee.io/zh-CN/)
+[官方文档](https://element-plus.gitee.io/zh-CN/guide/quickstart.html#%E5%AE%8C%E6%95%B4%E5%BC%95%E5%85%A5)
 
-```javascript
-// 安装包
-npm i element-plus @element-plus/icon-vue
+```bash
+npm i element-plus @element-plus/icons-vue -s
+```
 
-// main.ts
+在`main.ts`中加入`element-plus`
+
+```js
+// element
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-app.use(ElemntPlus)
 
-// 如果要全局使用`element-icon`，需要全局注册
-// help.ts
-import type { App } from 'vue'
-import * as icons from '@element-plus/icon-vue'
-export function registerComponent(app: App) {
-  const elIcons = icons as any
-  for(const i in elIcons) {
-    app.component(`element${elIcons[i].name}`, elIcons[i])
-  }
+const app = createApp(App)
+
+app.use(store)
+app.use(router)
+app.use(ElementPlus)
+app.mount('#app')
+```
+
+###### 配置路径别名
+
+在`vue.config.js`中可使用配置
+
+```js
+module.exports = {
+  // webpack的配置，会通过webpack-merge合并到最终的配置中
+  configureWebpack: {
+    // 模块解析规则
+    resolve: {
+      // 配置路径别名
+      alias: {
+        '@': path.resolve(__dirname, './src'),
+        '@views': path.resolve(__dirname, './src/views'),
+        '@utils': path.resolve(__dirname, './src/utils'),
+        '@components': path.resolve(__dirname, './src/components'),
+      },
+    },
+  },
 }
+```
+
+###### 通过改变 element 主题色来设置主题
+
+首先使用`el-color-picker`组件来获取选择的颜色，然后通过 css 变量来改变
+
+```js
+// 改变主题色
+const el = document.getElementsByTagName('body')[0]
+el.style.setProperty('--el-button-bg-primary', val)
+```
+
+###### 使用 scss 变量
+
+我们可以在基础的`scss`文件中定好常用的变量，然后通过`var`来使用
+
+```css
+/* index.scss */
+/* :root 表示文档树的根元素 */
+:root {
+  --main-bg: red;
+}
+
+/* 某个vue文件 */
+.tagName {
+  background: var(--main-bg);
+}
+```
+
+###### 一键全灰模式
+
+主要通过动态设置 `filter: grayscale`的值来实现
+
+```js
+documentElement.setAttribute('style', `filter:grayscale(0)`)
 ```
 
 ###### vue3 小提示
