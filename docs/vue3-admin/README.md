@@ -154,3 +154,17 @@ documentElement.setAttribute('style', `filter:grayscale(0)`)
   const divRef = ref(null) // 这样就能获取到自组件
 </script>
 ```
+
+###### element icons 图标的使用
+
+为了方便使用 element 图标，我们可以将图标注册为组件
+
+```js
+export function func(app) {
+  // 获取element icons
+  const icons = elementIcons
+  for (let i in icons) {
+    app.component(`element${icons[i].name}`, icons[i])
+  }
+}
+```
