@@ -2,9 +2,11 @@
 
 > 2022-1-9
 
-## 基础数据类型
+## 基础篇
 
-```ts
+### 基础数据类型
+
+```typescript
 let str: string = '123'
 let num: number = 123
 let bool: boolean = false
@@ -20,27 +22,27 @@ let sym: symbol = Symbol('me')
 1. 在默认情况下，`null`和`undefined`是所有类型的子类型，可以把`null`和`undefined`赋值给其他类型
 2. 虽然`number`和`bigint`都表示数字，但两种类型不兼容
 
-## 其他类型
+### 其他类型
 
-### Array
+#### Array
 
 1. 数组的定义有两种方式
 
-```ts
+```typescript
 let arr: Array<string> = ['1']
 let arr2: string[] = ['2']
 ```
 
 2. 联合数组的定义
 
-```ts
+```typescript
 let arr: (number | string)[] = [1, 2, '1']
 let arr2: Array<number | string> = [1, 2, 3, '2']
 ```
 
 3. 对象数组的定义
 
-```ts
+```typescript
 interface Arrobj {
   name: string
   age: number
@@ -49,7 +51,7 @@ interface Arrobj {
 let arr: Array<Arrobj> = [{ name: '123', age: 123 }]
 ```
 
-### 函数
+#### 函数
 
 ###### 函数声明
 
@@ -61,7 +63,7 @@ function sum(x: number, y: number): number {
 
 ###### 函数表达式
 
-```ts
+```typescript
 let mySum: (x: number, y: number) => number = (
   x: number,
   y: number
@@ -74,7 +76,7 @@ let mySum: (x: number, y: number) => number = (
 
 可选参数后不能跟必填参数
 
-```ts
+```typescript
 function buildName(firstName: string, lastName?: string) {
   if (lastName) {
     return firstName + ',' + lastName
@@ -86,7 +88,7 @@ function buildName(firstName: string, lastName?: string) {
 
 ###### 默认参数
 
-```ts
+```typescript
 function buildName(firstName: string, lastName: string = 'cat') {
   if (lastName) {
     return firstName + ',' + lastName
@@ -98,7 +100,7 @@ function buildName(firstName: string, lastName: string = 'cat') {
 
 ###### 剩余参数
 
-```ts
+```typescript
 function push(array: any[], ...items: any[]) {
   items.forEach((item) => {
     array.push(item)
@@ -108,13 +110,13 @@ function push(array: any[], ...items: any[]) {
 
 > 2022-1-10
 
-### 元组
+#### 元组
 
 元组表示特定类型和长度的数组
 
 ###### 定义
 
-```ts
+```typescript
 let x: [string, number]
 
 x = ['1', 1]
@@ -123,7 +125,7 @@ x = [1, 2] // 报错，一定要保持一致
 
 ###### 解构
 
-```ts
+```typescript
 let x: [string, number] = ['1', 1]
 
 let [s, n] = x
@@ -133,7 +135,7 @@ let [s, n] = x
 
 加上`?`表示可选
 
-```ts
+```typescript
 let x: [string, number?] = ['1']
 ```
 
@@ -141,39 +143,39 @@ let x: [string, number?] = ['1']
 
 readonly 字段
 
-```ts
+```typescript
 const point: readonly [string, number] = ['123', 123]
 ```
 
-### never
+#### never
 
 表示永不存在的值的类型,值永不存在的两种情况：
 
 1. 函数**抛出异常**
 2. 进入**死循环**
 
-### any
+#### any
 
 `any`是类型系统的顶级类型，可以被赋值为任意类型，也能调用任何方法，**尽量不要使用 any**
 
-### unknown
+#### unknown
 
 与`any`的区别：
 
 1. 任何类型可以给`any`赋值，也可以赋值给任何类型
 2. 任何类型可以给`unkonwn`赋值，但只能赋值给`unkonwn`和`any`
 
-### object、Object、{}
+#### object、Object、{}
 
 1. `object`表示所有非原始类型，不能把原始类型赋值给 object
 2. `Object`表示所有类型，可以把原始类型、非原始类型赋值给 Object
 3. `{}`与`Object`一致
 
-## 类型推断
+### 类型推断
 
 一般情况下，不需要每个变量都写类型，系统会自动帮我们推断出来
 
-```ts
+```typescript
 // 等价
 let str: string = '123'
 let str1 = '123'
@@ -183,11 +185,11 @@ const n: number = 123
 const n2 = 123 // 此时类型是123
 ```
 
-## 类型断言
+### 类型断言
 
 但自己知道某一步的确定类型时，可以使用类型断言
 
-```ts
+```typescript
 type StringOrNumber = string | number
 
 function add(x: StringOrNumber) {
@@ -199,7 +201,7 @@ function add(x: StringOrNumber) {
 
 有两种方法表达，但推荐使用`as`，因为尖括号模式会与`react`的`jsx`有冲突
 
-```ts
+```typescript
 // 尖括号 语法
 let someValue: any = 'this is a string'
 let strLength: number = (<string>someValue).length
@@ -213,16 +215,16 @@ let strLength: number = (someValue as string).length
 
 可以排除掉`null`和`undefined`
 
-```ts
+```typescript
 let m: null | undefined | string
 m!.toUpperCase()
 ```
 
-## 字面量类型
+### 字面量类型
 
 字面量类型：字符串字面量类型、数字字面量类型、布尔字面量类型
 
-```ts
+```typescript
 let str: 'this is string' = 'this is string' // 表示this is string
 let num: 1 = 1
 let bool: true = true
@@ -232,16 +234,16 @@ let bool: true = true
 
 ###### let 和 const
 
-```ts
+```typescript
 let str = 'aaa' // 类型为string
 const str1 = 'aaa' // 类型为aaa
 ```
 
-## 类型拓宽
+### 类型拓宽
 
 所有通过 let 或 var 定义的变量、函数的形参、对象的非只读属性，如果满足指定了初始值且未显示添加类型注解的条件，那么它们推断出来的类型就是指定的初始值字面量类型拓宽后的类型
 
-```ts
+```typescript
 const str = 'this is string' // 类型是 this is string
 let str2 = str // 类型是 string
 
@@ -251,7 +253,7 @@ let str4 = str3 // 类型是 this is string
 
 ###### 使用 const 确定类型
 
-```ts
+```typescript
 // const obj: {
 //   readonly x: 1;
 // }
@@ -262,13 +264,13 @@ const obj = {
 let n = 3 as const // n: 3
 ```
 
-## 类型缩小
+### 类型缩小
 
 ###### 类型守卫
 
 将类型明确缩小
 
-```ts
+```typescript
 let func = (anything: any) => {
   if (typeof anything === 'string') {
     return anything // 类型是string
@@ -279,38 +281,38 @@ let func = (anything: any) => {
 }
 ```
 
-## 联合类型
+### 联合类型
 
 联合类型表示取值可以为多种类型的中的一种，使用`|`分割
 
-```ts
+```typescript
 let x: string | number = 123
 ```
 
-## 类型别名
+### 类型别名
 
 给类型起一个新的名字，而不是新创建一种类型
 
-```ts
+```typescript
 type NewType = string
 type NewType2 = string | number
 ```
 
-## 交叉类型
+### 交叉类型
 
 将多个类型合并为一个类型，一般用于将多个接口类型合并成一个类型，实现接口继承的效果
 
-```ts
+```typescript
 type InterfaceType = { id: number; name: string } & { sex: string }
 
 const mixType: InterfaceType = { id: 1, name: '123', sex: 'xx' }
 ```
 
-## 接口
+### 接口
 
 可以用于**对类的一部分进行抽象**，也可以用于**对象的形状进行描述**
 
-```ts
+```typescript
 interface Person {
   name: string
   age: number
@@ -324,9 +326,9 @@ let tom: Person = {
 
 接口名一般大写开头，属性不能多，也不能少
 
-### 可选与只读
+#### 可选与只读
 
-```ts
+```typescript
 interface Person {
   name: string
   age?: number // 可选
@@ -336,14 +338,14 @@ interface Person {
 
 `ReanonlyArray<T>`，保证数组创建不能被修改
 
-```ts
+```typescript
 let arr: Array<number> = [1, 2, 3]
 let arr2: ReadonlyArray<number> = arr
 ```
 
-### 任意属性
+#### 任意属性
 
-```ts
+```typescript
 interface Person {
   name: string
   age: number
@@ -360,7 +362,7 @@ let tom: Person = {
 
 ?> 注意：一旦定义了任意属性，那么确定属性和可选属性的类型的必须是它的类型的子集
 
-```ts
+```typescript
 interface Person {
   name: string
   age?: number // Error number类型不能赋值给string
@@ -375,11 +377,11 @@ interface Person {
 }
 ```
 
-## 鸭式辨形法
+### 鸭式辨形法
 
 **像鸭子一样走路并且嘎嘎叫的就叫鸭子**，即具有鸭子特征的认为它就是鸭子
 
-```ts
+```typescript
 interface LabeledValue {
   label: string
 }
@@ -396,19 +398,19 @@ printLabel({ label: '12', size: 10 }) // Error
 
 上面代码，在参数里写对象就相当于是直接给`labeledObj`赋值，这个对象有严格的类型定义，所以不能多参或少参。而当你在外面将该对象用另一个变量`myObj`接收`myObj`不会经过额外属性检查，但会根据类型推论为`let myObj: { size: number; label: string } = { size: 10, label: "Size 10 Object" }`;，然后将这个`myObj`再赋值给`labeledObj`，此时根据类型的兼容性，两种类型对象，参照鸭式辨型法，因为都具有 label 属性，所以被认定为两个相同，故而可以用此法来绕开多余的类型检查。
 
-## 绕过额外属性检查的方法
+### 绕过额外属性检查的方法
 
 1. 鸭式辩型法
 2. 类型断言 `as`
 3. 索引签名 `[propName: string]: any`
 
-## 接口（interface）与类型别名（type）的区别
+### 接口（interface）与类型别名（type）的区别
 
 在大多数的情况下，二者基本没有区别，只有一下的特殊情况
 
 ###### Object/Function
 
-```ts
+```typescript
 interface Point {
   x: number
   y: number
@@ -429,7 +431,7 @@ type Func2 = (x: number, y: number) => number
 接口可以扩展类型别名，类型别名也能扩展接口  
 接口使用`extends`实现，类型别名通过`&`实现
 
-```ts
+```typescript
 interface Int1 {
   number: number
 }
@@ -449,11 +451,11 @@ interface Int3 extends Type1 {
 type Type3 = Int1 & { y: string }
 ```
 
-## 泛型
+### 泛型
 
 使用一个类型 T，**T 是一个抽象类型，只有在调用的时候才能确定它的值**
 
-```ts
+```typescript
 function identity<T>(arg: T): T {
   return arg
 }
@@ -468,7 +470,7 @@ function identity<T>(arg: T): T {
 
 多个泛型使用例子
 
-```ts
+```typescript
 function identity<T, U>(arg: T, arg2: U): T {
   console.log(arg2)
   return arg
@@ -477,11 +479,11 @@ function identity<T, U>(arg: T, arg2: U): T {
 console.log(identity(2, 'sss'))
 ```
 
-### 泛型约束
+#### 泛型约束
 
 使用`extends`
 
-```ts
+```typescript
 function trace<T>(arg: T): T {
   console.log(arg.size) // Error，不一定有size
   return arg
@@ -497,13 +499,13 @@ function tran<T extends Sizeable>(arg: T): T {
 }
 ```
 
-### 泛型工具
+#### 泛型工具
 
-##### typeof
+###### typeof
 
 主要用于获取类型上下文中获取变量或者属性的类型
 
-```ts
+```typescript
 interface Person {
   name: string
   age: number
@@ -513,11 +515,11 @@ const tom: Person = { name: 'tom', age: 12 }
 type Tom = typeof tom // type Tom = Person
 ```
 
-##### keyof
+###### keyof
 
 用于获取某种类型的所有键，返回类型是联合类型
 
-```ts
+```typescript
 interface Person {
   name: string
   age: number
@@ -544,11 +546,11 @@ const date = prop(todo, 'date') // Error 不存在date
 console.log(id)
 ```
 
-##### in
+###### in
 
 用来遍历枚举类型
 
-```ts
+```typescript
 type Keys = 'a' | 'b' | 'c'
 
 type Obj = {
@@ -561,21 +563,21 @@ type Obj = {
 // }
 ```
 
-##### infer
+###### infer
 
 在条件类型语句中，可以用`infer`声明一个类型变量并且使用它
 
-```ts
+```typescript
 type ReturnType<T> = T extends (...args: any[]) => infer R ? R : any
 ```
 
 以上代码中 infer R 就是声明一个变量来承载传入函数签名的返回值类型，简单说就是用它取到函数返回值的类型方便之后使用。
 
-##### extends
+###### extends
 
 对泛型进行约束或者继承
 
-```ts
+```typescript
 interface Lengthwise {
   length: number
 }
@@ -590,9 +592,9 @@ func(3) // Error 没有length属性
 func({ length: 10, value: 3 }) // OK
 ```
 
-##### 索引类型
+###### 索引类型
 
-```ts
+```typescript
 interface Person {
   name: string
   age: number
@@ -611,11 +613,11 @@ getV(person, ['name'])
 getV(person, ['sdf']) // Error
 ```
 
-##### 映射类型
+###### 映射类型
 
 根据旧的类型创建新的类型，称为映射类型
 
-```ts
+```typescript
 interface TestInterface {
   name: string
   age: number
@@ -637,11 +639,11 @@ type ReadonlyInterface<T> = {
 type NewInterface2 = ReadonlyInterface<TestInterface>
 ```
 
-##### Partial
+###### Partial
 
 可以将类型的属性变成可选（只支持第一层）
 
-```ts
+```typescript
 // 定义
 type Partial1<T> = {
   [P in keyof T]+?: T[P]
@@ -655,11 +657,11 @@ type TestType = {
 type types = Partial1<TestType>
 ```
 
-##### Required
+###### Required
 
 将类型的属性变为必选
 
-```ts
+```typescript
 type Required1<T> = {
   [P in keyof T]-?: T[P]
 }
@@ -675,7 +677,7 @@ type P = Required1<Person>
 
 将类型变成只读
 
-```ts
+```typescript
 type Readonly1<T> = {
   +readonly [P in keyof T]: T[P]
 }
@@ -692,7 +694,7 @@ type P = Readonly1<Person>
 
 将某个类型中挑出一些属性出来
 
-```ts
+```typescript
 type Pick1<T, K extends keyof T> = {
   [P in K]: T[P]
 }
@@ -705,11 +707,11 @@ interface Person {
 type P = Pick1<Person, 'name'>
 ```
 
-##### Record
+###### Record
 
 `Record<K extends keyof any, T>`的作用是将`K`中所有的属性的值转化为 `T` 类型
 
-```ts
+```typescript
 type Record<K extends keyof any, T> = {
   [P in K]: T
 }
@@ -726,40 +728,40 @@ const x: Record<Page, PageInfo> = {
 }
 ```
 
-##### RetureType
+###### RetureType
 
 得到一个函数的返回值类型
 
-```ts
+```typescript
 type Func = (value: number) => string
 
 const foo: ReturnType<Func> = '123'
 ```
 
-##### Exclude
+###### Exclude
 
 `Exclude<T,U>`将某个类型中属于另一个的类型移除掉
 
-```ts
+```typescript
 type Exclude1<T, U> = T extends U ? never : T
 
 type T0 = Exclude1<1 | 2, 1> // 2
 ```
 
-##### Extract
+###### Extract
 
 `Extract<T, U>`作用是从`T`中提取出`U`
 
-```ts
+```typescript
 type Extract2<T, U> = T extends U ? T : never
 type T0 = Extract2<1 | 2, 1>
 ```
 
-##### Omit
+###### Omit
 
 `Omit<T, K extends keyof any>`的作用是将 `T` 类型中与 `K` 类型匹配的属性去掉
 
-```ts
+```typescript
 type Omit<T, K extends keyof any> = Pick<T, Exclude<keyof T, K>>
 
 interface Todo {
@@ -773,20 +775,20 @@ type Todo2 = Omit<Todo, 'desc'>
 
 > 2022-1-11
 
-##### NonNullable
+###### NonNullable
 
 `NonNullable<T>`的作用时用来过滤类型中的`null`和`undefined`
 
-```ts
+```typescript
 type T0 = NonNullable<string | number | undefined> // 类型是 string | number
 ```
 
-## tsconfig.json
+### tsconfig.json
 
-tsconfig.json 是 ts 项目的配置文件，存在该文件的目录就是项目的根目录，所以要把该文件放到项目根目录中  
+tsconfig.json 是 typescript 项目的配置文件，存在该文件的目录就是项目的根目录，所以要把该文件放到项目根目录中  
 tsconfig.json 包好 Typescript 编译的相关配置
 
-#### 配置实例
+##### 配置实例
 
 ```json
 {
@@ -806,7 +808,7 @@ tsconfig.json 包好 Typescript 编译的相关配置
     "removeComments": true, // 删除编译后的所有的注释
     "noEmit": true, // 不生成输出文件
     "importHelpers": true, // 从 tslib 导入辅助工具函数
-    "isolatedModules": true, // 将每个文件做为单独的模块 （与 'ts.transpileModule' 类似）.
+    "isolatedModules": true, // 将每个文件做为单独的模块 （与 'typescript.transpileModule' 类似）.
 
     /* 严格的类型检查选项 */
     "strict": true, // 启用所有严格类型检查选项
@@ -841,4 +843,101 @@ tsconfig.json 包好 Typescript 编译的相关配置
     "emitDecoratorMetadata": true // 为装饰器提供元数据的支持
   }
 }
+```
+
+> 2022-1-12
+
+## 深入篇
+
+### keyof
+
+```typescript
+interface Eg1 {
+  name: string
+  readonly age: number
+}
+
+type T1 = keyof Eg1 // 'name' | 'age'
+
+class Eg2 {
+  private name: string
+  public readonly age: number
+  protected home: string
+}
+
+type T2 = keyof Eg2 // "age"，其他非公有属性的不能被获取
+
+const str: T2 = 'age'
+```
+
+### T[K] 索引
+
+```typescript
+interface T1 {
+  name: string
+  readonly age: number
+}
+
+type V1 = T1['name'] // string
+type V2 = T1['name' | 'age'] // string | number
+type V3 = T1['111'] // Error，因为不存在
+type V4 = T1[keyof T1] // string | number
+```
+
+### extends 拓展
+
+- 用于继承
+
+```typescript
+interface T1 {
+  name: string
+}
+
+interface T2 {
+  age: number
+}
+
+interface T3 extends T1, T2 {
+  sex: string
+}
+```
+
+- 用于条件判断
+
+```typescript
+type A1 = 'x' extends 'x' ? 1 : 2 // 1
+
+type A2 = 'x' | 'y' extends 'x' ? 1 : 2 // 2
+
+type A3 = 'x' extends 'x' | 'y' ? 1 : 2 // 1
+
+type P<T> = T extends 'x' ? 1 : 2
+
+type A4 = P<'x' | 'y'> // 1 | 2
+```
+
+总结，就是 `extends` 前面的参数为联合类型时则会分解（依次遍历所有的子类型进行条件判断）联合类型进行判断。然后将最终的结果组成新的联合类型。
+
+### 类型兼容性
+
+**子类型比父类型更加具体，父类型比子类型更宽泛**
+
+- 赋值性
+
+```typescript
+interface Animal {
+  name: string
+}
+
+interface Dog extends Animal {
+  bread(): void
+}
+
+let a: Animal
+let b: Dog
+
+// Dog为更具体的类型，所以为父类，子类可以赋值给父类
+a = b
+// 反过来不行
+b = a // Error
 ```
