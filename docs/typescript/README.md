@@ -941,3 +941,26 @@ a = b
 // 反过来不行
 b = a // Error
 ```
+
+### 同态与非同态
+
+`Partial`、`Readonly`、`Pick`都属于同态，即属性修饰符都会被拷贝  
+`Record`是非同态，不会拷贝属性修饰符
+
+```typescript
+// {readonly a?: string}，此处readonly和？都被拷贝了
+type Type1 = Pick<{ readonly a?: string }, 'a'>
+```
+
+原因在于`Record`使用`typeof any`，没有遍历所有输入的类型
+
+### Parameters 获取函数的参数类型，将每个参数类型放到一个元组中
+
+```typescript
+// [arg1: number, arg2: number]
+type Type = Parameters<(arg1: number, arg2: number) => number>
+```
+
+### 自定义 Ts 高级类型工具
+
+#### SymmetricDifference 获取没有同时存在于 T 和 U 内的类型（待续）
