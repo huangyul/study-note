@@ -10,8 +10,8 @@
 
 原始值包括：`Undefined` `Null` `Boolean` `Number` `String` `Symbol`
 
-原始值是按值访问，操作的是存储在变量中的实际值  
-引用值是按
+原始值是**按值访问**，操作的是存储在变量中的实际值  
+引用值是**按引用访问**,无法直接操作
 
 #### 1、动态属性
 
@@ -72,8 +72,9 @@ console.log([1, 2] instanceof Array)
 ### 二、执行上下文与作用域
 
 1. **上下文**决定了变量或函数可以访问哪些数据，以及它们的行为；
-2. 每个函数都有自己的**执行上下文**。当函数被调用时，函数的上下文被推到一个上下文栈，在执行完之后，再弹出该栈，ECMAScript 程序的执行流就是通过这个上下文进行控制的；
-3. 上下文中的代码在执行的时候，会创建变量对象的一个**作用域链**
+2. 所有通过`var`定义的全局变量和函数都会成为`window`对象的属性和方法，而使用`let`和`const`的顶级声明不会定义在全局上下文中；
+3. 每个函数都有自己的**执行上下文**。当函数被调用时，函数的上下文被推到一个上下文栈，在执行完之后，再弹出该栈，ECMAScript 程序的执行流就是通过这个上下文进行控制的；
+4. 上下文中的代码在执行的时候，会创建变量对象的一个**作用域链**
 
 ```javascript
 let color = 'xxx'
@@ -219,11 +220,20 @@ let s2 = s1.substring(2) // 调用实例的特定方法
 
 #### 字符串操作方法
 
-1. concat()：用于将一个或多个字符串拼接成一个新字符
+0. 获取字符位置 charAt()
+
+```js
+let str = 'abcd'
+
+console.log(str.charAt(2)) // c
+```
+
+1. concat()：用于将一个或多个字符串拼接成一个新字符，一般使用`+`即可
 
 ```javascript
 let str = '123'
-let str = str.concat('456') // 123456
+str = str.concat('456') // 123456
+str = str + '789' // 123456789
 ```
 
 2. slice()、substr()、substring()：截取字符串
@@ -296,11 +306,11 @@ console.log(str.toLowerCase()) //huang
 
 #### Global
 
-`Global`对象是一种兜底对象，也就是全局变量和方法挂载的对象（浏览器的为`window`对象）
+`Global`对象是一种兜底对象，也就是全局变量和方法挂载的对象（浏览器的为`window`对象），常用的方法：`isNan()`、`isFinite()`、`parseInt()`、`parseFloat()`
 
 1. URL 编码
 
-encodeURI()和 encodeURIComponent()方法用于将 url 转换成浏览器可以理解的字符
+`encodeURI()`和 `encodeURIComponent()`方法用于将 url 转换成浏览器可以理解的字符，主要区别是`encodeURI`不会编码属于 URL 组件的特殊字符，例如`://`，`encodeURIComponent`则会对这些字符进行处理
 
 ```javascript
 let url = 'http://www.wrox.com/illegal value.js#start'
