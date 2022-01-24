@@ -113,9 +113,10 @@ function func1() {
 
 块级作用域声明，作用域由最近的一堆`花括号{}`界定
 
-与 var 的区别：
+与 `var` 的区别：
 
-1. let 不能重复声明，var 重复声明会覆盖；
+1. `let`不能重复声明，`var`重复声明会覆盖；
+2. `var`有变量提升，`let`没有
 
 ##### 3、const
 
@@ -274,7 +275,7 @@ console.log(str.trimStart())
 console.log(str.trimEnd())
 ```
 
-6. repeat(),repeatALl()：替代
+6. replace(),replaceAll()：替代
 
 ```javascript
 let str = 'hhhhh'
@@ -306,7 +307,7 @@ console.log(str.toLowerCase()) //huang
 
 #### Global
 
-`Global`对象是一种兜底对象，也就是全局变量和方法挂载的对象（浏览器的为`window`对象），常用的方法：`isNan()`、`isFinite()`、`parseInt()`、`parseFloat()`
+`Global`对象是一种兜底对象，也就是全局变量和方法挂载的对象（浏览器的为`window`对象），常用的方法：`isNaN()`、`isFinite()`、`parseInt()`、`parseFloat()`
 
 1. URL 编码
 
@@ -325,7 +326,7 @@ console.log(encodeURIComponent(url)) // http%3A%2F%2Fwww.wrox.com%2Fillegal%20va
 
 #### Math
 
-提供一些辅助计算的属性和方法
+保留数学公式、信息和计算的对象，提供一些辅助计算的属性和方法
 
 1. `min()`和`max()`
 
@@ -380,7 +381,7 @@ let persion = { name: 'xxx' }
 ```javascript
 // 所有可迭代的对象都可以使用from
 console.log(Array.from('123')) // [ '1', '2', '3' ]
-// 如果参数是数组，则原样返回
+// 如果参数是数组，则原样返回，可用于浅拷贝数组
 console.log(Array.from([1, 2, 3])) // [ 1, 2, 3 ]
 // 使用第二个参数可以加工数据
 console.log(Array.from('123', (x) => x * x)) // [ 1, 4, 9 ]
@@ -555,7 +556,7 @@ for (let i = 0; i < 10; i++) {
 
 ### 迭代器模式
 
-简单来说就是统一所有可迭代的数据结构，通过实现 Iterable 接口，可以统一使用`for..of`进行迭代
+就是统一所有可迭代的数据结构，通过实现 Iterable 接口，可以统一使用`for..of`进行迭代
 
 #### 1. 可迭代协议
 
@@ -625,6 +626,8 @@ class Counter {
 function* genratorFn() {}
 ```
 
+?> 箭头函数不能用来定义生成器
+
 调用生成器函数会产生一个生成器对象，一开始处于暂停，内部实现了`Iterator`接口，调用`next()`方法可以让生成器开始或恢复
 
 ```javascript
@@ -669,6 +672,10 @@ for (let i of generatorFunc()) {
 }
 // 1 2 3
 ```
+
+2. 使用`yield`实现输入和输出
+
+`yield`可以作为函数的中间参数使用。上一次让生成器函数暂停的`yield`关键字会接收到传给`next()`方法的第一个值，但第一次调用`next()`传入的值不会被使用
 
 ## 对象、类与面向对象编程
 
@@ -877,6 +884,33 @@ console.log(p1) // Person { name: 'name', age: 12 }
 4. 执行构造函数内部的代码（为新对象添加属性）
 5. 如果构造函数返回非空对象，则返回该对象；否则返回刚创建的新对象
 
+###### 理解构造函数
+
+构造函数也是普通函数，与普通函数没有任何区别，之所以能创建对象，可以理解为是先创建一个新对象，然后将构造函数的`this`指向该对象
+
+```javascript
+function Person(name, age) {
+  this.name = name
+  this.age = age
+  this.sayName = function () {
+    console.log(name)
+  }
+}
+
+// 使用new实例时，this会被绑定到新对象上
+let person1 = new Person('xxx', 21)
+person.sayName() // 'xxx'
+
+// 没有使用new创建一个新的对象，构造函数的this就会绑定到window上
+Person('window', 11)
+window.sayName() // 'window'
+
+// 在新对象中调用
+let o = new Object()
+Person.call(o, 'object', 21)
+o.sayName() // 'object'
+```
+
 ###### 构造函数的问题
 
 构造函数内部定义的方法，都是新的函数实例
@@ -910,7 +944,7 @@ p.sayName()
 
 ###### 对于原型的理解
 
-在构造函数定义时，构造函数就会有 prototype 属性，该属性也是一个对象，成为原型对象；原型对象有一个 constructor 属性，该属性指回构造函数
+在构造函数定义时，构造函数就会有 `prototype` 属性，该属性也是一个对象，称为原型对象；原型对象有一个 `constructor` 属性，该属性指回构造函数
 
 ```javascript
 function Person() {}
@@ -918,15 +952,101 @@ function Person() {}
 console.log(Person.prototype)
 // prototype的constructor指回Person构造函数
 console.log(Person.prototype.constructor == Person)
+// 正常的原型链都会终止于Object的原型对象
+// Object原型的原型是null
 ```
 
 实例中的 prototype 指向构造函数的原型，所有将属性和方法定义在构造函数的原型上，就可以共享属性
+
+`isPrototypeOf()`可以确定两个对象是否有原型指向关系
+
+```javascript
+function Person() {}
+
+let person = new Person()
+
+console.log(Person.prototype.isPrototypeOf(person1)) // true
+```
+
+`getPrototypeOf()`可以原型对象
+
+```javascript
+function Person() {}
+
+let person = new Person()
+
+console.log(Object.getPrototypeOf(person)) // Person.prototype
+```
+
+`Object.create()`可以创建一个新对象，并为其指定原型
+
+```javascript
+let biped = {
+  numLegs: 2,
+}
+
+let person = Object.create(biped) // 指向原型是biped
+person.name = 'xxx'
+
+console.log(person.name)
+console.log(person.numLegs)
+// 判断person的原型是不是biped
+console.log(Object.getPrototypeOf(person) === biped)
+```
 
 ![](./images/prototype-1.png)
 
 ###### 原型层级
 
 在通过对象访问属性时，首先会找对象实例本身，如果本身有，则返回，如果没有，则进入原型对象上找
+
+```javascript
+function Person() {
+  Person.prototype.name = 'xxx'
+}
+
+let person1 = new Person()
+let person2 = new Person()
+
+person1.name = 'www'
+console.log(person1.name) // 'www'，来自实例
+console.log(person2.name) // xxx 来自原型
+
+// 定义了实例的属性，会切断与原型的联系，只能通过delete重新连接上
+person1.name = null
+console.log(person1.name) // null
+
+delete person1.name
+console.log(person1.name) // xxx
+```
+
+###### 原型与 in
+
+有两种方式使用`in`操作符：单独使用和在`for-in`中使用  
+单独使用时，无论属性在原型上还是在实例上，都会返回`true`
+
+```javascript
+let obj1 = { name: 123 }
+let obj2 = Object.create(obj1)
+obj2.name2 = 111
+
+console.log('name' in obj2) // true
+console.log('name2' in obj2) // true
+```
+
+`hasOwnProperty()`只有在实例上有的属性才返回`true`
+
+```javascript
+function Person {
+  Person.prototype.name = '123'
+}
+
+let person1 = new Person()
+person1.name2 = 'xxx'
+
+console.log(person1.hasOwnProperty('name')) // false
+console.log(person1.hasOwnProperty('name2')) // true
+```
 
 ###### 对象的迭代
 
