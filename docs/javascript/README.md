@@ -265,7 +265,7 @@ console.log(str.substr(3, 7)) // lo worl
 
 检查是否包括子字符串，返回`boolean`值
 
-5. trim(): 去掉前后空格 trimStart()：只去前空格 trimEnd(): 只去后空格
+5. `trim()`: 去掉前后空格 `trimStart()`：只去前空格 `trimEnd()`: 只去后空格
 
 ```javascript
 let str = ' hello world '
@@ -1085,11 +1085,106 @@ console.log(ins.getSubType())
 console.log(ins.getType())
 ```
 
+###### 默认原型
+
+默认情况下，所有引用类型的继承自`Object`，所以任何函数的默认原型都是一个**Object 实例**，所以可以继承同`String()`,`toLocaleString()`等方法的原因
+
+###### 原型与继承的关系
+
+确定原型与实例的方法有两种：
+
+1. `instanceof`
+
+```javascript
+let person = {}
+
+console.log(person instanceof Object)
+```
+
+2. `isPrototypeOf()`只要原型链中包含这个原型，则返回`true`
+
+```javascript
+let person = {}
+
+console.log(Object.prototype.isPrototypeOf(person)) // true
+```
+
+###### 关于方法
+
+子类如果要添加父类没有的方法或者覆盖父类的方法，都必须在原型赋值后再添加到原型上
+
+```javascript
+function SuperType() {}
+
+function SupType() {}
+
+SupType.prototype = new SuperType()
+
+// 这里才能添加新的方法
+SupType.prototype.getName = function () {
+  return '123321'
+}
+```
+
+!> 通过对象字面量添加新的方法，会导致与原来的原型断绝关系
+
+```javascript
+Object1.prototype = new SuperType()
+
+// 使用字面量定义，此时会与原本的原型断开
+Object1.prototype = {
+  xxx() {
+    // do something
+  },
+}
+```
+
+###### 原型链的问题
+
+在使用原型实现继承时，原型实际上会变成另一个类型的实例，这意味着原先的实例属性摇身一变成为了原型的属性。
+
+```javascript
+function Type1() {
+  this.colors = [1, 2, 3]
+  this.name = '12'
+}
+
+function Type2() {}
+
+// 继承SuperType
+Type2.prototype = new Type1()
+
+let i = new Type2()
+i.colors.push(4)
+i.name = 'i'
+console.log(i.colors) // 1,2,3,4
+console.log(i.name) // i
+
+let i2 = new Type2()
+console.log(i2.colors) // 1,2,3,4
+console.log(i.name) // i
+```
+
+分析上面的例子:  
+首先构造函数`Type1`里面定义了`name`属性，在`Type2`继承时会变成`Type1`的一个实例，原理与使用构造函数定义对象一样，此时`Type2.prototype`也有了`name` 属性，最终所有的`Type2`的实例都会继承这个属性
+
+#### 3.2 盗用构造函数
+
+#### 3.3 组合继承
+
+#### 3.4 原型式继承
+
+#### 3.5 寄生式继承
+
+#### 3.6 寄生式组合继承
+
 ### 4、类
 
 #### 4.1、类的定义
 
-`class Person {}`
+类表面上看起来可以支持正式的面向对象编程，实际本质使用的仍然是原型和构造函数的概念
+
+类的声明：`class Person {}`
 
 ###### 类的构成
 
@@ -1097,146 +1192,300 @@ console.log(ins.getType())
 
 #### 4.2、类构造函数
 
-通过`new`关键字定义类时，会主动调用`constructor`构造方法
+`constructor`关键字用于在类定义块内内部创建类的构造函数。非必须
+
+###### 实例化
+
+使用`new`操作符实例化`Person`的操作等于使用`new`调用其构造函数
 
 ```javascript
-class Person {
-  constructor() {
-    console.log(123)
+class Animal {}
+
+class Cat {
+  constructor(name) {
+    console.log('cat')
+    this.name = name
   }
 }
 
-let p = new Person() // 123
+const animal = new Animal() // 此处如果没有构造函数，可以不加（）
+
+const cat = new Cat('cat') // cat
+```
+
+默认情况先，类的构造函数会返回 this，如果没有返回 this，而是其他对象，那么这个新对象的 instanceof 操作符无法检测出与类有关联
+
+```javascript
+class Person {
+  constructor(override) {
+    if (override) {
+      return {
+        name: 'xxx',
+      }
+    }
+  }
+}
+
+let p1 = new Person(),
+  p2 = new Person(true)
+
+console.log(p1 instanceof Person) // true
+console.log(p2 instanceof Person) // false
+```
+
+类构造函数和构造函数的区别：调用类构造函数必须使用`new`，而普通构造函数如果不使用`new`，默认情况下会把属性加入全局变量中（`window`或`gloabl`）
+
+###### 类本质就是一个函数
+
+```javascript
+class Person {}
+
+// 类型为函数
+console.log(typeof Person) // function
+// 原型的构造函数还是只想本身
+console.log(Person === Person.prototype.constructor) // true
 ```
 
 #### 4.3、实例、原型和类成员
 
-###### 实例
+类可以定义存在于实例的成员、存在于原型上的成员、以及存在于类本身的成员
 
-1. 生成实例要使用`new`
-2. 实例的属性要显示定义到 this 上，否则都是定义到原型上
+###### 实例成员
 
-```javascript
-class Poins {
-  constructor(x, y) {
-    this.x = x
-    this.y = y
-  }
-  toString() {
-    return this.x + this.y
-  }
-}
-
-const p = new Poins(1, 2)
-console.log(p.hasOwnProperty('x')) // true
-console.log(p.hasOwnProperty('toString')) // false,在原型对象上
-```
-
-3. 所有实例共享一个原型对象
-
-#### 取值函数和存值函数
+每次通过`new`调用类，都会执行类构造函数，在这个函数内部可以为新创建的实例添加“自有”属性；在构造函数执行完毕后，仍然可以给实例继续添加新成员。也就是说，使用`this`的属性就是实例成员
 
 ```javascript
 class Person {
-  constructor() {}
-
-  get age() {
-    return 'getter'
-  }
-
-  set age(value) {
-    console.log('setter' + value)
-  }
-}
-
-let p = new Person()
-p.age = 12 // setter12
-console.log(p.age) // getter
-```
-
-#### 静态方法
-
-类相当于实例的原型，所有在类中定义的方法，都会被实例继承，如果在一个方法前加上`static`，则该方法不会被实例继承，直接通过类来调用
-
-```javascript
-class Foo {
-  static func() {
-    console.log(123123)
-  }
-}
-
-Foo.func() // 123123
-```
-
-静态方法中有`this`，则指向类而不是实例
-
-父类的静态方法可以被子类继承
-
-```javascript
-class Foo {
-  static func() {
-    console.log(123)
-  }
-}
-
-class Bar extends Foo {}
-
-Bar.func()
-```
-
-#### 4.4、类的继承
-
-```javascript
-class Foo {
   constructor() {
-    console.log('父类的构造函数')
+    this.name = '123213'
+    this.arr = [1, 2, 3]
   }
 }
 
-class Bar extends Foo {
+let p1 = new Person(),
+  p2 = new Person()
+
+console.log(p1.name === p2.name) // true
+console.log(p1.arr === p2.arr) // false
+console.log(p1 === p2) // false
+```
+
+###### 原型方法与访问器
+
+在类块中定义的方法作为原型方法
+
+```javascript
+class Person {
+  // 此方法为原型方法
+  say() {
+    console.log('xxx')
+  }
+}
+
+Person.prototype.say() // xxx
+```
+
+!> 类中不能给原型添加原始值或者对象作为成员数据
+
+```javascript
+class Person {
+  name: 'Jake'
+}
+// Uncaught SyntaxError: Unexpected token
+```
+
+类定义也支持获取和设置访问器，与普通对象一样
+
+```javascript
+class Person {
   constructor() {
-    // 必须先调用super方法，才能使用this，相当于调用父类的构造函数
+    this.name_ = 'xxx'
+  }
+  set name(val) {
+    this.name_ = val
+  }
+  get name() {
+    return this.name_
+  }
+}
+
+let p1 = new Person()
+console.log(p1.name) // xxx
+p1.name = 'p1'
+console.log(p1.name) // p1
+```
+
+###### 静态方法
+
+静态方法通过用于执行不需要实例的操作，也不要求存在类的实例
+
+```javascript
+class Person {
+  static say() {
+    console.log('person')
+  }
+}
+
+Person.say()
+```
+
+#### 4.4 继承
+
+`ES6`原生支持类继承机制，但本质还是使用原型链的原理
+
+###### 继承基础
+
+使用`extends`，既可以继承对象，不禁可以继承一个类， 还可以继承不同函数。
+
+```javascript
+class Animal {}
+
+class Cat extends Animal {}
+
+let cat = new Cat()
+console.log(cat instanceof Cat) // true
+console.log(cat instanceof Animal) // true
+```
+
+###### 构造函数、HomeObejct 和 Super()
+
+派生类可以通过 `super` 关键字引用它们的原型，只能在类构造函数、实例方法和静态方法内部使用
+
+1. 在子类构造函数里，第一步一定要调用`super`
+
+```javascript
+class Animal {
+  constructor() {
+    this.prototype = true
+  }
+}
+
+class Cat extends Animal {
+  constructor() {
     super()
-    this.name = 'xxx'
+
+    console.log(this instanceof Animal) // true
+    console.log(this) // Cat { prototype: true }
   }
 }
-const bar = new Bar() // 父类的构造函数
+
+new Cat()
 ```
 
-###### super
+2. 静态方法中，可以通过 `super` 调用父类定义的静态方法
 
-`super`可以作为函数和对象，作为函数时指向父类的构造函数，作为对象时指向父类的原型对象
+```javascript
+class Animal {
+  static say() {
+    console.log(this)
+  }
+}
 
-1. 作为函数时，必须在子类的构造函数中先调用
-2. 作为对象时，在普通函数指向父类的原型对象；在静态函数指向父类。
+class Cat extends Animal {
+  static sayMyself() {
+    super.say()
+  }
+}
+
+Cat.sayMyself() // [class Cat extends Animal]
+```
+
+3. 问题注意点
+
+```javascript
+// super只能在派生类构造函数和静态方法中使用
+class Person {
+  constructor() {
+    super() // Error
+  }
+}
+
+// 不能单独调用super，要么用来调用构造函数，要么用来引用静态方法
+class Animal {}
+class Cat extends Animal {
+  constructor() {
+    console.log(super) // Error
+  }
+}
+
+// 在类的构造函数中，不能在调用super之前引用this
+class Animal {}
+class Cat extends Animal {
+  constructor() {
+    console.log(this) // Error
+  }
+}
+
+// 如果一个派生类中显式定义了构造函数，则要么调用super（），要么返回一个对象
+class A {}
+class B extends A {
+  constructor() {
+    super() // 调用super
+  }
+}
+class C extends A {
+  constructor() {
+    return {} // 返回对象
+  }
+}
+```
+
+###### 抽象基类
+
+定义：只能其他类继承，但本身不会被实例化，可以使用`new.target`阻止实例化
+
+```javascript
+class Animal {
+  constructor() {
+    // 如果是使用new，直接报错
+    if (new.target === Animal) {
+      throw new Error('这是一个基类，不能用来实例化')
+    }
+  }
+}
+```
+
+###### 继承内置类型
+
+```javascript
+class SuperArray extends Array {}
+// 此时SueprArray就用了Array类的所有属性和方法
+const arr = new SuperArray(1, 2, 3, 4) // [1,2,3,4]
+```
+
+###### 类混入 Object.assign()
 
 ```javascript
 class A {
   constructor() {
-    this.p = 2
+    this.a = 'a'
   }
-  p() {
-    return 2
+  A() {
+    console.log('A')
   }
 }
-// 父类的原型属性
-A.prototype.name = 123
-class B extends A {
+
+class B {
   constructor() {
-    super()
-    console.log(super.p) // 访问不到实例方法
-    console.log(super.name) // 可以访问原型对象方法，因为普通函数的super指向父类的原型对象
+    this.b = 'b'
+  }
+  B() {
+    console.log('B')
   }
 }
-let b = new B()
-```
 
-##### 混入
+class C {
+  constructor() {
+    this.c = 'c'
+  }
+  C() {
+    console.log('C')
+  }
+}
 
-```javascript
-const a = {}
-const b = {}
-{...a, ...b}
+const d = Object.assign(new A(), new B(), new C())
+
+console.log(d)
 ```
 
 ## 代理与反射
@@ -1273,6 +1522,8 @@ console.log(target.name2)
 
 ###### 捕获器
 
+在处理程序对象中定义的**基本操作的拦截器**
+
 ```javascript
 const target = {
   id: 'target',
@@ -1296,18 +1547,23 @@ console.log(proxy.id) // 捕获，但没有实际返回 id 的值
 
 ```javascript
 const target = {
-  id: 12,
+  a: 'a',
+  b: 'b',
 }
 
-const handle = {
+const proxy = new Proxy(target, {
   get(target, propKey, receiver) {
-    return target[propKey]
+    if (propKey === 'b') {
+      return 'xxx'
+    } else {
+      return Reflect.get(...arguments)
+    }
   },
-}
+})
 
-const proxy = new Proxy(target, handle)
-
-console.log(proxy.id)
+console.log(target.b) // b
+console.log(proxy.a) // a
+console.log(proxy.b) // xxx
 ```
 
 Reflect：反射，处理程序对象中所有可以捕获的方法都有对象的反射 API 方法，这些方法与捕获器拦截的方法具有相同的名称和函数签名，而且具有与被拦截方法相同的行为  
@@ -1331,30 +1587,9 @@ const proxy = new Proxy(target, handle)
 console.log(proxy.id)
 ```
 
-```javascript
-const target = {
-  num: 123,
-  num2: 456,
-}
-
-const handle = {
-  get(target, propKey, receiver) {
-    let desc = ''
-    // 通过特殊情况处理
-    if (propKey === 'num2') {
-      desc = '999'
-    }
-    return Reflect.get(...arguments) + desc
-  },
-}
-
-const proxy = new Proxy(target, handle)
-
-console.log(proxy.num) // 123
-console.log(proxy.num2) // 456999
-```
-
 ###### 可撤销代理
+
+使用`revocable()`可以定义支持撤销代理对象与目标对象，撤销是不可逆的
 
 ```javascript
 const target = {
@@ -1407,86 +1642,31 @@ console.log(proxySecond.id)
 // 1
 ```
 
-### 2、代理捕获器与反射方法
+### 2、反射 Reflect
 
-#### 2.1 get()
+###### Reflect.get(target, name, receiver)
 
-在获取属性值的操作中被调用，返回值无限制
+查找并返回`target`对象的`name`属性，如果没有，返回`undefined`
 
 ```javascript
-const target = {
-  id: 1,
+const obj = {
+  foo: 1,
 }
 
-const proxy = new Proxy(target, {
-  get(target, propKey, receiver) {
-    console.log('get')
-    return Reflect.get(...arguments)
-  },
-})
-
-console.log(proxy.id) // get 1
+console.log(Reflect.get(obj, 'foo')) // 1
 ```
 
-#### set()
+###### Reflect.set(target, name, receiver)
 
-在设置值的操作中被调用，返回 true 表示成功，返回 false 表示失败
-
-```javascript
-const target = {
-  id: 1,
-}
-
-const proxy = new Proxy(target, {
-  set() {
-    console.log('set')
-    return Reflect.set(...arguments)
-  },
-})
-
-proxy.id = 2 // set
-```
-
-#### has()
-
-在`in`操作符中被调用
+设置`target`对象的`name`属性
 
 ```javascript
-const target = {
-  id: 1,
+const obj = {
+  foo: 1,
 }
 
-const proxy = new Proxy(target, {
-  has() {
-    console.log('has')
-    return Reflect.has(...arguments)
-  },
-})
-
-console.log('id' in proxy) // has true
-```
-
-#### defineProperty()
-
-在`Object.defineProperty()`中被调用
-
-```javascript
-const target = {
-  id: 1,
-}
-
-const proxy = new Proxy(target, {
-  defineProperty() {
-    console.log('defineProperty')
-    return Reflect.defineProperty(...arguments)
-  },
-  get() {
-    console.log('get')
-    return Reflect.get(...arguments)
-  },
-})
-
-Object.defineProperty(proxy, 'name', { value: 'xxx' }) // defineProperty
+Reflect.set(obj, 'foo', 2)
+console.log(obj.foo) // 2
 ```
 
 ## 函数
