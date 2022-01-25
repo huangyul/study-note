@@ -586,7 +586,7 @@ console.log(iterator.next()) // { value: 1, done: false }
 console.log(iterator.next()) // { value: 2, done: false }
 console.log(iterator.next()) // { value: 3, done: false }
 console.log(iterator.next()) // { value: undefined, done: true }
-// 迭代器是一次性的，后续继续调用，也会返回doen：true
+// 迭代器是一次性的，后续继续调用，也会返回done：true
 console.log(iterator.next()) // { value: undefined, done: true }
 ```
 
