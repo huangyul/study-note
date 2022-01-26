@@ -2026,4 +2026,234 @@ function fac2(n) {
 
 闭包指那些引用了另一个**函数作用域中变量**的函数
 
+```javascript
+function A() {
+  let a = 'a'
+  return function () {
+    console.log(a)
+  }
+}
+```
+
+对于闭包的理解：  
+形成的条件是一个函数里引用了其他函数作用域中的变量，一般发生在嵌套函数。例如上面的例子，A 函数有局部变量 a，正常来说当 A 执行完后，局部变量 a 就会销毁，但是 A 函数内部有个匿名函数引用了 A 的变量（形成闭包），此时就算 A 函数执行完，也不能
+销毁，因为匿名函数还有对它的引用，所以会造成占用性能的问题。
+
+```javascript
+function b() {
+  let a = 1
+  return function () {
+    return (a += 1)
+  }
+}
+
+const add = b()
+
+console.log(add()) // 2
+console.log(add()) // 3
+console.log(add()) // 4
+```
+
+以上例子，由于内部的匿名函数一直保持对局部变量 a 的引用，所以 a 一直没有销毁，一直累加
+
 ###### this 对象
+
+this 在闭包中会有点难理解，例如
+
+```javascript
+// 定义全局变量i
+global.i = 1
+
+const obj = {
+  i: 2, // 局部变量i
+  getI() {
+    return function () {
+      return this.i
+    }
+  },
+}
+
+// 立即执行
+console.log(obj.getI()()) // 1
+```
+
+上面显示 1 的原因：内部函数无法直接访问外部函数的 `this` 和 `arguments`，所以上面的例子会将 `this` 指定为全局，解决方法是 1、用变量存起来，再传给闭包函数。2、函数运行时绑定上下文
+
+```javascript
+// 解决方法1
+global.i = 1
+const obj = {
+  i: 2,
+  getI() {
+    // 将this保存下来
+    let that = this
+    return function () {
+      return that.i
+    }
+  },
+}
+
+// 解决方法2
+// 调用是绑定上下文
+obj.getI().call(obj)
+```
+
+###### 内存泄漏
+
+IE9 之前使用了不同的垃圾回收机制，所以使用闭包会造成内存泄漏，解决方法就是将函数引用设为`null`
+
+### 立即调用函数表达式
+
+立即调用的匿名函数又被称为立即调用的函数表达式
+
+```javascript
+;(function () {})()
+;(function (name) {
+  console.log(name)
+})('hhh') // hhh
+```
+
+### 私有变量
+
+js 实际上没有私用变量，但是可以理解为函数中的变量就是私有的，因为外部无法访问其中的变量
+
+```javascript
+function fun() {
+  let i = 1 // 私有变量
+}
+
+console.log(i) // Error
+```
+
+可以通过闭包的方式，创建出能够访问私有变量的公有方法（特权方法）
+
+```javascript
+function MyObj() {
+  // 私有变量和私有函数
+  let private = 10
+
+  function privateFunc() {
+    return false
+  }
+
+  // 公有方法（特权方法）
+  this.publicFunc = function () {
+    private++
+    return privateFunc()
+  }
+}
+```
+
+## 异步函数
+
+### 同步与异步
+
+**同步**就是顺序地执行每一条指令  
+**异步**类似于系统中断，即当前进程外部的实体可以触发代码执行
+
+javascript 异步的解决方案：
+
+1. 回调函数
+2. promise
+3. async/await
+
+### Promise
+
+##### Promise 基础
+
+###### 状态
+
+Promise 一共有三个状态：
+
+1. 待定（pending）
+2. 解决（fulfilled，resolved）
+3. 拒绝（rejected）
+
+**待定(pending)**是 primise 的最初始状态，在**待定(pending)**状态下，可以转为**解决(resolved)**，也可以转为**拒绝(rejected)**，甚至永远处于**待定(pending)**
+
+**promise 的状态是私用的，不能通过代码检测到**
+
+###### 解决值和拒绝理由
+
+当一个 promise 转为解决，可以提供一个**解决值**  
+如果被拒绝，也可以提供一个**拒绝的理由**
+
+###### 通过执行函数控制状态
+
+因为 promise 的状态是私有的，所以只能在内部进行状态转换
+
+```javascript
+// 将状态转为解决
+let p1 = new Promise((resolve, reject) => resolve())
+
+// 将状态转为拒绝
+let p2 = new Promise((resolve, reject) => reject())
+```
+
+###### Promise.resolve()
+
+通过调用 Promise.resolve()，也可以实例化一个解决的 promise
+
+```javascript
+// 下面两种写法是一致的
+let p1 = new Promise((resolve) => resolve())
+
+let p2 = Promise.resolve()
+```
+
+!> 注意，只能转一个解决值，多的会被忽略
+
+```javascript
+setTimeout(
+  console.log,
+  0,
+  Promise.resolve(1, 2, 4) // 1
+)
+```
+
+?? resolve 中传入 promise
+
+###### Promise.reject()
+
+会实例化一个拒绝的 promise 并抛出异步错误
+
+```javascript
+let p1 = new Promise((resolve, reject) => reject())
+let p1 = new Promise.reject()
+```
+
+!> try..catch() {} 不能捕获 reject，因为它是以同步对象
+
+#### 实例方法
+
+##### Thenable 接口
+
+在`ECMAScript`暴露的异步接口中，任何对象都有一个`then()`方法，方法实现了`Thenable`接口
+
+##### Promise.prototype.then()
+
+方法最多接收两个参数：`onResolved处理进程`和`onRejected处理进程`
+
+因为状态只能转换一次，所以两个操作是互斥的，二选一发生
+
+```javascript
+// p1返回resolve
+let p1 = new Promise((resolve, reject) => setTimeout(() => resolve(), 3000))
+// p2返回reject
+let p2 = new Promise((resolve, reject) => setTimeout(() => reject(), 1000))
+
+p1.then(
+  () => console.log(1),
+  () => console.log(2)
+) // 1
+
+p2.then(
+  () => console.log(3),
+  () => console.log(4)
+) // 4
+
+// 不传需要填入null
+p1.then(null, () => console.log(3))
+```
+
+`then()`返回的是一个新的 promise 实例
