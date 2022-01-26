@@ -1162,7 +1162,7 @@ console.log(i.name) // i
 
 let i2 = new Type2()
 console.log(i2.colors) // 1,2,3,4
-console.log(i.name) // i
+console.log(i2.name) // 12
 ```
 
 分析上面的例子:  
@@ -1642,32 +1642,174 @@ console.log(proxySecond.id)
 // 1
 ```
 
-### 2、反射 Reflect
+### 2、代理与反射实例方法
 
-###### Reflect.get(target, name, receiver)
+###### get()
 
-查找并返回`target`对象的`name`属性，如果没有，返回`undefined`
+`get()`捕获器会在获取属性值的操作中被调用
 
-```javascript
-const obj = {
-  foo: 1,
-}
+拦截的操作:
 
-console.log(Reflect.get(obj, 'foo')) // 1
-```
-
-###### Reflect.set(target, name, receiver)
-
-设置`target`对象的`name`属性
+1. proxy.property
+2. proxy[property]
+3. Object.create(proxy)[property]
+4. Reflect.get(proxy, property, receiver)
 
 ```javascript
-const obj = {
-  foo: 1,
-}
+const target = {}
 
-Reflect.set(obj, 'foo', 2)
-console.log(obj.foo) // 2
+const proxy = new Proxy(target, {
+  // 捕获，三个参数：目标对象，属性名，代理对象
+  get(target, property, receiver) {
+    // 反射
+    return Reflect.get(...arguments)
+  },
+})
 ```
+
+###### set()
+
+`set()`捕获器会在设置属性值的操作中被调用
+
+拦截的操作:
+
+1. proxy.property = value
+2. proxy[property] = value
+3. Object.create(proxy)[property] = value
+4. Reflect.set(proxy, property, value, receiver)
+
+```javascript
+const target = {}
+
+const proxy = new Proxy(target, {
+  // 参数：目标对象，属性名，值，代理对象
+  set(target, property, value, recevier) {
+    return Reflect.set(...arguments)
+  },
+})
+```
+
+###### has()
+
+`has()`捕获器会在`in`操作符中被调用
+
+拦截的操作
+
+1. property in proxy
+2. property in Object.create(proxy)
+3. with(proxy) {(property);}
+4. Reflect.has(proxy, property)
+
+```javascript
+const target = {}
+
+const proxy = new Proxy(target, {
+  has(target, property, receiver) {
+    return Reflect.has(...arguments)
+  },
+})
+
+console.log('foo' in proxy)
+```
+
+###### defindProperty()
+
+`defindProperty()`捕获器会在`Object.defineProperty()`中调用
+
+拦截的操作
+
+1. Object.defineProperty()
+2. Reflect.defineProperty()
+
+```javascript
+const target = {}
+
+const proxy = new Proxy(target, {
+  // 目标对象，属性名，含可选的 enumerable、configurable、writable、value、get 和 set 定义的对象
+  defineProperty(target, property, descriptor) {
+    console.log('defineProperty')
+    return Reflect.defineProperty(...arguments)
+  },
+})
+
+Object.defineProperty(proxy, 'num', {
+  value: 123,
+})
+```
+
+###### getOwnPropertyDescriptor()
+
+`getOwnPropertyDescriptor()`捕获器会在`Object.getOwnPropertyDescriptor()`中被调用
+
+拦截的操作
+
+1. Object.getOwnPropertyDescriptor(proxy, property)
+2. Reflect.getOwnPropertyDescriptor(proxy, property)
+
+```javascript
+const obj = { n: 1 }
+
+const proxy = new Proxy(obj, {
+  // 目标对象，属性名
+  getOwnPropertyDescriptor(target, property) {
+    console.log('getOwnPropertyDescriptor')
+    return Reflect.getOwnPropertyDescriptor(...arguments)
+  },
+})
+
+console.log(Object.getOwnPropertyDescriptor(proxy, 'n'))
+```
+
+###### delectProperty()
+
+`deletctProperry()`捕获器会在`delete`操作符中调用
+
+拦截的操作
+
+1. delete proxy.property
+2. delete proxy[property]
+3. Reflect.deleteProperty(proxy, property)
+
+```javascript
+const obj = { n: 1 }
+
+const proxy = new Proxy(obj, {
+  // 目标对象，属性名
+  deleteProperty(target, property) {
+    console.log('deleteProperty')
+    return Reflect.deleteProperty(...arguments)
+  },
+})
+
+delete proxy.n
+```
+
+###### ownKeys()
+
+`ownKeys()`捕获器会在`Object.keys()`及类似方法中被调用
+
+拦截的操作：
+
+1. Object.keys()
+2. Reflect.ownKeys()
+
+```javascript
+const obj = { n: 1 }
+
+const proxy = new Proxy(obj, {
+  // 目标对象
+  ownKeys(target) {
+    console.log('ownKeys')
+    return Reflect.ownKeys(...arguments)
+  },
+})
+
+Object.keys(proxy)
+```
+
+###### getPrototypeOf()
+
+`getPrototypeOf()`捕获器会在`Object.getPrototypeOf()`中被调用
 
 ## 函数
 
