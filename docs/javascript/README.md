@@ -1087,7 +1087,7 @@ console.log(ins.getType())
 
 ###### 默认原型
 
-默认情况下，所有引用类型的继承自`Object`，所以任何函数的默认原型都是一个**Object 实例**，所以可以继承同`String()`,`toLocaleString()`等方法的原因
+默认情况下，所有引用类型的继承自`Object`，所以任何函数的默认原型都是一个**Object 实例**，所以可以继承`toString()`,`toLocaleString()`等方法的原因
 
 ###### 原型与继承的关系
 
@@ -2256,4 +2256,91 @@ p2.then(
 p1.then(null, () => console.log(3))
 ```
 
-`then()`返回的是一个新的 promise 实例
+`then()`返回的是一个新的 `promise` 实例，新的`promise`实例返回值会通过`Promise.resolved()`包装来生成新`promise`。如果没有提供这个处理程序，则会包装上一个`resolve`的值，如果没有显式的返回语句，则默认返回`undefined`
+
+```javascript
+let p1 = Promise.resolve(111)
+
+// p2也会默认返回Promise.resolve包装好的值
+let p2 = p1.then() // 如果没有处理程序，会将解决值用Promise.resolve包装成实例再次返回
+setTimeout(console.log, 0, p2) // Promise { 111 }
+p2.then((val) => {
+  console.log(val) // 111
+  return val // 只要有返回值，就会被Promise.resolve包装成实例返回
+}).then((val) => console.log(val)) // 111
+
+let p3 = p1.then(() => undefined) // Promise<resolved>: undefined
+let p4 = p1.then(() => {}) // Promise<resolved>: undefined
+let p5 = p1.then(() => Promise.resolve()) // Promise<resolved>: undefined
+
+let p6 = p1.then(() => Promise.reject()) // Promise<reject>: undefined
+```
+
+注意：`onRejected()`处理程序的返回值也是会被`Promise.resolved()`包装。
+
+```javascript
+let p1 = Promise.reject(111)
+
+let p2 = p1.then()
+
+p2.catch((val) => {
+  console.log(val)
+  return val // 此时返回Promise.resolve包装好的实例，下面的then仍然可以接收到
+}).then((val) => console.log(val))
+```
+
+###### Promise.prototype.catch()
+
+用于给`promise`添加拒接处理程序，只接收一个参数：`onRejcted()`，实际上，就是一个语法糖，本质就是调用`Promise.prototype.then(null, onRejcted)`，也会返回一个新的 promise 实例
+
+###### Promise.prototype.finally()
+
+用于给`onFinally()`添加处理程序，无论`promise`最后转为什么状态，都会执行，最后也是返回一个`promise`
+
+###### 非重入 promise 方法
+
+当 `promise` 进入落定状态时，与该状态的处理程序仅仅会被排期，而非立即执行。`then` 中的处理程序会被放到消息队列中，等同步程序执行完了，再出列执行
+
+```javascript
+let p = Promise.resolve()
+
+p.then(() => console.log('1'))
+
+console.log('2')
+
+// 2 1
+```
+
+**所以异步的操作可以放到`then`的处理程序中**
+
+###### reject
+
+拒绝处理类似 throw()表达式，只要在 promise 中抛出错误，都会成为拒绝的理由
+
+###### Promise.all()
+
+将多个 promise 实例，包装成一个新的 promise 实例，接收数组作为参数
+
+```javascript
+const p = Promise.all([p1, p2, p3])
+```
+
+1. 主要都完成，最后返回的结果才完成，返回的结果以数组的方式回传
+2. 只要有一个 promise 实例被拒绝，整体就会被拒绝，返回第一个被拒绝的实例返回值
+
+```javascript
+const p1 = Promise.resolve('p1')
+const p2 = Promise.reject('p2')
+
+Promise.all([p1, p2])
+  .then((res) => {
+    console.log(res)
+  })
+  .catch((e) => {
+    console.log(e)
+  })
+```
+
+###### Promise.race()
+
+将多个 Promise 实例包装成一个 Promise 实例，返回
