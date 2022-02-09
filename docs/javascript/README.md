@@ -2339,8 +2339,253 @@ Promise.all([p1, p2])
   .catch((e) => {
     console.log(e)
   })
+
+let p1 = new Promise((resolve) => {
+  setTimeout(() => resolve('p1'), 3000)
+})
+
+let p2 = new Promise((resolve) => {
+  setTimeout(() => resolve('p2'), 1000)
+})
+
+let p3 = Promise.all([p1, p2])
+p3.then((res) => console.log(res)) // 三秒后  ['p1','p2']
 ```
 
 ###### Promise.race()
 
-将多个 Promise 实例包装成一个 Promise 实例，返回
+将多个 `Promise` 实例包装成一个 `Promise` 实例，返回最先**落定**的`promise`，无论是解决还是拒绝，都会将第一个落定的**解决值**或**拒绝理由**包装成 `promise` 并返回
+
+```javascript
+let p1 = new Promise((resolve) => {
+  setTimeout(() => resolve('p1'), 3000)
+})
+
+let p2 = new Promise((resolve) => {
+  setTimeout(() => resolve('p2'), 1000)
+})
+
+let p3 = Promise.race([p1, p2])
+p3.then((res) => console.log(res)) // 1秒后  'p2'
+```
+
+###### 串行合成
+
+将上一个生成的值传给下一个值使用
+
+```javascript
+function addTow(x) {
+  return x + 2
+}
+function addThree(x) {
+  return x + 3
+}
+function addFive(x) {
+  return x + 5
+}
+function addTen(x) {
+  return Promise.resolve(x).then(addTow).then(addThree).then(addFive)
+}
+
+addTen(2).then(console.log)
+```
+
+分装通用函数
+
+```javascript
+function addTow(x) {
+  return x + 2
+}
+function addThree(x) {
+  return x + 3
+}
+function addFive(x) {
+  return x + 5
+}
+
+function compose(...arguments) {
+  return (x) =>
+    arguments.reduce((Promise, fn) => Promise.then(fn), Promise.resolve(x))
+}
+
+let addTen = compose(addTow, addThree, addFive)
+
+addTen(9).then(console.log)
+```
+
+### 异步函数
+
+异步函数，也称为“`async/await`”
+
+#### 异步函数
+
+###### async
+
+`async`用于声明异步函数
+
+```javascript
+async function foo() {}
+
+let bar = async function () {}
+
+let baz = async () => {}
+
+class Person {
+  async qux() {}
+}
+```
+
+使用了 `async` 之后，函数总体还是同步求值
+
+```javascript
+async function foo() {
+  console.log(1)
+}
+
+foo()
+console.log(2)
+
+// 1 2
+```
+
+但是在函数内部的`return`的值，会被包装成`Promise.resolve`
+
+```javascript
+async function foo() {
+  console.log(1)
+  return 3
+}
+foo().then(console.log)
+console.log(2)
+
+// 1 2 3
+```
+
+###### await
+
+使用`await`可以暂停异步函数代码的执行，等待`promise`解决（行为与生成器函数中的`yield`关键字一致）
+
+```javascript
+async function foo() {
+  console.log(1)
+  let p = new Promise((resolve) => setTimeout(resolve, 1000, 3))
+  console.log(await p)
+  console.log(2)
+}
+
+foo()
+
+// 1 3 2
+```
+
+`await`期待后面是一个`promise`，如果不是，则当作已经解决的`promise`
+
+###### await 的限制
+
+await 必须在异步函数中使用，不能在顶级上下文中使用，可以定义并立即调用函数时没问题的
+
+```javascript
+function foo(x) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, 3000, x)
+  })
+}
+
+;(async function () {
+  console.log(await foo(2))
+})()
+```
+
+###### 理解 await
+
+```javascript
+async function foo() {
+  console.log(await Promise.resolve('foo'))
+}
+
+async function bar() {
+  console.log(await 'bar')
+}
+
+async function baz() {
+  console.log('baz')
+}
+
+foo()
+bar()
+baz()
+
+// baz foo bar
+```
+
+await 等到一个 Promise.resolve()返回的值，如果不是，也会包装成 Promise.resolve()
+
+```javascript
+async function foo() {
+  console.log(2)
+  await null
+  console.log(4)
+}
+
+console.log(1)
+foo()
+console.log(3)
+
+// 1 2 3 4
+```
+
+控制台中输出结果的顺序很好地解释了运行时的工作过程：
+
+1. 打印 1；
+2. 调用异步函数 foo()；
+3. （在 foo()中）打印 2；
+4. （在 foo()中）await 关键字暂停执行，为立即可用的值 null 向消息队列中添加一个任务；
+5. foo()退出；
+6. 打印 3；
+7. 同步线程的代码执行完毕；
+8. JavaScript 运行时从消息队列中取出任务，恢复异步函数执行；
+9. （在 foo()中）恢复执行，await 取得 null 值（这里并没有使用）；
+10. （在 foo()中）打印 4；
+11. foo()返回。
+
+更深的例子
+
+```javascript
+async function foo() {
+  console.log(2)
+  console.log(await Promise.resolve(8))
+  console.log(9)
+}
+
+async function bar() {
+  console.log(4)
+  console.log(await 6)
+  console.log(7)
+}
+
+console.log(1)
+foo()
+console.log(3)
+bar()
+console.log(5)
+
+// 1 2 3 4 5 8 9 6 7
+```
+
+#### 实用例子
+
+###### 实现 sleep
+
+```javascript
+async function sleep(delay) {
+  return new Promise((resolve) => setTimeout(resolve, delay))
+}
+
+async function foo() {
+  const t0 = Date.now()
+  await sleep(1500)
+  console.log(Date.now() - t0)
+}
+
+foo()
+```
