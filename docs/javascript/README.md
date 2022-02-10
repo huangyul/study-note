@@ -2777,3 +2777,84 @@ window.find()
 ```
 
 ### location 对象
+
+location 主要提供当前窗口加载文档的信息，以及通常的导航功能。这个对象的独特之处在于：**它既是 window 的属性，也是 document 的属性，也就是说 window.location 和 document.location 是同一个对象**
+
+假设浏览器当前加载的 URL 是 http://foouser:barpassword@www.wrox.com:80/WileyCDA/?q=
+javascript#contents，`location` 对象的内容如下表所示。
+
+|       属性        |                            值                            |                             说明                             |
+| :---------------: | :------------------------------------------------------: | :----------------------------------------------------------: |
+|   location.hash   |                       "#contents"                        |   URL 散列值（井号后跟零或多个字符），如果没有则为空字符串   |
+|   location.host   |                    "www.wrox.com:80"                     |                       服务器名及端口号                       |
+| location.hostname |                      "www.wrox.com"                      |                           服务器名                           |
+|   location.href   | "http://www.wrox.com:80/WileyCDA/?q=javascript#contents" | 当前加载页面的完整 URL。location 的 toString()方法返回这个值 |
+| location.pathname |                       "/WileyCDA/"                       |                  URL 中的路径和（或）文件名                  |
+|   location.port   |                           "80"                           |       请求的端口。如果 URL 中没有端口，则返回空字符串        |
+| location.protocol |                         "http:"                          |           页面使用的协议。通常是"http:"或"https:"            |
+|  location.search  |                     "?q=javascript"                      |            URL 的查询字符串。这个字符串以问号开头            |
+| location.username |                        "foouser"                         |                      域名前指定的用户名                      |
+| location.password |                      "barpassword"                       |                       域名前指定的密码                       |
+|  location.origin  |                  "http://www.wrox.com"                   |                      URL 的源地址。只读                      |
+
+##### 操作地址
+
+使用 assign()方法可以修改浏览器的地址  
+`location.assign('http://www.baidu.com')`
+
+最常用的方式:`location.href = 'http://www.baidu.com'`
+
+其他用法：
+
+```javascript
+// 当前url为 http://www.baidu.com
+
+// 修改哈希 http://www.baidu.com#12
+location.hash = '#12'
+
+// 修改查询条件 http://www.baidu.com?name=javascript
+location.search = '?name=javascript'
+
+// 修改hostname http://www.taobao.com
+location.hostname = 'www.taobao.com'
+
+// 修改pathname http://www.baidu.com/huang/
+location.pathname = 'huang'
+
+// 修改port http://www.baidu.com:8080
+location.port = 8080
+```
+
+以上修改都会在浏览器历史中添加一条新纪录，使用`replace()`不会在历史记录中添加当前页面；使用`reload()`会重新加载当前页面
+
+```javascript
+location.reload() // 重新加载，可能会从缓存加载
+location.reload(true) // 重新加载，不走缓存
+```
+
+### navigator 对象
+
+### screen 对象
+
+### history 对象
+
+表示当前窗口首次使用以来用户的导航历史记录。处于安全考虑，这个对象不会暴露用户访问过的`url`，可以通过它实现前进和后退
+
+###### 导航
+
+```javascript
+// 后退一页
+history.go(-1)
+
+// 前进一页
+history.go(1)
+
+// 前进两页
+history.go(2)
+
+// 以此类推
+```
+
+## DOM
+
+文档对象模型（DOM，Document Object Model）是 HTML 和 XML 文档的编程接口
