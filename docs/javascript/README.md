@@ -2596,3 +2596,14 @@ foo()
 
 1. [参考文档](https://juejin.cn/post/6945319439772434469#heading-0)
 2. [github 仓库](https://github.com/huangyul/my-promise)
+
+###### 宏任务和微任务
+
+|    宏任务（Macrotask）    |       微任务（Microtask）       |
+| :-----------------------: | :-----------------------------: |
+|        setTimeout         | requestAnimationFrame（有争议） |
+|        setInterval        | MutationObserver（浏览器环境）  |
+|      MessageChannel       | Promise.[ then/catch/finally ]  |
+|       I/O，事件队列       |  process.nextTick（Node 环境）  |
+| setImmediate（Node 环境） |         queueMicrotask          |
+|   script（整体代码块）    |                                 |
