@@ -2589,3 +2589,10 @@ async function foo() {
 
 foo()
 ```
+
+### 拓展知识
+
+###### 手写 promise
+
+1. [参考文档](https://juejin.cn/post/6945319439772434469#heading-0)
+2. [github 仓库](https://github.com/huangyul/my-promise)
