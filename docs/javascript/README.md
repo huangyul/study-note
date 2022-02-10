@@ -2607,3 +2607,173 @@ foo()
 |       I/O，事件队列       |  process.nextTick（Node 环境）  |
 | setImmediate（Node 环境） |         queueMicrotask          |
 |   script（整体代码块）    |                                 |
+
+简单实例
+
+```html
+<!DOCTYPE html>
+<html>
+  <head></head>
+  <body>
+    <script>
+      // 宏任务1
+
+      let p = new Promise((resolve) => resolve(111))
+      p.then(console.log)
+
+      setTimeout(() => {
+        // 宏任务3
+        console.log(333) // 同步代码
+        let p3 = new Promise((resolve) => resolve(444)) // 微任务
+        p3.then(console.log)
+        setTimeout(() => {
+          console.log(999) // 同步代码
+        }, 0)
+      }, 0)
+    </script>
+
+    <script>
+      // 宏任务2
+      let p1 = new Promise((resolve) => resolve(222))
+      p1.then(console.log)
+
+      setTimeout(() => {
+        // 宏任务4
+        console.log(555) // 同步代码
+        let p3 = new Promise((resolve) => resolve(666)) // 微任务
+        p3.then(console.log)
+      }, 0)
+    </script>
+  </body>
+</html>
+// 111 222 333 444 555 666 999
+```
+
+## BOM
+
+`BOM`是浏览器对象`（Brower Object Model）`，因为每个浏览器开发商有各自的标准，所以缺乏规范，问题比较多
+
+### window 对象
+
+`BOM`的核心是`window`对象`，window`对象是浏览器中的`global`对象
+
+##### Global 作用域
+
+所有通过`var`声明的变量和函数都会变成`window`对象的属性和方法
+
+```js
+var age = 12
+console.log(window.age) // 12
+```
+
+使用`let`和`const`声明的变量不会变为全局变量
+
+##### 导航与打开新窗口
+
+`window.open()`可以用于导航到指定 URL  
+这个方法接收 4 个参数：要加载的 URL、目标窗口、特性字符串、表示新窗口再浏览器历史记录中是否替代当前加载页面的布尔值
+
+```javascript
+window.open(
+  'http://www.baidu.com/',
+  'wroxWindow',
+  'height=400,width=400,top=10,left=10,resizable=yes'
+)
+```
+
+配合 close 可以关闭打开的窗口
+
+```javascript
+const win = window.open('http://www.baidu.com')
+win.close() // 关闭窗口
+```
+
+因为很多会滥用`window.open`，所以很多浏览器会禁用掉，以下方法可以判断是否被屏蔽
+
+```javascript
+let blocked = false
+
+try {
+  let win = window.open('http://www.baidu.com', '_blank')
+  if (win == null) {
+    blocked = true
+  }
+} catch (err) {
+  blocked = true
+}
+if (blocked) {
+  alert('弹窗被禁止了')
+}
+```
+
+##### 定时器
+
+`setTimeout()`指定在一段时间后执行  
+`setInterval()`指定每隔一段时间执行
+
+###### setTimeout
+
+```javascript
+// 定义一个定时器
+const timer = setTimeout(() => {
+  console.log('hello')
+}, 1000)
+// 取消定时任务
+clearTimeout(timer)
+```
+
+###### setInterval
+
+```javascript
+const timer = setInterval(() => {
+  console.log('hello')
+}, 1000)
+
+// 取消定时器
+clearInterval(timer)
+```
+
+##### 系统对话框
+
+###### alert
+
+只有一个确定按钮
+
+```javascript
+alert('hello')
+```
+
+###### confirm
+
+有确定和取消按钮，可以通过判断`confirm`返回的返回值
+
+```javascript
+if (confirm('hello')) {
+  console.log('click ok')
+} else {
+  console.log('click cancel')
+}
+```
+
+###### prompt
+
+提示用户输入消息
+
+```javascript
+let result = prompt('what is your name:?', '')
+if (result !== null) {
+  console.log(`your name is ${result}`)
+}
+```
+
+###### 其他对话框
+
+```javascript
+// 显示打印对话框
+window.print()
+
+// 显示查找对话框
+window.find()
+```
+
+### location 对象
