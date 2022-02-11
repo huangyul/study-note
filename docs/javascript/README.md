@@ -3227,3 +3227,25 @@ btn.addEventListener(
 btn.addEventListener('click', handler, false)
 btn.removeEventListener('click', handler, false)
 ```
+
+### 事件对象
+
+在 DOM 发生事件时，所有相关信息都会被收集并存储到一个名为 event 的对象中。
+
+#### DOM 事件对象
+
+```javascript
+btn.onclick = function (event) {
+  console.log(event.type)
+}
+```
+
+常用的属性
+
+|     属性      |  类型  | 读/写 |            说明            |
+| :-----------: | :----: | :---: | :------------------------: |
+|    target     |  元素  | 只读  |          事件目标          |
+|     type      | 字符串 | 只读  |      被触发的事件类型      |
+| currentTarget |  元素  | 只读  | 当前事件处理程序所在的元素 |
+
+?> 事件的 this、currentTarget、target 的值是一样的
