@@ -2858,3 +2858,174 @@ history.go(2)
 ## DOM
 
 文档对象模型（DOM，Document Object Model）是 HTML 和 XML 文档的编程接口
+
+### 节点层级
+
+每一个标签都是一个 dom 节点，`html`是根节点，也成为文档元素
+
+#### Node 类型
+
+`DOM1` 描述为 `Node` 的接口，这个接口所有 `DOM` 节点类型都必须实现，所有节点都继承 `Node` 类型，共享相同的基本属性和方法
+
+###### nodeName 与 nodeValue
+
+` nodeName`和`nodeValue `保留着节点的信息
+
+在使用前，最好先检测节点类型
+
+```javascript
+if (someNode.nodeType === 1) {
+  value = someNode.nodeName
+}
+```
+
+###### 节点关系
+
+1. 每一个节点都有一个`childNodes`属性，包含一个`NodeList`实例
+
+```javascript
+let firstChild = someNode.childNodes[0]
+// 使用item()获取元素
+let secondChild = someNode.childNodes.item(1)
+let count = someNode.childNodes.length
+```
+
+详细关系如下图：  
+![](./images/bom-1.png)
+
+###### 操控节点
+
+1. `appendChild()`在`childNodes`列表末尾添加节点，该方法返回新的节点
+
+```javascript
+let returnNode = someNode.appendChild(newNode)
+returnNode === newNode // true
+```
+
+如果将文档已经存在的节点传给`appendChild()`，则这个节点会从之前的位置被转移到新位置
+
+2. `insertBefore()`在某个节点前被插入新子节点
+
+接收两个参数：要插入的节点和参照节点，如果参照节点为空，则与`appendChild()`作用一致
+
+```javascript
+someNode.insertBefore(newNode, oldNode)
+```
+
+3. `replaceChild()`t 替换某一个子节点
+
+```javascript
+someNode.replaceChild(newNode, oldNode)
+```
+
+4. `removeChild()`删除某一个子节点
+
+```javascript
+someNode.removeChild(someNode.firstChild)
+```
+
+5. `cloneNode`复制节点，接收一个布尔值参数，表示是否深复制，复制子节点
+
+```javascript
+someNode.cloneNode(true)
+```
+
+#### Document 类型
+
+特征：
+
+1. nodeType 等于 9
+2. nodeName 值为#document
+3. nodeValue 为 null
+
+###### 定位元素
+
+使用 docuemnt 对象的一些方法可以获取操控元素的能力
+
+`getElementById()`
+
+```javascript
+docuemt.getELementById('odiv') // 获取id为odiv的元素的引用
+```
+
+`getElementsByTagName()`获取多个元素的`NodeList`
+
+```javascript
+document.getElementsByTagName('img') // 获取所有img标签元素
+```
+
+`getElementsByName()`获取给定`name`属性的所有元素
+
+###### 文档写入
+
+向网页输出流中写入内容  
+`write()`和 `writeln()`方法都接收一个字符串参数，可以将
+这个字符串写入网页中。`write()`简单地写入文本，而 `writeln()`还会在字符串末尾追加一个换行符
+（\n）。
+
+#### Element 类型
+
+特征：
+
+1. nodeType 等于 1
+2. nodeName 为元素标签名
+3. nodeValue 为 null
+
+###### nodeName 与 tagName 是一样的
+
+```javascript
+let div = document.getELementById('div1')
+div.tagName // DIV 以大写的方式显示
+div.nodeName == div.tagName // true
+```
+
+###### HTML 元素
+
+常用标准属性
+
+1. id，元素在文档中的唯一标识符
+2. title， 包含元素的额外信息
+3. className，指定元素的 css 类
+
+###### 操作属性
+
+1. `getAttribute()`
+
+```javascript
+let div = document.getElementById('div1')
+div.getAttribute('id') // div1
+```
+
+2. `setAttribute()`
+
+```javascript
+let div = do...
+div.setAttribute('class', 'className')
+div.setAttribute('id', 'div2')
+```
+
+?> 自定义属性无法通过 getAttribute 获取
+
+3. `removeAttribute()` 删除属性
+
+##### 创建元素
+
+`let div = document.createElement('div')`
+
+```javascript
+let div = document.createElement('div')
+div.setAttribute('class', 'div1')
+document.getElementById('oDiv').appendChild(div)
+```
+
+#### Text 类型
+
+特征：
+
+1. nodeType 等于 3
+2. nodeName 为 text
+3. nodeValue 为节点包含的文本
+
+###### 创建文本节点
+
+`document.createTextNode()`可以用来创建新文本节点，它接收一个参数，即要插入节点的文本。
