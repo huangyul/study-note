@@ -3124,3 +3124,106 @@ let button = document.getElementById('myButton')
 button.focus()
 console.log(document.hasFocus()) // true
 ```
+
+## 事件
+
+### 事件流
+
+#### 事件冒泡
+
+IE 事件流被称为事件冒泡，事件被定义为最具体的元素（文档树中最深的节点）开始触发，然后向上传播至文档节点
+
+#### 事件捕获
+
+事件从文档节点开始，一直给到最具体的节点结束
+
+#### DOM 事件流
+
+DOM2 Event 规定事件流分为 3 个阶段：事件捕获、到达目标和事件冒泡；实际上目标元素在事件捕获节点是不会接收事件的，但现代浏览器都实现了拓展，是的目标元素在捕获阶段也能收到事件，最终目标元素会有两个机会来处理事件
+
+### 事件处理程序
+
+事件意味着用户或浏览器执行某个动作
+
+#### HTML 事件处理程序
+
+特定元素支持使用事件处理程序执行 javascript 代码
+
+```html
+<input type="button" onclick="console.log('click')" value="click" />
+
+<!-- 使用函数的方法 -->
+<button onclick="doSomething()"></button>
+```
+
+#### DOM0 事件处理程序
+
+1. 基本用法
+
+```javascript
+let btn = document.getElementById('myBtn')
+btn.onclick = function () {
+  console.log('click)
+}
+```
+
+2. 通过这个这种方式处理事件，可以获取元素本身
+
+```javascript
+btn.onclick = function () {
+  console.log(this)
+}
+```
+
+3. 这种方式注册的事件在事件流中的冒泡阶段
+
+4. 通过设置为 null，可移除事件
+
+```javascript
+btn.onclick = null
+```
+
+#### DOM2 事件处理程序
+
+定义了两个事件处理方法：
+
+1. `addEventListener()` 添加事件
+2. `removeEventListener()` 移除事件
+
+接收三个参数：事件名、事件处理程序，布尔值；布尔值 false（默认值）表示在冒泡阶段调用事件处理程序
+
+```javascript
+document.getElementById('myBtn').addEventListener(
+  'click',
+  () => {
+    console.log('xxx')
+  },
+  false
+)
+```
+
+好处：可以为同一事件添加多个事件处理程序
+
+```javascript
+btn.addEventListener(
+  'click',
+  () => {
+    console.log(1)
+  },
+  false
+)
+btn.addEventListener(
+  'click',
+  () => {
+    console.log(2)
+  },
+  false
+)
+```
+
+删除事件时匿名函数无效
+
+```javascript
+btn.addEventListener('click', handler, false)
+btn.removeEventListener('click', handler, false)
+```
