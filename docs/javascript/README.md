@@ -3029,3 +3029,7 @@ document.getElementById('oDiv').appendChild(div)
 ###### 创建文本节点
 
 `document.createTextNode()`可以用来创建新文本节点，它接收一个参数，即要插入节点的文本。
+
+```javascript
+let textE = document.createTextNode('hello world')
+```
