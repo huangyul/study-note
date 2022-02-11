@@ -3035,3 +3035,68 @@ let textE = document.createTextNode('hello world')
 ```
 
 ### DOM 编程
+
+##### 动态脚本
+
+通过同态生成`<script>`，动态插入脚本
+
+```javascript
+const script = document.createElement('script')
+script.src = 'xxx.js'
+document.body.appendChild(script)
+```
+
+##### 动态样式
+
+```javascript
+let link = document.createElement('link')
+link.rel = 'stylesheet'
+link.type = 'text/css'
+link.href = 'styles.css'
+let head = document.getElementsByTagName('head')[0]
+head.appendChild(link)
+```
+
+### MutationObserver 接口
+
+可以在 DOM 被修改时异步执行回调
+
+#### 基本用法
+
+## DOM 拓展
+
+### Selectors API
+
+1. `querySelector()`
+
+```javascript
+// 取得<body>元素
+let body = document.querySelector('body')
+// 取得 ID 为"myDiv"的元素
+let myDiv = document.querySelector('#myDiv')
+
+// 取得类名为"selected"的第一个元素
+let selected = document.querySelector('.selected')
+// 取得类名为"button"的图片
+let img = document.body.querySelector('img.button')
+```
+
+1. `querySelectorAll()`
+
+返回所有匹配的节点，是一个 NodeList 的静态实例
+
+### HTML5
+
+#### CSS 类拓展
+
+1. getElementsByClassName()
+
+```javascript
+// 取得所有类名中包含"username"和"current"元素
+// 这两个类名的顺序无关紧要
+let allCurrentUsernames = document.getElementsByClassName('username current')
+// 取得 ID 为"myDiv"的元素子树中所有包含"selected"类的元素
+let selected = document
+  .getElementById('myDiv')
+  .getElementsByClassName('selected')
+```
