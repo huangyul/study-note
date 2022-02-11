@@ -3100,3 +3100,27 @@ let selected = document
   .getElementById('myDiv')
   .getElementsByClassName('selected')
 ```
+
+2. classList() 操作元素的类名
+
+```javascript
+// 删除"disabled"类
+div.classList.remove('disabled')
+// 添加"current"类
+div.classList.add('current')
+// 切换"user"类
+div.classList.toggle('user')
+```
+
+#### 焦点管理
+
+`document.activeElement()`和`document.hasFocus()`
+
+```javascript
+let button = document.getElementById('myButton')
+button.focus()
+console.log(document.activeElement === button) // true
+let button = document.getElementById('myButton')
+button.focus()
+console.log(document.hasFocus()) // true
+```
