@@ -240,3 +240,83 @@ function currying(fn, ...rest1) {
   return function
 }
 ```
+
+## 从浏览器输入 url 到请求返回发生了什么
+
+### 一、输入网址并解析
+
+如果输入的不是 URL 结构的字符串，浏览器会使用默认的搜索引擎搜索该字符串
+
+###### URL 的组成
+
+URL 主要由`协议`、`主机`、`端口`、`路径`、`搜索字段`、`锚点`组成
+
+#### 解析 URL
+
+输入 URL 后，浏览器会解析出协议、主机、端口、路径等信息，并构造一个 HTTP 请求
+
+1. 浏览器发送请求前，根据请求头的 expires 和 cache-control 判断是否命中（包括是否过期）强缓存策略，如果命中，直接从缓存获取资源，不会发送请求。如果没有命中，则进入下一步；
+2. 没有命中强缓存规则，浏览器会发送请求，根据请求头的 If-Modified—Since 和 If-None-Match 判断是否命中协商缓存，如果命中，直接从缓存获取资源，如果没有命中，则进入下一步
+3. 如果前两步都没有命中，则直接从服务端获取资源
+
+#### 浏览器缓存
+
+##### 强缓存
+
+强缓存就是向浏览器查找该请求结果，并根据该结果的缓存规则来决定是否使用该缓存结果的过程。分为 Expires 和 Cache-Control
+
+![](./images/1.png)
+
+`Expires`
+
+- 版本 HTTP 1.0
+- 语法：Expires: Wed, 22 Nov 2019 08:41:00 GMT
+
+`Cache-Control`
+
+- 版本 HTTP 1.1
+- 语法：Cache-Control:max-age=3600
+
+```javascript
+// server.js
+const http = require('http')
+const fs = require('fs')
+
+http
+  .createServer(function (request, response) {
+    console.log('request', request.url)
+
+    if (request.url === '/') {
+      const html = fs.readFileSync('./index.html', 'utf-8')
+      response.writeHead(200, {
+        'Content-Type': 'text/html',
+      })
+      response.end(html)
+    }
+
+    if (request.url === '/script.js') {
+      response.writeHead(200, {
+        'Content-Type': 'text/javascript',
+        'Cache-Control': 'max-age=5,public', // 缓存5s
+      })
+      response.end('console.log("script loaded")')
+    }
+  })
+  .listen(8888)
+
+console.log('server listening on 8888')
+```
+
+##### 协商缓存
+
+协商缓存就是强缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识决定是否使用缓存的过程
+
+![]('./images/2.png')
+
+##### DNS 域名解析
+
+### TCP/IP 连接：三次握手
+
+#### 三次握手
+
+客户端和服务端在进行 http 请求和返回的工程中，需要创建一个 TCP connection（由客户端发起），http 不参在连接这个概念，它只有请求和响应，请求和响应都是数据包，它们之间的传输通道就是 TCP connection
