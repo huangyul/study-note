@@ -514,3 +514,29 @@ W3C 的解释式：它决定了元素如果对其内容进行定位，以及与�
 ### flex
 
 [阮一峰 flex 教程](https://www.ruanyifeng.com/blog/2015/07/flex-grammar.html)
+
+## JS
+
+### 判断类型
+
+1. 判断基本类型 typeof ，唯一的问题是无法辨别出 object 和 null
+2. instanceof 可以判断对象类型，不能判断基本数据类型
+3. Object.prototype.toString.call()
+
+```javascript
+Object.prototype.toString.call(2) // "[object Number]"
+Object.prototype.toString.call('') // "[object String]"
+Object.prototype.toString.call(true) // "[object Boolean]"
+Object.prototype.toString.call(undefined) // "[object Undefined]"
+Object.prototype.toString.call(null) // "[object Null]"
+Object.prototype.toString.call(Math) // "[object Math]"
+Object.prototype.toString.call({}) // "[object Object]"
+Object.prototype.toString.call([]) // "[object Array]"
+Object.prototype.toString.call(function () {}) // "[object Function]"
+```
+
+判断数组：
+
+1. Array.isArray()
+2. typeof func
+3. Object.prototype.toString.call()
