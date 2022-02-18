@@ -356,3 +356,157 @@ css3 中的盒模型有：标准盒模型、IE 盒模型
 
 - box-sizing:content 标准盒模型
 - box-sizing:border-box IE 盒模型
+
+### css 选择器和优先级
+
+!important > style > id > class
+
+### 重排和重绘的理解
+
+- 重排：无论通过什么方式影响了元素的几何信息（元素在视口内的位置和尺寸大小），浏览器需要重新计算元素在视口内的
+
+### 对 BFC 的理解
+
+BFC 称为块级格式化上下文  
+W3C 的解释式：它决定了元素如果对其内容进行定位，以及与其他元素的关系和相互作用，当涉及到可视化布局时，BFC 提供了一个环境，HTML 在这个环境中按照一定的规则进行布局  
+简单来说就是，BFC 是一个完全独立的空间（布局环境），让空间里的子元素不会影响到外面的布局，可以将 BRC 看成是 CSS 元素属性
+
+#### 怎么触发
+
+- overflow：hidden
+- display: inline-block
+- postion: absolute
+- postion: fixed
+- display: table-cell
+- display: flex
+
+### 实现两栏布局（左侧固定，右侧自适应）
+
+1. 左侧左浮动 float: left，右侧 margin-left： xxxpx
+2. 左侧左浮动，右侧加 BFC 包裹
+3. flex 布局
+4. 左边绝对定位，右边 margin-left
+
+### 圣杯布局和双飞翼布局
+
+目的：
+
+- 三栏布局，中间一栏最先加载和渲染
+- 两侧内容固定，中间内容随宽度自适应
+- 一般用于 pc 网页
+
+技术总结：
+
+- 使用 float
+- 两侧使用 margin 负值
+
+###### 圣杯布局
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <style>
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    .container {
+      padding-left: 200px;
+      padding-right: 150px;
+    }
+    .column {
+      float: left;
+    }
+    .container::after {
+      content: '';
+      clear: both;
+    }
+    .left {
+      background-color: aquamarine;
+      width: 200px;
+      margin-left: -100%;
+      position: relative;
+      right: 200px;
+    }
+    .right {
+      background-color: beige;
+      width: 150px;
+      margin-right: -150px;
+    }
+    .center {
+      background-color: blanchedalmond;
+      width: 100%;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="center column">center</div>
+      <div class="left column">left</div>
+      <div class="right column">right</div>
+    </div>
+  </body>
+</html>
+```
+
+###### 双飞翼布局
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        min-width: 500px;
+      }
+      .container {
+        width: 100%;
+      }
+      .column {
+        float: left;
+      }
+      .center {
+        background-color: aliceblue;
+        margin-left: 200px;
+        margin-right: 150px;
+      }
+      .left {
+        background-color: antiquewhite;
+        width: 200px;
+        margin-left: -100%;
+      }
+      .right {
+        width: 150px;
+        background-color: aquamarine;
+        margin-left: -150px;
+      }
+      .footer {
+        clear: both;
+      }
+      .footer,
+      .header {
+        background-color: black;
+        color: wheat;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">header</div>
+    <div class="container column">
+      <div class="center">center</div>
+    </div>
+    <div class="left column">left</div>
+    <div class="right column">right</div>
+    <div class="footer">footer</div>
+  </body>
+</html>
+```
