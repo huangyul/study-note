@@ -540,3 +540,18 @@ Object.prototype.toString.call(function () {}) // "[object Function]"
 1. Array.isArray()
 2. typeof func
 3. Object.prototype.toString.call()
+
+### 深拷贝
+
+#### 浅拷贝和深拷贝的区别
+
+浅拷贝：创建一个新对象，这个对象有着原始对象属性值的一份精确拷贝。如果属性是基本类型，拷贝的就是基本类型的值，如果属性是对象，拷贝的就是内存地址  
+深拷贝：将一个对象从内存中完整的拷贝一份出来，从堆内存中开辟一个新的区域存放新对象，且修改对象不会影响源对象
+
+#### 最简单的版本
+
+```javascript
+JSON.parsse(JSON.stringify(obj))
+```
+
+####
