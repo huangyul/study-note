@@ -581,3 +581,53 @@ function clone(target, map = new Map()) {
   }
 }
 ```
+
+### call,apply,bind 的实现
+
+#### call
+
+```javascript
+Function.prototype.myCall = function (ctx) {
+  // 判断调用对象一定要是函数
+  if (typeof this !== 'function') {
+    throw new TypeError('Type Error')
+  }
+  // 取出除对象外的所有参数
+  let args = [...arguments].slice(1)
+  let result = null
+  // 如果没有传调用对象，就默认全局
+  ctx = ctx || global
+  // 将方法加到调用对象上
+  ctx.fn = this
+  // 调用方法获取结果
+  result = ctx.fn(...args)
+  // 删除调用的属性方法
+  delete ctx.fn
+  // 返回结果
+  return result
+}
+```
+
+#### apply
+
+```javascript
+Function.prototype.myApply = function (ctx) {
+  if (typeof this !== 'function') {
+    throw new TypeError('Type Error')
+  }
+  let result = null
+  ctx = ctx || global
+  // 使用Symbol保证属性的唯一，不会污染原来的属性
+  let fnSymbol = Symbol()
+  ctx[fnSymbol] = this
+  // 执行方法
+  // 判断有没有传入数组参数
+  if (arguments[1]) {
+    result = ctx[fnSymbol](...arguments[1])
+  } else {
+    result = ctx[fnSymbol]()
+  }
+  delete ctx[fnSymbol]
+  return result
+}
+```
