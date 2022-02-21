@@ -554,4 +554,30 @@ Object.prototype.toString.call(function () {}) // "[object Function]"
 JSON.parsse(JSON.stringify(obj))
 ```
 
-####
+#### 基础版
+
+```javascript
+function clone(target, map = new Map()) {
+  // 递归
+  if (typeof target === 'object') {
+    // 判断数组还是对象
+    let cloneTarget = Array.isArray(target) ? [] : {}
+
+    // 解决循环引用的问题
+    if (map.get(target)) {
+      return map.get(target)
+    }
+    map.set(target, cloneTarget)
+
+    for (let key in target) {
+      // 是自己实例上的属性再复制
+      if (target.hasOwnProperty(key)) {
+        cloneTarget[key] = clone(target[key], map)
+      }
+    }
+    return cloneTarget
+  } else {
+    return target
+  }
+}
+```
