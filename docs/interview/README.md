@@ -631,3 +631,64 @@ Function.prototype.myApply = function (ctx) {
   return result
 }
 ```
+
+#### bind
+
+**基础版**
+
+```javascript
+Function.prototype.myBind = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('type error')
+  }
+
+  // 获取除了第一个以外的参数
+  let args = Array.prototype.slice.call(arguments, 1)
+
+  // 保留当前的this
+  let self = this
+
+  let fn = function () {
+    let bindArg = Array.prototype.slice.call(arguments)
+
+    return self.apply(context, args.concat(bindArg))
+  }
+
+  return fn
+}
+```
+
+**完整版**
+
+```javascript
+Function.prototype.myBind = function (context) {
+  if (typeof this !== 'function') {
+    throw new TypeError('type error')
+  }
+
+  // 获取除了第一个以外的参数
+  let args = Array.prototype.slice.call(arguments, 1)
+
+  // 保留当前的this
+  let self = this
+
+  // 创建一个空对象
+  const fNOP = function () {}
+
+  let fn = function () {
+    let bindArg = Array.prototype.slice.call(arguments)
+
+    return self.apply(
+      this instanceof fNOP ? this : context,
+      args.concat(bindArg)
+    )
+  }
+
+  // 空对象的原型指向绑定函数的原型
+  fNOP.prototype = this.prototype
+  // 空对象的实例赋值给 方法
+  fn.prototype = new fNOP()
+
+  return fn
+}
+```
