@@ -25,7 +25,7 @@ oDiv.removeChild(oDiv2)
 
 1. `Number(null)`得到 0
 2. 作为函数的参数，表示该函数的参数不是对象
-3. 作为对象原型链的重点
+3. 作为对象原型链的起点
 
 `undefined`:
 
@@ -708,5 +708,73 @@ function _new(fn, ...rest) {
   const result = fn.apply(obj, rest)
   // 如果执行结果是一个对象，返回执行结果，如果不是，则放回新创建的对象
   return result instanceof Object ? result : obj
+}
+```
+
+## Web 存储
+
+### cookie 和 session
+
+cookie 通过在客户端记录信息确定用户身份，session 通过在服务器记录信息确定用户身份。
+
+**cookie**：服务器发送到用户浏览器并保存在本地的一小块文本数据。主要用于会话状态管理、个性化设置、浏览器行为跟踪
+**session**：代表服务器与客户端一次会话的过程，存储方式为属性及配置信息，当客户端关闭或者超时 session 就会丢失
+
+###### 不同之处
+
+1. Cookie 保存在客户端，session 保存在服务器
+2. 有效期不同，cookie 可以设置为长时间保存，session 只能保存在当前会话
+3. 存储大小，cookie 不能超过 4k，session 可以存比较大的数据
+
+###### 联系
+
+用户第一次请求服务器的时候，服务器根据用户提交的相关信息，创建创建对应的 Session ，请求返回时将此 Session 的唯一标识信息 SessionID 返回给浏览器，浏览器接收到服务器返回的 SessionID 信息后，会将此信息存入到 Cookie 中，同时 Cookie 记录此 SessionID 属于哪个域名。
+
+当用户第二次访问服务器的时候，请求会自动判断此域名下是否存在 Cookie 信息，如果存在自动将 Cookie 信息也发送给服务端，服务端会从 Cookie 中获取 SessionID，再根据 SessionID 查找对应的 Session 信息，如果没有找到说明用户没有登录或者登录失效，如果找到 Session 证明用户已经登录可执行后面操作。
+
+?> 现在一般用 **token**
+
+### 操作
+
+**cookie**  
+`document.cookie=`  
+如果没有设置 Expires 或 Max-Age，那么就是会话 cookie，关闭窗口就会丢失
+**session 和 local**
+
+```typescript
+/**
+ * 浏览器永久缓存
+ */
+export const Local = {
+  set(key: string, val: any) {
+    localStorage.setItem(key, val)
+  },
+  get(key: string) {
+    return localStorage.getItem(key)
+  },
+  remove(key: string) {
+    localStorage.removeItem(key)
+  },
+  clear() {
+    localStorage.clear()
+  },
+}
+
+/**
+ * 浏览器临时缓存
+ */
+export const Session = {
+  set(key: string, val: any) {
+    sessionStorage.setItem(key, JSON.stringify(val))
+  },
+  get(key: string) {
+    return JSON.parse(sessionStorage.getItem(key))
+  },
+  remove(key: string) {
+    sessionStorage.removeItem(key)
+  },
+  clear() {
+    sessionStorage.clear()
+  },
 }
 ```
