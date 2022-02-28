@@ -6,6 +6,8 @@
 
 ### 一、原始值与引用值
 
+`ECMAScript`有 6 种数据简单的数据类型（原始类型）：Undefined,Null,Boolean,Number,String 和 Symbol。还有一种复杂的数据类型 Object（对象）
+
 **原始值**就是最简单的数据，**引用值**是由多个值构成的对象
 
 原始值包括：`Undefined` `Null` `Boolean` `Number` `String` `Symbol`

@@ -672,9 +672,6 @@ Function.prototype.myBind = function (context) {
   // 保留当前的this
   let self = this
 
-  // 创建一个空对象
-  const fNOP = function () {}
-
   let fn = function () {
     let bindArg = Array.prototype.slice.call(arguments)
 
@@ -683,11 +680,13 @@ Function.prototype.myBind = function (context) {
       args.concat(bindArg)
     )
   }
-
+  // 创建一个空对象
+  const fNOP = function () {}
   // 空对象的原型指向绑定函数的原型
   fNOP.prototype = this.prototype
   // 空对象的实例赋值给 方法
   fn.prototype = new fNOP()
+  // 以上三句相当于Object.create(this.prototype)
 
   return fn
 }
