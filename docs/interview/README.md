@@ -152,6 +152,15 @@ BFC 具有一些特性：
 利用 2 ，我们可以避免 margin  重叠问题。
 利用 3 ，我们可以避免高度塌陷。
 
+### 两栏布局
+
+左侧固定+右侧自适应布局
+
+1. 左侧 float：left，右侧 margin-left：左侧的宽度
+2. 左侧 float：left，右侧 overflow：auto （BFC）
+3. 父元素 display：flex，右侧 flex：1
+4. 左侧 position：absolute，右侧 margin-left：左侧宽度
+
 ## 一、Javascript 基础
 
 ### DOM 常用 API
