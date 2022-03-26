@@ -95,6 +95,20 @@
 2. 可以先将元素设为 display：none，操作结束后再显示出来
 3. 对于复杂动画使用绝对定位
 
+### 盒模型介绍
+
+CSS3 中的盒模型由两种：**标准盒模型**、**IE 盒模型**
+
+盒模型都是由`content+padding+border+margin`构成，其大小都是由`content+padding+border`决定，但盒子内容宽/高度的计算不同
+
+- 标准盒模型： content
+- IE 盒模型：content+padding+border
+
+可以通过 box-sizing 来改变元素的盒模型
+
+- box-sizing: content-box 标准盒模型
+- box-sizing：border-box IE 盒模型
+
 ## 一、Javascript 基础
 
 ### DOM 常用 API
