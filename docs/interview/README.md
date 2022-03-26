@@ -13,6 +13,15 @@
 1. 如果 `script` 放到 `head` 就使用 `defer`
 2. 直接放到 `body` 的最后
 
+### 浏览器输入 url 后
+
+1. DNS 解析：将域名转为 IP 地址
+2. TCP 链接：TCP 三次握手
+3. 发送 http 请求
+4. 服务器接收请求并返回 HTTP 报文
+5. 浏览器解析并渲染
+6. 断开链接：TCP 四次握手
+
 ## 一、Javascript 基础
 
 ### DOM 常用 API
