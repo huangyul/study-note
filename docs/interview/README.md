@@ -8,6 +8,15 @@
 2. 有利于 SEO（搜索引擎）
 3. 很好的呈现页面内结构
 
+### HTML5 新增语义化标签
+
+1. `<header></header>` 定义文档头部区域
+2. `<footer></footer>` 定义文档尾部区域
+3. `<article></article>` 定义页面独立内容区域
+4. `<aside></aside>` 定义侧边栏内容
+5. `<nav></nav>` 定义导航部分
+6. `<section></section>` 定义文档中的节
+
 ### script 标签 defer 和 async 的区别
 
 - 没有任何其他属性：当 `HTML` 解析到`<script>`标签时，会停止解析，先下载 `js` 脚本，并执行完后再继续解析
