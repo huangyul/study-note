@@ -133,7 +133,7 @@ CSS3 中的盒模型由两种：**标准盒模型**、**IE 盒模型**
 1. 伪类用于当已有元素处于的某个状态时，为其添加对应的样式，这个状态是根据用户行为而动态变化的。(:hover)
 2. 伪元素用于创建一些不在文档树中的元素，并为其添加样式。(::before)
 
-?> 为了区分伪类和伪元素，css3 开始都使用"::"
+?> 为了区分伪类和伪元素，css3 开始伪元素都使用"::"
 
 ### CSS 选择器和优先级
 
@@ -186,6 +186,88 @@ BFC 具有一些特性：
 2. 左侧 float：left，右侧 overflow：auto （BFC）
 3. 父元素 display：flex，右侧 flex：1
 4. 左侧 position：absolute，右侧 margin-left：左侧宽度
+
+### 水平垂直居中
+
+```html
+<div class="div"></div>
+```
+
+###### absolute + 四边为 0 (定宽高)
+
+```css
+.div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+}
+```
+
+###### absolute + margin 负 50% （定宽高）
+
+```css
+.div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 200px;
+  height: 200px;
+  margin-top: -100px;
+  margin-left: -100px;
+}
+```
+
+###### absolute + transform（不定宽高）
+
+```css
+.div {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+```
+
+###### flex
+
+```css
+.div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+```
+
+### position 定位
+
+###### static 静态定位
+
+默认值，left、top、right、bottom 不起作用
+
+###### relative 相对定位
+
+相对于自己元素自己原本的位置进行定位
+
+###### absolute 绝对定位
+
+相对于上一个有定位的父元素（position 不为 static）进行定位
+
+###### fixed 固定定位
+
+相对于视口进行定位
+
+###### 画布和视口
+
+1. 画布：整个页面的大小
+2. 视口：浏览器可视范围大小
+3. 一般画布大于视口
+
+###### sticky 粘性定位
+
+元素一开始行为像 relative，当位置到达设定好的值（left、top、bottom、right）后，就变成 fixed 定位
 
 ## 一、Javascript 基础
 
