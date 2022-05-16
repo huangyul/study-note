@@ -38,3 +38,28 @@ function func(nums) {
   return i + 1
 }
 ```
+
+`2022-5-16`
+
+###### 搜索插入的位置
+
+有一个有序数组和一个目标数字，寻找该目标数字在数组中的插入位置，例如[1,2,2,4]和3，返回3。
+
+可是使用二分法，就是找出一个中间位置与目标进行对比，根据条件判断使用前面半部分还是后面半部分，以此类推，知道找出结果
+
+```js
+var searchInsert = function (nums, target) {
+  let n = nums.length
+  let l = 0,
+    r = n - 1
+  while (l <= r) {
+    let mid = Math.floor((r + l) / 2)
+    if (target <= nums[mid]) {
+      r = mid - 1
+    } else {
+      l = mid + 1
+    }
+  }
+  return l
+}
+```
