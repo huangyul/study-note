@@ -324,7 +324,7 @@ console.log(encodeURIComponent(url)) // http%3A%2F%2Fwww.wrox.com%2Fillegal%20va
 
 ?> encodeURIComponent()更彻底，所有一般使用这个
 
-解码：`decodeURI` 对应 `encodeURI` ；`decodeURIComponent` 对应 `decodeURIComponent`
+解码：`decodeURI` 对应 `encodeURI` ；`decodeURIComponent` 对应 `encodeURIComponent`
 
 #### Math
 
