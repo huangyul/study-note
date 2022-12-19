@@ -140,3 +140,17 @@ function addTowSum(l1, l2) {
   return head.next
 }
 ```
+
+## 无重复字符的最长字串
+
+> 难度中等
+
+abcabcbb
+
+(abc)abcbb
+a(bca)bcbb
+ab(cab)cbb
+abc(abc)bb
+abca(bc)bb
+abcab(cb)b
+abcabcb(b)
