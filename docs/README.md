@@ -12,3 +12,4 @@
 6. [基础复习](/interview/REAMDE.md ':target=_self')
 7. [gitlab 部署笔记](/gitlab/README.md ':target=_self')
 8. [实战项目--后台管理系统](/vue3-admin/README.md ':target=_self')
+9. [日常开发笔记](/library/README.md 'target=_self')

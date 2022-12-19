@@ -9,3 +9,4 @@
 - [基础复习](interview/)
 - [部署 gitlab](gitlab/)
 - [实战项目--后台管理系统](vue3-admin/)
+- [日常开发笔记](library/)
