@@ -1060,7 +1060,7 @@ console.log(person1.hasOwnProperty('name2')) // true
 
 #### 3.1、原型链
 
-一个原型对象指向另外一个类型的实例
+一个原型对象指向另外一个类 型的实例
 
 ```javascript
 function SuperType() {
