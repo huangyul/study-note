@@ -1,6 +1,6 @@
 # 算法笔记
 
-## Two Sum
+## 两数之和
 
 > 简单
 
@@ -60,7 +60,7 @@ function towSum(nums, target) {
 {2: 2}
 }
 
-#### 使用 Map 的唯一性
+#### 解法二：使用 Map 的唯一性
 
 ```js
 function towSum(nums, target) {
@@ -77,3 +77,66 @@ function towSum(nums, target) {
 ```
 
 要注意的点：`map` 将数组的实际内容作为 `key`，数组下标作为 `value`，就是为了使用 `has` 来判断
+
+## 两数相加
+
+> 难度中等
+
+#### 题目描述
+
+给你两个 非空 的链表，表示两个非负的整数。它们每位数字都是按照 逆序 的方式存储的，并且每个节点只能存储 一位 数字。
+
+请你将两个数相加，并以相同形式返回一个表示和的链表。
+
+你可以假设除了数字 0 之外，这两个数都不会以 0 开头。
+
+###### 实例
+
+输入：l1 = [2,4,3], l2 = [5,6,4]
+输出：[7,0,8]
+解释：342 + 465 = 807
+
+#### js 中的链表解释
+
+链表里面的每个值都是一个类对象的东西，其中 val 表示当前的值，next 表示指向下一个链表
+
+#### 解法：
+
+(2->4->3) + (5->6->4) = (7->0->8)
+
+1. 取出加号两边的最低位
+   注意：可能存在没有的情况，例如 99+9999，此时要补零
+
+```js
+let val1 = l1 !== null ? 0 : l1.val
+let val2 = l2 !== null ? 0 : l2.val
+```
+
+2. 求出两个值的和，并算出是否要进 1，保留到下一次计算中
+
+```js
+let res = val1 + val2
+addOne = res >= 10 ? 1 : 0
+sum.next = new ListNode(res % 10) // 因为结果可能大于0
+```
+
+代码入下：
+
+```js
+function addTowSum(l1, l2) {
+  let addOne = 0 // 进位
+  let sum = new ListNode('0')
+  let head = sum
+  while (l1 || l2 || addOne) {
+    let val1 = l1 !== null ? l1.val : 0
+    let val2 = l2 !== null ? l2.val : 0
+    let res = val1 + val2 + addOne
+    addOne = res >= 10 ? 1 : 0
+    sum.next = new ListNode(res % 10)
+    sum = sum.next
+    if (l1) l1 = l1.next
+    if (l2) l2 = l2.next
+  }
+  return head.next
+}
+```
