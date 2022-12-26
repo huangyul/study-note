@@ -692,7 +692,7 @@ type P = Readonly1<Person>
 
 ###### Pick
 
-将某个类型中挑出一些属性出来
+将某个类型中挑出一些属性出来 
 
 ```typescript
 type Pick1<T, K extends keyof T> = {

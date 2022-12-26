@@ -269,7 +269,173 @@ BFC 具有一些特性：
 
 元素一开始行为像 relative，当位置到达设定好的值（left、top、bottom、right）后，就变成 fixed 定位
 
+### 圣杯布局和双飞翼布局
+
+目的：
+
+- 三栏布局，中间一栏最先加载和渲染
+- 两侧内容固定，中间内容随宽度自适应
+- 一般用于 pc 网页
+
+技术总结：
+
+- 使用 float
+- 两侧使用 margin 负值
+
+###### 圣杯布局
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+  </head>
+  <style>
+    html,
+    body {
+      padding: 0;
+      margin: 0;
+    }
+    .container {
+      padding-left: 200px;
+      padding-right: 150px;
+    }
+    .column {
+      float: left;
+    }
+    .container::after {
+      content: '';
+      clear: both;
+    }
+    .left {
+      background-color: aquamarine;
+      width: 200px;
+      margin-left: -100%;
+      position: relative;
+      right: 200px;
+    }
+    .right {
+      background-color: beige;
+      width: 150px;
+      margin-right: -150px;
+    }
+    .center {
+      background-color: blanchedalmond;
+      width: 100%;
+    }
+  </style>
+  <body>
+    <div class="container">
+      <div class="center column">center</div>
+      <div class="left column">left</div>
+      <div class="right column">right</div>
+    </div>
+  </body>
+</html>
+```
+
+###### 双飞翼布局
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <style>
+      html,
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      body {
+        min-width: 500px;
+      }
+      .container {
+        width: 100%;
+      }
+      .column {
+        float: left;
+      }
+      .center {
+        background-color: aliceblue;
+        margin-left: 200px;
+        margin-right: 150px;
+      }
+      .left {
+        background-color: antiquewhite;
+        width: 200px;
+        margin-left: -100%;
+      }
+      .right {
+        width: 150px;
+        background-color: aquamarine;
+        margin-left: -150px;
+      }
+      .footer {
+        clear: both;
+      }
+      .footer,
+      .header {
+        background-color: black;
+        color: wheat;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="header">header</div>
+    <div class="container column">
+      <div class="center">center</div>
+    </div>
+    <div class="left column">left</div>
+    <div class="right column">right</div>
+    <div class="footer">footer</div>
+  </body>
+</html>
+```
+
 ## 一、Javascript 基础
+
+### 基本的数据类型
+
+`Number`,`String`,`Boolean`,`Null`,`Undefined`,`Object`,`BigInt`,`Symbol`
+
+1. Symbol 表示独一无二的值，经常用于表示对象的唯一 key
+2. BigInt 表示任意大小的数值
+
+###### 类型判断
+
+1. typeof 只能判断基本数据类型，不能判断 object、null、array，因为都返回 object
+
+2. instanceof 能判断引用类型
+
+3. Object.prototype.toString.call() 可以判断所有类型
+
+```javascript
+Object.prototype.toString.call(2) // "[object Number]"
+Object.prototype.toString.call('') // "[object String]"
+Object.prototype.toString.call(true) // "[object Boolean]"
+Object.prototype.toString.call(undefined) // "[object Undefined]"
+Object.prototype.toString.call(null) // "[object Null]"
+Object.prototype.toString.call(Math) // "[object Math]"
+Object.prototype.toString.call({}) // "[object Object]"
+Object.prototype.toString.call([]) // "[object Array]"
+Object.prototype.toString.call(function () {}) // "[object Function]"
+```
+
+4. 判断数组的方法
+
+```javascript
+cosnt arr = [1]
+Array.isArray(arr)
+arr instanceof Array
+Object.prototype.toString.call(arr) // [object Array]
+```
+
+###### 0.1 + 0.2 != 0.3
+
+因为 javascript 采用 IEEE745 中的双精度（64）位表示数字，其中第一位为符号位，二到十二为指数位，后面的为尾数，所以能表示的数字范围有限  
+javascript 在存储数字时，会先把十进制数字转为二进制，其中整数采用除二法，小数采用乘二法  
+在存储 0.1 时，javascript 计算 0.1 的二进制会形成无限小数，所以会自动截取，造成有误差，0.2 和 0.3 也是如此
 
 ### DOM 常用 API
 
@@ -655,130 +821,6 @@ W3C 的解释式：它决定了元素如果对其内容进行定位，以及与�
 2. 左侧左浮动，右侧加 BFC 包裹
 3. flex 布局
 4. 左边绝对定位，右边 margin-left
-
-### 圣杯布局和双飞翼布局
-
-目的：
-
-- 三栏布局，中间一栏最先加载和渲染
-- 两侧内容固定，中间内容随宽度自适应
-- 一般用于 pc 网页
-
-技术总结：
-
-- 使用 float
-- 两侧使用 margin 负值
-
-###### 圣杯布局
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-  </head>
-  <style>
-    html,
-    body {
-      padding: 0;
-      margin: 0;
-    }
-    .container {
-      padding-left: 200px;
-      padding-right: 150px;
-    }
-    .column {
-      float: left;
-    }
-    .container::after {
-      content: '';
-      clear: both;
-    }
-    .left {
-      background-color: aquamarine;
-      width: 200px;
-      margin-left: -100%;
-      position: relative;
-      right: 200px;
-    }
-    .right {
-      background-color: beige;
-      width: 150px;
-      margin-right: -150px;
-    }
-    .center {
-      background-color: blanchedalmond;
-      width: 100%;
-    }
-  </style>
-  <body>
-    <div class="container">
-      <div class="center column">center</div>
-      <div class="left column">left</div>
-      <div class="right column">right</div>
-    </div>
-  </body>
-</html>
-```
-
-###### 双飞翼布局
-
-```html
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8" />
-    <style>
-      html,
-      body {
-        padding: 0;
-        margin: 0;
-      }
-      body {
-        min-width: 500px;
-      }
-      .container {
-        width: 100%;
-      }
-      .column {
-        float: left;
-      }
-      .center {
-        background-color: aliceblue;
-        margin-left: 200px;
-        margin-right: 150px;
-      }
-      .left {
-        background-color: antiquewhite;
-        width: 200px;
-        margin-left: -100%;
-      }
-      .right {
-        width: 150px;
-        background-color: aquamarine;
-        margin-left: -150px;
-      }
-      .footer {
-        clear: both;
-      }
-      .footer,
-      .header {
-        background-color: black;
-        color: wheat;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="header">header</div>
-    <div class="container column">
-      <div class="center">center</div>
-    </div>
-    <div class="left column">left</div>
-    <div class="right column">right</div>
-    <div class="footer">footer</div>
-  </body>
-</html>
-```
 
 ### flex
 
