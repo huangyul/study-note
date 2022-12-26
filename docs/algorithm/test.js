@@ -1,26 +1,9 @@
-// var lengthOfLongestSubstring = function (s) {
-//   let res = 0,
-//     temp = []
-//   for (let i = 0; i < s.length; i++) {
-//     if (temp.indexOf(s[i]) == -1) {
-//       temp.push(s[i])
-//     } else {
-//       temp.shift()
-//       i--
-//       continue
-//     }
-//     res = Math.max(res, temp.length)
-//   }
-//   return res
-// }
-
-const lengthOfLongestSubstring = function (str) {
+function func(s) {
   let res = 0,
     temp = []
-
-  for (let i = 0; i < str.length; i++) {
-    if (!temp.includes(str[i])) {
-      temp.push(str[i])
+  for (let i = 0; i < s.length; i++) {
+    if (temp.indexOf(s[i]) == -1) {
+      temp.push(s[i])
     } else {
       temp.shift()
       i--
@@ -31,4 +14,4 @@ const lengthOfLongestSubstring = function (str) {
   return res
 }
 
-console.log(lengthOfLongestSubstring('pwwkew'))
+console.log(func('abcabcbb'))

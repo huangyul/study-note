@@ -41,8 +41,8 @@
 
 ```js
 function towSum(nums, target) {
-  for (let i = 0; i < nums.length; i++) {
-    for (let j = i + 1; j < nums.length; j++) {
+  for (let i = 0; i < nums.length - 1; i++) {
+    for (let j = i + 1; j < nums.length - 1 - i; j++) {
       if (nums[i] + nums[j] === target) {
         return [i, j]
       }
@@ -145,12 +145,73 @@ function addTowSum(l1, l2) {
 
 > 难度中等
 
-abcabcbb
+#### 题目描述
+
+给定一个字符串 s ，请你找出其中不含有重复字符的 最长子串 的长度。
+
+###### 实例
+
+输入: s = "abcabcbb"
+输出: 3
+解释: 因为无重复字符的最长子串是 "abc"，所以其长度为 3。
+
+#### 解决思路一滑块
 
 (abc)abcbb
-a(bca)bcbb
+a(bc)abcbb
 ab(cab)cbb
 abc(abc)bb
 abca(bc)bb
 abcab(cb)b
+abcabc(b)b
 abcabcb(b)
+
+- 使用 for 循环，定义每种可能性
+- 使用 slice 方法，将最大的长度切下来并保存
+
+```js
+function fun(s) {
+  if (str.length <= 1) {
+    return str.length
+  }
+  let left = 0
+  let right = 1
+  let max = 0
+  let temp
+  while (right < str.length) {
+    temp = str.slice(left, right)
+    if (temp.indexOf(str.charAt(right)) > -1) {
+      left++
+      continue
+    } else {
+      right++
+    }
+    if (right - left > max) {
+      max = right - left
+    }
+  }
+  return max
+}
+```
+
+#### 解决思路二
+
+通过一个变量来存暂时的数据
+
+```js
+var lengthOfLongestSubstring = function (s) {
+  let res = 0,
+    temp = []
+  for (let i = 0; i < s.length; i++) {
+    if (temp.indexOf(s[i]) == -1) {
+      temp.push(s[i])
+    } else {
+      temp.shift()
+      i--
+      continue
+    }
+    res = Math.max(res, temp.length)
+  }
+  return res
+}
+```
