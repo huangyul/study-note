@@ -1,17 +1,29 @@
-function func(s) {
-  let res = 0,
-    temp = []
-  for (let i = 0; i < s.length; i++) {
-    if (temp.indexOf(s[i]) == -1) {
-      temp.push(s[i])
+function func(nums1, nums2) {
+  let merge = []
+  let i = 0
+  let j = 0
+
+  while (i < nums1.length && j < nums2.length) {
+    if (nums1[i] > nums2[j]) {
+      merge.push(nums2[j++])
     } else {
-      temp.shift()
-      i--
-      continue
+      merge.push(nums1[i++])
     }
-    res = Math.max(res, temp.length)
   }
-  return res
+
+  while (i < nums1.length) {
+    merge.push(nums1[i++])
+  }
+
+  while (j < nums2.length) {
+    merge.push(nums2[j++])
+  }
+
+  const { length } = merge
+  console.log(merge)
+  return length % 2 === 1
+    ? merge[Math.floor(length / 2)]
+    : (merge[length / 2] + merge[length / 2 - 1]) / 2
 }
 
-console.log(func('abcabcbb'))
+console.log(func([1, 3], [2]))
