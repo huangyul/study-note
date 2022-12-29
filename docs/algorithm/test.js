@@ -1,29 +1,23 @@
-function func(nums1, nums2) {
-  let merge = []
-  let i = 0
-  let j = 0
+function func(s) {
+  if (s.length < 2) {
+    return s
+  }
+  let res = ''
+  for (let i = 0; i < s.length; i++) {
+    helper(i, i)
+    helper(i, i + 1)
+  }
 
-  while (i < nums1.length && j < nums2.length) {
-    if (nums1[i] > nums2[j]) {
-      merge.push(nums2[j++])
-    } else {
-      merge.push(nums1[i++])
+  function helper(m, n) {
+    while (m >= 0 && n < s.length && s[m] == s[n]) {
+      m--
+      n++
+    }
+    if (n - m - 1 > res.length) {
+      res = s.slice(m + 1, n)
     }
   }
-
-  while (i < nums1.length) {
-    merge.push(nums1[i++])
-  }
-
-  while (j < nums2.length) {
-    merge.push(nums2[j++])
-  }
-
-  const { length } = merge
-  console.log(merge)
-  return length % 2 === 1
-    ? merge[Math.floor(length / 2)]
-    : (merge[length / 2] + merge[length / 2 - 1]) / 2
+  return res
 }
 
-console.log(func([1, 3], [2]))
+console.log(func('cbbd'))

@@ -80,7 +80,7 @@ function towSum(nums, target) {
 
 ## 两数相加
 
-> 难度中等
+> 中等
 
 ### 题目描述
 
@@ -143,7 +143,7 @@ function addTowSum(l1, l2) {
 
 ## 无重复字符的最长字串
 
-> 难度中等
+> 中等
 
 ### 题目描述
 
@@ -218,6 +218,8 @@ var lengthOfLongestSubstring = function (s) {
 
 ## 寻找两个正序数组的中位数
 
+> 困难
+
 ### 题目描述
 
 给定两个大小分别为 m 和 n 的正序（从小到大）数组 nums1 和 nums2。请你找出并返回这两个正序数组的 中位数 。
@@ -240,7 +242,7 @@ var lengthOfLongestSubstring = function (s) {
 
 分别遍历两个数组内的项，重新组合成一个新的数组，然后再求出新数组的中间项的值
 
-**注意：此方法的时间复杂度为O(m+n)，并不符合题目要求**
+**注意：此方法的时间复杂度为 O(m+n)，并不符合题目要求**
 
 ```js
 function func(nums1, nums2) {
@@ -249,8 +251,8 @@ function func(nums1, nums2) {
   let j = 0
 
   // 先合并两个数组
-  while(i < nums1.length && j < nums2.length) {
-    if(nums1[i] < nums2[j]) {
+  while (i < nums1.length && j < nums2.length) {
+    if (nums1[i] < nums2[j]) {
       merge.push(nums1[i++])
     } else {
       merge.push(nums2[j++])
@@ -258,14 +260,69 @@ function func(nums1, nums2) {
   }
 
   // 将剩余的推到合并数组里
-  while(i < nums1.length) {
+  while (i < nums1.length) {
     merge.push(nums1[i++])
   }
-  while(j < nums2.length) {
+  while (j < nums2.length) {
     merge.push(nums2[j++])
   }
 
-  const {length} = merge
-  return length % 2 === 1 ? merge[Math.floor(length / 2)] : (merge[Math.floor(length / 2) - 1]) / 2
+  const { length } = merge
+  return length % 2 === 1
+    ? merge[Math.floor(length / 2)]
+    : merge[Math.floor(length / 2) - 1] / 2
+}
+```
+
+### 解法二：二分查找
+
+## 最长回文字串
+
+> 中等
+
+### 题目描述
+
+给你一个字符串 s，找到 s 中最长的回文子串。
+
+如果字符串的反序与原始字符串相同，则该字符串称为回文字符串。
+
+#### 输出实例
+
+示例 1：
+
+输入：s = "babad"
+输出："bab"
+解释："aba" 同样是符合题意的答案。
+示例 2：
+
+输入：s = "cbbd"
+输出："bb"
+
+### 解法一：中心扩散法
+
+从头开始遍历每一个字符串，以这个字符串为中心一个个扩散，直到不满足回文的特点为止。
+
+```js
+function func(s) {
+  // 如果只有一个字符，则返回本身，一个字符也是回文
+  if (s.length === 1) {
+    return s
+  }
+  let res = ''
+  for (let i = 0; i < s.length; i++) {}
+
+  function func1(m, n) {
+    // 在满足条件的情况下一步步扩散
+    while (m <= 0 && n > s.length && s[m] == s[n]) {
+      m--
+      n++
+    }
+    // 注意，此时得到的m和n是刚好不满足的情况
+    // 所以满足的长度是n-1-(m+1)+1
+    if (n - m - 1 > res.length) {
+      res = s.slice(m + 1, n)
+    }
+  }
+  return res
 }
 ```
