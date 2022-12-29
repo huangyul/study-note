@@ -1,23 +1,17 @@
-function func(s) {
-  if (s.length < 2) {
-    return s
+function func(n) {
+  if(n == 1) {
+    return 1
   }
-  let res = ''
-  for (let i = 0; i < s.length; i++) {
-    helper(i, i)
-    helper(i, i + 1)
+  if(n == 2) {
+    return 2
   }
-
-  function helper(m, n) {
-    while (m >= 0 && n < s.length && s[m] == s[n]) {
-      m--
-      n++
-    }
-    if (n - m - 1 > res.length) {
-      res = s.slice(m + 1, n)
-    }
+  let a = 1,b =2,temp=0
+  for(let i = 3; i < n; i++) {
+    temp = a + b
+    a = b
+    b = temp
   }
-  return res
+  return temp
 }
 
-console.log(func('cbbd'))
+console.log(func(10))
