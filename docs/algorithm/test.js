@@ -1,17 +1,12 @@
-function func(n) {
-  if(n == 1) {
-    return 1
+function func(nums, target) {
+  let map = new Map()
+  for (let i = 0; i < nums.length; i++) {
+    if (map.has(target - nums[i])) {
+      return [map.get(target - nums[i]), i]
+    } else {
+      map.set(nums[i], i)
+    }
   }
-  if(n == 2) {
-    return 2
-  }
-  let a = 1,b =2,temp=0
-  for(let i = 3; i < n; i++) {
-    temp = a + b
-    a = b
-    b = temp
-  }
-  return temp
+  return []
 }
-
-console.log(func(10))
+console.log(func([1, 2, 4, 8], 10))
