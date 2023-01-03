@@ -276,6 +276,8 @@ function func(nums1, nums2) {
 
 ### 解法二：二分查找
 
+// TODO
+
 ## 最长回文字串
 
 > 中等
@@ -329,6 +331,43 @@ function func(s) {
 
 ## 正则表达式匹配
 
+// TODO
+
 > 困难
 
 [动态规划基础介绍](https://zhuanlan.zhihu.com/p/365698607)
+
+## 盛最多水的容器
+
+> 中等
+
+### 题目描述
+
+给定一个长度为 n 的整数数组 height 。有 n 条垂线，第 i 条线的两个端点是 (i, 0) 和 (i, height[i]) 。
+找出其中的两条线，使得它们与 x 轴共同构成的容器可以容纳最多的水。
+返回容器可以储存的最大水量。
+说明：你不能倾斜容器。
+
+#### 输出实例
+
+输入：[1,8,6,2,5,4,8,3,7]   
+输出：49   
+最大的容器为 8-6-2-5-4-8-7   7*7
+
+### 双指针法
+
+分别使用两个指针，一个在数组的头，一个在数组的末端   
+- 指针短的靠里移动
+- 算出每次的面积，保留最大值
+
+```js
+function func(height) {
+  let max = 0
+  for(let i = 0,j = height.length - 1; i < j; ) {
+    const minHeight = height[i] < height[j] ? height[i++] : height[j--]
+    const area = (j - i + 1) * minHeight
+    max = Math.max(max, area)
+  }
+  return max
+}
+```
