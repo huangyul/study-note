@@ -350,24 +350,99 @@ function func(s) {
 
 #### 输出实例
 
-输入：[1,8,6,2,5,4,8,3,7]   
-输出：49   
-最大的容器为 8-6-2-5-4-8-7   7*7
+输入：[1,8,6,2,5,4,8,3,7]  
+输出：49  
+最大的容器为 8-6-2-5-4-8-7 7\*7
 
 ### 双指针法
 
-分别使用两个指针，一个在数组的头，一个在数组的末端   
+分别使用两个指针，一个在数组的头，一个在数组的末端
+
 - 指针短的靠里移动
 - 算出每次的面积，保留最大值
 
 ```js
 function func(height) {
   let max = 0
-  for(let i = 0,j = height.length - 1; i < j; ) {
+  for (let i = 0, j = height.length - 1; i < j; ) {
     const minHeight = height[i] < height[j] ? height[i++] : height[j--]
     const area = (j - i + 1) * minHeight
     max = Math.max(max, area)
   }
   return max
+}
+```
+
+## 三数之和
+
+> 中等
+
+### 题目描述
+
+给你一个整数数组 nums ，判断是否存在三元组 [nums[i], nums[j], nums[k]] 满足 i != j、i != k 且 j != k ，同时还满足 nums[i] + nums[j] + nums[k] == 0 。请
+你返回所有和为 0 且不重复的三元组。
+注意：答案中不可以包含重复的三元组。
+
+#### 输出示例
+
+// 输入：nums = [-1,0,1,2,-1,-4]
+// 输出：[[-1,-1,2],[-1,0,1]]
+
+### 解法：排序+双指针
+
+1. 先处理特殊情况，传入的为 null 或数组长度小于三的情况
+2. 将数组从小到大排序
+3. 遍历数组
+   1. 如果第 i 个大于 0，因为已经排好序，后面的都大于 i，所以不会有其他结果，直接返回
+   2. 在遍历中，使用两个指针分别指向 i 的下一位和最后一位，比较并移动指针
+
+```js
+function func(nums) {
+  const res = []
+  // 如果为null或者长度小于三，返回空数组
+  if (nums === null || nums.length < 3) {
+    return res
+  }
+  // 将数组排序
+  const arr = nums.sort((a, b) => a - b)
+  // 遍历排好序的数组
+  for (let i = 0; i < arr.length; i++) {
+    // 如果第i个大于0，因为i后面的数都比第i个大，所以后面不会再有结果
+    if (arr[i] > 0) {
+      return res
+    }
+    // 如果第i位跟上一位相同，则跳过
+    if (i > 0 && arr[i] === arr[i - 1]) {
+      continue
+    }
+    // 定义两个指针，分别指向i的下一位和最后一位，并且开始使用双指针法
+    let L = i + 1,
+      R = arr.length - 1
+    while (L < R) {
+      let sum = arr[i] + arr[L] + arr[R]
+      // 如果符合条件，则推进去并且两个指针都往里移动一位
+      if (sum === 0) {
+        res.push([arr[i], arr[L], arr[R]])
+        // 处理相同的值
+        while (L < R && arr[L] === arr[L + 1]) {
+          L++
+        }
+        while (L < R && arr[R] === arr[R - 1]) {
+          R--
+        }
+        L++
+        R--
+      }
+      // 如果结果大于0，要让右指针往里移动一位，以减小和
+      else if (sum > 0) {
+        R--
+      }
+      // 同理
+      else if (sum < 0) {
+        L++
+      }
+    }
+  }
+  return res
 }
 ```
