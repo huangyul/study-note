@@ -446,3 +446,70 @@ function func(nums) {
   return res
 }
 ```
+
+## 电话号码的字母组合
+
+> 中等
+
+### 题目描述
+
+给定一个仅包含数字 2-9 的字符串，返回所有它能表示的字母组合。答案可以按 任意顺序 返回。
+给出数字到字母的映射如下（与电话按键相同）。注意 1 不对应任何字母。
+
+#### 输出实例
+
+输入：digits = "23"
+输出：["ad","ae","af","bd","be","bf","cd","ce","cf"]
+
+输入：digits = ""
+输出：[]
+
+输入：digits = "2"
+输出：["a","b","c"]
+
+### 解法-回溯法
+
+看到组合，基本要想到回溯
+
+回溯法（back tracking）（探索与回溯法）是一种选优搜索法，又称为试探法，按选优条件向前搜索，以达到目标。
+
+```js
+function func(str) {
+  const phone = [
+    '',
+    '*',
+    'abc',
+    'def',
+    'ghi',
+    'jkl',
+    'mno',
+    'pqrs',
+    'tuv',
+    'wxyz',
+  ]
+  // 如果输入的为空，直接返回空数组
+  if (!str) {
+    return []
+  }
+
+  // 定义一个要返回的值
+  const res = []
+
+  // 定义一个用于遍历的方法
+  // 接收两个参数，第一个是上一次遍历拿到的值，第二个是还需要遍历的值
+  function backtrach(letter, strs) {
+    // 如果没有要遍历的值，则推入结果并返回
+    if(strs.length === 0) {
+      res.push(letter)
+      return 
+    }
+    // 取出第一个值和剩余的值
+    const [curStr, ...resStr] = strs
+    for (let value of phone[curStr]) {
+      backtrach(letter + value, resStr)
+    }
+  }
+  backtrach('', str)
+  return res
+}
+```
