@@ -499,9 +499,9 @@ function func(str) {
   // 接收两个参数，第一个是上一次遍历拿到的值，第二个是还需要遍历的值
   function backtrach(letter, strs) {
     // 如果没有要遍历的值，则推入结果并返回
-    if(strs.length === 0) {
+    if (strs.length === 0) {
       res.push(letter)
-      return 
+      return
     }
     // 取出第一个值和剩余的值
     const [curStr, ...resStr] = strs
@@ -512,4 +512,60 @@ function func(str) {
   backtrach('', str)
   return res
 }
+```
+
+## 删除链表倒数第 n 个结点
+
+> 中等
+
+### 题目描述
+
+给你一个链表，删除链表的倒数第 n 个结点，并且返回链表的头结点。
+
+#### 输出示例
+
+输入：head = [1,2,3,4,5], n = 2
+输出：[1,2,3,5]
+
+### 解法--双指针法
+
+1. 使用两个指针，slow 和 fast，一开始 slow 从 0 开始，fast 从 0 移动 n 位
+2. 两个指针同时移动，直到 fast 指针移出链表
+3. 这时候删掉 slow 的下一个 next，指向 next 的 next
+
+```js
+function ListNode(val, next) {
+  this.val = val === undefined ? 0 : val
+  this.next = next === undefined ? null : next
+}
+function generateList(arr) {
+  let list = new ListNode(0)
+  let head = list
+  for (let i = 0; i < arr.length; i++) {
+    list.next = new ListNode(arr[i])
+    list = list.next
+  }
+  return head.next
+}
+
+function func(head, n) {
+  head = generateList(head)
+  let ret = new ListNode(0, head)
+  let slow = ret
+  let fast = ret
+
+  while (n--) {
+    fast = fast.next
+  }
+  if (!fast) return ret.next
+
+  while (fast.next) {
+    fast = fast.next
+    slow = slow.next
+  }
+  slow.next = slow.next.next
+  return ret.next
+}
+
+console.log(func([1, 2, 3, 4, 5], 4))
 ```
