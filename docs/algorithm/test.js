@@ -1,27 +1,30 @@
-function func(s) {
-  if (s.length === 0) {
-    return false
-  }
-  if (s.length % 2 === 1) {
-    return false
-  }
-
-  let map = {
-    ')': '(',
-    ']': '[',
-    '}': '{',
-  }
-  const res = []
-  for (let i = 0; i < s.length; i++) {
-    if (res.length === 0) {
-      res.push(s[i])
-    } else if (res[res.length - 1] === map[s[i]]) {
-      res.pop()
-    } else {
-      res.push(s[i])
+function ListNode(val, next) {
+  this.val = val ? val : 0
+  this.next = next ? next : null
+}
+function generatorList(arr) {
+  let list = new ListNode()
+  let head = list
+  for (let i = 0; i < arr.length; i++) {
+    head.val = arr[i]
+    if (i === arr.length - 1) {
+      break
     }
+    head.next = new ListNode()
+    head = head.next
   }
-  return res.length === 0
+  return list
+}
+var func = function (list1, list2) {
+  if (!list1) return list2
+  if (!list2) return list1
+  if (list1.val < list2.val) {
+    list1.next = func(list1.next, list2)
+    return list1
+  } else {
+    list2.next = func(list1, list2.next)
+    return list2
+  }
 }
 
-console.log(func('()()'))
+console.log(func(generatorList([1]), generatorList([2])))
