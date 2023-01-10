@@ -37,66 +37,49 @@ function generateListNode(arr) {
  * 上面是ListNode链表类 generateListNode(arr)
  * 下面才是正式代码编写的开始
  */
+//  输入：nums = [4,5,6,7,0,1,2], target = 0
+//  输出：4
+function func(nums, target) {
+  // 时间复杂度：O(logn)
+  // 空间复杂度：O(1)
+  // [6,7,8,1,2,3,4,5]
+  let start = 0
+  let end = nums.length - 1
 
-function func(nums) {
-  let i = nums.length - 2 // 向左遍历，i从倒数第二开始是为了nums[i+1]要存在
-  while (i >= 0 && nums[i] >= nums[i + 1]) {
-    // 寻找第一个小于右邻居的数
-    i--
-  }
-  if (i >= 0) {
-    // 这个数在数组中存在，从它身后挑一个数，和它换
-    let j = nums.length - 1 // 从最后一项，向左遍历
-    while (j >= 0 && nums[j] <= nums[i]) {
-      // 寻找第一个大于 nums[i] 的数
-      j--
+  while (start <= end) {
+    const mid = start + ((end - start) >> 1)
+    if (nums[mid] === target) return mid
+
+    // [start, mid]有序
+
+    // ️⚠️注意这里的等号
+    if (nums[mid] >= nums[start]) {
+      //target 在 [start, mid] 之间
+
+      // 其实target不可能等于nums[mid]， 但是为了对称，我还是加上了等号
+      if (target >= nums[start] && target <= nums[mid]) {
+        end = mid - 1
+      } else {
+        //target 不在 [start, mid] 之间
+        start = mid + 1
+      }
+    } else {
+      // [mid, end]有序
+
+      // target 在 [mid, end] 之间
+      if (target >= nums[mid] && target <= nums[end]) {
+        start = mid + 1
+      } else {
+        // target 不在 [mid, end] 之间
+        end = mid - 1
+      }
     }
-    ;[nums[i], nums[j]] = [nums[j], nums[i]] // 两数交换，实现变大
   }
-  // 如果 i = -1，说明是递减排列，如 3 2 1，没有下一排列，直接翻转为最小排列：1 2 3
-  let l = i + 1
-  let r = nums.length - 1
-  while (l < r) {
-    // i 右边的数进行翻转，使得变大的幅度小一些
-    ;[nums[l], nums[r]] = [nums[r], nums[l]]
-    l++
-    r--
-  }
-  return nums
+
+  return -1
 }
 
-function func1(nums) {
-  if (nums.length <= 1) {
-    return nums
-  }
+const res = func([4, 5, 6, 7, 8, 9, 0, 1, 2], 0)
+console.log(res)
 
-  // 从倒数第二位开始找，保证有i+1的存在
-  let i = nums.length - 2
-  // 从右到左找出比后一位小的数
-  while (i >= 0 && nums[i] >= nums[i + 1]) {
-    i--
-  }
-  // i>0表示这个数存在
-  if (i > 0) {
-    // 从右到左开始找，找出第一个比nums[i]大的数
-    let j = nums.length - 1
-    while (i < j && nums[i] >= nums[j]) {
-      j--
-    }
-    // 交换值
-    ;[nums[i], nums[j]] = [nums[j], nums[i]]
-  }
-  // 最后只需处理i后面的数，将它们升序排好，就获得下一个排列数
-  let l = i + 1
-  let r = nums.length - 1
-  while (l < r) {
-    ;[nums[l], nums[r]] = [nums[r], nums[l]]
-    l++
-    r--
-  }
-}
-
-const nums = [1, 5, 2, 4, 3, 2]
-const res = func1(nums)
-console.log(nums)
-// console.log(res)
+//https://leetcode.cn/problems/search-in-rotated-sorted-array/solutions/221747/pythonjs-er-fen-fa-33-sou-suo-xuan-zhuan-pai-xu-sh/?orderBy=most_votes&languageTags=javascript
