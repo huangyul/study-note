@@ -866,3 +866,58 @@ function func(nums, target) {
   return -1
 }
 ```
+
+## 在排序数组中查找元素的第一个和最后一个位置
+
+> 中等
+
+### 题目描述
+
+给你一个按照非递减顺序排列的整数数组 nums，和一个目标值 target。请你找出给定目标值在数组中的开始位置和结束位置。
+
+如果数组中不存在目标值 target，返回 [-1, -1]。
+
+你必须设计并实现时间复杂度为 O(log n) 的算法解决此问题。
+
+#### 输出示例
+
+输入：nums = [5,7,7,8,8,10], target = 8
+输出：[3,4]
+
+输入：nums = [5,7,7,8,8,10], target = 6
+输出：[-1,-1]
+
+输入：nums = [], target = 0
+输出：[-1,-1]
+
+### 解法-二分法
+
+看到要求 O(log n)且排好序的数组，基本是二分法
+
+```js
+function func(nums, target) {
+  if (nums.length === 0) return [-1, -1]
+  let l = 0
+  let r = nums.length - 1
+  const res = []
+  while (l <= r) {
+    let mid = l + ((r - l) >> 1)
+    if (nums[mid] === target) {
+      let l1 = mid
+      let l2 = mid
+      while (l1 >= l && nums[l1] === nums[l1 - 1]) {
+        l1--
+      }
+      while (l2 <= r && nums[l2] === nums[l2 + 1]) {
+        l2++
+      }
+      return [l1, l2]
+    } else if (nums[mid] > target) {
+      r--
+    } else {
+      l++
+    }
+  }
+  return [-1, -1]
+}
+```

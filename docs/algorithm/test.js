@@ -37,49 +37,35 @@ function generateListNode(arr) {
  * 上面是ListNode链表类 generateListNode(arr)
  * 下面才是正式代码编写的开始
  */
-//  输入：nums = [4,5,6,7,0,1,2], target = 0
-//  输出：4
+//  输入：nums = [5,7,7,8,8,10], target = 8
+//  输出：[3,4]
 function func(nums, target) {
-  // 时间复杂度：O(logn)
-  // 空间复杂度：O(1)
-  // [6,7,8,1,2,3,4,5]
-  let start = 0
-  let end = nums.length - 1
-
-  while (start <= end) {
-    const mid = start + ((end - start) >> 1)
-    if (nums[mid] === target) return mid
-
-    // [start, mid]有序
-
-    // ️⚠️注意这里的等号
-    if (nums[mid] >= nums[start]) {
-      //target 在 [start, mid] 之间
-
-      // 其实target不可能等于nums[mid]， 但是为了对称，我还是加上了等号
-      if (target >= nums[start] && target <= nums[mid]) {
-        end = mid - 1
-      } else {
-        //target 不在 [start, mid] 之间
-        start = mid + 1
+  if (nums.length === 0) return [-1, -1]
+  let l = 0
+  let r = nums.length - 1
+  const res = []
+  while (l <= r) {
+    let mid = l + ((r - l) >> 1)
+    if (nums[mid] === target) {
+      let l1 = mid
+      let l2 = mid
+      while (l1 >= l && nums[l1] === nums[l1 - 1]) {
+        l1--
       }
+      while (l2 <= r && nums[l2] === nums[l2 + 1]) {
+        l2++
+      }
+      return [l1, l2]
+    } else if (nums[mid] > target) {
+      r--
     } else {
-      // [mid, end]有序
-
-      // target 在 [mid, end] 之间
-      if (target >= nums[mid] && target <= nums[end]) {
-        start = mid + 1
-      } else {
-        // target 不在 [mid, end] 之间
-        end = mid - 1
-      }
+      l++
     }
   }
-
-  return -1
+  return [-1, -1]
 }
 
-const res = func([4, 5, 6, 7, 8, 9, 0, 1, 2], 1)
+const res = func([5,7,7,8,8,10], 6)
 console.log(res)
 
 //https://leetcode.cn/problems/search-in-rotated-sorted-array/solutions/221747/pythonjs-er-fen-fa-33-sou-suo-xuan-zhuan-pai-xu-sh/?orderBy=most_votes&languageTags=javascript
