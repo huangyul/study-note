@@ -79,7 +79,7 @@ function func(nums, target) {
   return -1
 }
 
-const res = func([4, 5, 6, 7, 8, 9, 0, 1, 2], 0)
+const res = func([4, 5, 6, 7, 8, 9, 0, 1, 2], 1)
 console.log(res)
 
 //https://leetcode.cn/problems/search-in-rotated-sorted-array/solutions/221747/pythonjs-er-fen-fa-33-sou-suo-xuan-zhuan-pai-xu-sh/?orderBy=most_votes&languageTags=javascript

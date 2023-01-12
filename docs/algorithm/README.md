@@ -828,3 +828,41 @@ function func(nums) {
 
 输入：nums = [1], target = 0
 输出：-1
+
+### 解法-二分法
+
+1. 因为原本是一个排好序的数组，然后在某一位上旋转了，所以通过中间的数去比较，如果中间的数大于第一位，则前半段肯定是按顺序排好的；否则后半段是按顺序排好的；
+2. 如何找出 target？找出按顺序排好的那一半段，通过比较判断 target 是否在里面，然后做相应的操作继续二分
+
+```js
+function func(nums, target) {
+  let start = 0
+  let end = nums.length - 1
+
+  while (start <= end) {
+    // 找出中间位
+    let mid = start + ((end - start) >> 1)
+    // 如果中间位刚好等于
+    if (nums[mid] === target) return mid
+    // 判断左半段是不是按顺序的
+    if (nums[start] <= nums[mid]) {
+      // 判断target是否在里面
+      if (nums[start] <= target && target <= nums[mid]) {
+        // 如果在里面，则进一步缩小范围
+        end = mid - 1
+      } else {
+        start = mid + 1
+      }
+    } else {
+      if (nums[mid] <= target && target <= nums[end]) {
+        start = mid + 1
+      } else {
+        end = mid - 1
+      }
+    }
+  }
+
+  // 都不符合，返回-1
+  return -1
+}
+```
