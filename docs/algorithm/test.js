@@ -37,35 +37,30 @@ function generateListNode(arr) {
  * 上面是ListNode链表类 generateListNode(arr)
  * 下面才是正式代码编写的开始
  */
-//  输入：nums = [5,7,7,8,8,10], target = 8
-//  输出：[3,4]
-function func(nums, target) {
-  if (nums.length === 0) return [-1, -1]
-  let l = 0
-  let r = nums.length - 1
+//  输入：candidates = [2,3,6,7], target = 7
+//  输出：[[2,2,3],[7]]
+function func(candidates, target) {
   const res = []
-  while (l <= r) {
-    let mid = l + ((r - l) >> 1)
-    if (nums[mid] === target) {
-      let l1 = mid
-      let l2 = mid
-      while (l1 >= l && nums[l1] === nums[l1 - 1]) {
-        l1--
+  const dfs = (start, temp, sum) => {
+    // start是当前选择的起点索引 temp是当前的集合 sum是当前求和
+    if (sum >= target) {
+      if (sum == target) {
+        res.push(temp.slice()) // temp的拷贝 加入解集
       }
-      while (l2 <= r && nums[l2] === nums[l2 + 1]) {
-        l2++
-      }
-      return [l1, l2]
-    } else if (nums[mid] > target) {
-      r--
-    } else {
-      l++
+      return // 结束当前递归
+    }
+    for (let i = start; i < candidates.length; i++) {
+      // 枚举当前可选的数，从start开始
+      temp.push(candidates[i]) // 选这个数
+      dfs(i, temp, sum + candidates[i]) // 基于此继续选择，传i，下一次就不会选到i左边的数
+      temp.pop() // 撤销选择，回到选择candidates[i]之前的状态，继续尝试选同层右边的数
     }
   }
-  return [-1, -1]
+  dfs(0, [], 0) // 最开始可选的数是从第0项开始的，传入一个空集合，sum也为0
+  return res
 }
 
-const res = func([5,7,7,8,8,10], 6)
+const res = func([2, 3, 6, 7], 7)
 console.log(res)
 
 //https://leetcode.cn/problems/search-in-rotated-sorted-array/solutions/221747/pythonjs-er-fen-fa-33-sou-suo-xuan-zhuan-pai-xu-sh/?orderBy=most_votes&languageTags=javascript
