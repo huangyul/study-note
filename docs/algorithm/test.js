@@ -39,7 +39,7 @@ function generateListNode(arr) {
  */
 //  输入：candidates = [2,3,6,7], target = 7
 //  输出：[[2,2,3],[7]]
-function func(candidates, target) {
+function func1(candidates, target) {
   const res = []
   const dfs = (start, temp, sum) => {
     // start是当前选择的起点索引 temp是当前的集合 sum是当前求和
@@ -60,7 +60,27 @@ function func(candidates, target) {
   return res
 }
 
-const res = func([2, 3, 6, 7], 7)
-console.log(res)
+function func(candidates, target) {
+  const res = []
 
-//https://leetcode.cn/problems/search-in-rotated-sorted-array/solutions/221747/pythonjs-er-fen-fa-33-sou-suo-xuan-zhuan-pai-xu-sh/?orderBy=most_votes&languageTags=javascript
+  const dfs = (start, temp, sum) => {
+    if (sum >= target) {
+      if (sum === target) {
+        res.push([...temp])
+      }
+      return
+    }
+
+    for (let i = start; i < candidates.length; i++) {
+      temp.push(candidates[i])
+      dfs(i, temp, sum + candidates[i])
+      temp.pop()
+    }
+  }
+
+  dfs(0, [], 0)
+  return res
+}
+
+const res = func([2, 3], 5)
+console.log(res)
