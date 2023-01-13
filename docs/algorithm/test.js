@@ -19,68 +19,35 @@ function generateListNode(arr) {
   return res
 }
 
-// const res = []
-
-// func1(n, 0, 0, '')
-// return res
-
-// function func1(n, lc, rc, str) {
-//   if (lc === n && rc === n) {
-//     res.push(str)
-//   } else {
-//     if (lc < n) func1(n, lc + 1, rc, str + '(')
-//     if (rc < n && lc > rc) func1(n, lc, rc + 1, str + ')')
-//   }
-// }
-
 /**
  * 上面是ListNode链表类 generateListNode(arr)
  * 下面才是正式代码编写的开始
  */
-//  输入：candidates = [2,3,6,7], target = 7
-//  输出：[[2,2,3],[7]]
-function func1(candidates, target) {
-  const res = []
-  const dfs = (start, temp, sum) => {
-    // start是当前选择的起点索引 temp是当前的集合 sum是当前求和
-    if (sum >= target) {
-      if (sum == target) {
-        res.push(temp.slice()) // temp的拷贝 加入解集
-      }
-      return // 结束当前递归
-    }
-    for (let i = start; i < candidates.length; i++) {
-      // 枚举当前可选的数，从start开始
-      temp.push(candidates[i]) // 选这个数
-      dfs(i, temp, sum + candidates[i]) // 基于此继续选择，传i，下一次就不会选到i左边的数
-      temp.pop() // 撤销选择，回到选择candidates[i]之前的状态，继续尝试选同层右边的数
-    }
-  }
-  dfs(0, [], 0) // 最开始可选的数是从第0项开始的，传入一个空集合，sum也为0
-  return res
-}
+//  输入：nums = [1,2,3]
+//  输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+function func(nums) {
+  let res = []
+  let used = {}
 
-function func(candidates, target) {
-  const res = []
-
-  const dfs = (start, temp, sum) => {
-    if (sum >= target) {
-      if (sum === target) {
-        res.push([...temp])
-      }
+  const dfs = (temp) => {
+    if (temp.length === nums.length) {
+      res.push([...temp])
       return
     }
-
-    for (let i = start; i < candidates.length; i++) {
-      temp.push(candidates[i])
-      dfs(i, temp, sum + candidates[i])
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) {
+        continue
+      }
+      temp.push(nums[i])
+      used[i] = true
+      dfs(temp)
       temp.pop()
+      used[i] = false
     }
   }
-
-  dfs(0, [], 0)
+  dfs([])
   return res
 }
 
-const res = func([2, 3], 5)
+const res = func([1, 2, 3])
 console.log(res)

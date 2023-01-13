@@ -985,3 +985,52 @@ function func(candidates, target) {
   return res
 }
 ```
+
+## 全排列
+
+> 中等
+
+### 题目描述
+
+给定一个不含重复数字的数组 nums ，返回其 所有可能的全排列 。你可以 按任意顺序 返回答案。
+
+#### 输出示例
+
+输入：nums = [1,2,3]
+输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+输入：nums = [0,1]
+输出：[[0,1],[1,0]]
+
+输入：nums = [1]
+输出：[[1]]
+
+### 解法-回溯法
+
+使用深度优先搜索，把所有结果一一找出来
+
+```js
+function func(nums) {
+  let res = []
+  let used = {}
+
+  const dfs = (temp) => {
+    if (temp.length === nums.length) {
+      res.push([...temp])
+    }
+    for (let i = 0; i < nums.length; i++) {
+      if (used[i]) {
+        continue
+      }
+      temp.push(nums[i])
+      used[i] = true
+      dfs(temp)
+      // 回溯的关键，退回上一步，继续遍历
+      temp.pop()
+      used[i] = false
+    }
+  }
+  dfs([])
+  return res
+}
+```
