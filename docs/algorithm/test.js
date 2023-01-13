@@ -25,29 +25,29 @@ function generateListNode(arr) {
  */
 //  输入：nums = [1,2,3]
 //  输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
-function func(nums) {
-  let res = []
-  let used = {}
+function func(matrix) {
+  let p1 = 0
+  let p2 = matrix.length - 1
 
-  const dfs = (temp) => {
-    if (temp.length === nums.length) {
-      res.push([...temp])
-      return
+  while (p1 < p2) {
+    let add = 0
+    while (add < p2 - p1) {
+      let temp = matrix[p1][p1 + add]
+      matrix[p1][p1 + add] = matrix[p2 - add][p1]
+      matrix[p2 - add][p1] = matrix[p2][p2 - add]
+      matrix[p2][p2 - add] = matrix[p1 + add][p2]
+      matrix[p1 + add][p2] = temp
+      add += 1
     }
-    for (let i = 0; i < nums.length; i++) {
-      if (used[i]) {
-        continue
-      }
-      temp.push(nums[i])
-      used[i] = true
-      dfs(temp)
-      temp.pop()
-      used[i] = false
-    }
+    p1++
+    p2--
   }
-  dfs([])
-  return res
 }
 
-const res = func([1, 2, 3])
-console.log(res)
+const res1 = [
+  [1, 2, 3],
+  [4, 5, 6],
+  [7, 8, 9],
+]
+const res = func(res1)
+console.log(res1)
