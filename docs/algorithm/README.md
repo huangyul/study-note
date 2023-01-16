@@ -1086,3 +1086,43 @@ function func(matrix) {
   }
 }
 ```
+
+## 字母异位词分组
+
+> 中等
+
+### 题目描述
+
+给你一个字符串数组，请你将 字母异位词 组合在一起。可以按任意顺序返回结果列表。
+
+字母异位词 是由重新排列源单词的字母得到的一个新单词，所有源单词中的字母通常恰好只用一次。
+
+#### 示例输出
+
+输入: strs = ["eat", "tea", "tan", "ate", "nat", "bat"]
+输出: [["bat"],["nat","tan"],["ate","eat","tea"]]
+
+输入: strs = [""]
+输出: [[""]]
+
+输入: strs = ["a"]
+输出: [["a"]]
+
+### 解法-排序
+
+- 按题目的要求是字母异位词是排序不同的任意组合，那就说明排序后的结果是一样的；
+- 可以使用 Map，存储数据
+
+```js
+function func(strs) {
+  let h = new Map(),
+    k
+  for (let i = 0; i < strs.length; i++) {
+    // 先求出排好序的组合
+    k = strs[i].split('').sort().join('')
+    // 这里注意数据结构
+    h.has(k) ? h.get(k).push(strs[i]) : h.set(k, [strs[i]])
+  }
+  return Array.from(h.values())
+}
+```

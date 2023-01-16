@@ -23,31 +23,29 @@ function generateListNode(arr) {
  * 上面是ListNode链表类 generateListNode(arr)
  * 下面才是正式代码编写的开始
  */
-//  输入：nums = [1,2,3]
-//  输出：[[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
-function func(matrix) {
-  let p1 = 0
-  let p2 = matrix.length - 1
+//  输入：nums = ['eat', 'tea', 'tan', 'ate', 'nat', 'bat']
+//  输出：[["bat"],["nat","tan"],["ate","eat","tea"]]
+// function func(strs) {
+//   var h = new Map(),
+//     k
+//   for (var i = 0; i < strs.length; i++) {
+//     k = strs[i].split('').sort().join('')
+//     h.has(k) ? h.get(k).push(strs[i]) : h.set(k, [strs[i]])
+//   }
 
-  while (p1 < p2) {
-    let add = 0
-    while (add < p2 - p1) {
-      let temp = matrix[p1][p1 + add]
-      matrix[p1][p1 + add] = matrix[p2 - add][p1]
-      matrix[p2 - add][p1] = matrix[p2][p2 - add]
-      matrix[p2][p2 - add] = matrix[p1 + add][p2]
-      matrix[p1 + add][p2] = temp
-      add += 1
-    }
-    p1++
-    p2--
+//   return Array.from(h.values())
+// }
+
+function func(strs) {
+  let k,
+    h = new Map()
+  for (let i = 0; i < strs.length; i++) {
+    k = strs[i].split('').sort().join('')
+    h.has(k) ? h.get(k).push(strs[i]) : h.set(k, [strs[i]])
   }
+  console.log(h.values())
+  return Array.from(h.values())
 }
 
-const res1 = [
-  [1, 2, 3],
-  [4, 5, 6],
-  [7, 8, 9],
-]
-const res = func(res1)
-console.log(res1)
+const res = func(['eat', 'tea', 'tan', 'ate', 'nat', 'bat'])
+console.log(res)
