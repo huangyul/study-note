@@ -1,21 +1,12 @@
-# vue3-admin
-
-技术栈：
-🥇 [vue3](https://cn.vuejs.org/guide/introduction.html)   
-🥈 [Typescript]()   
-🥉 [Element-plus](https://element-plus.org/zh-CN/guide/design.html)   
-🏅 ...👀👀👀     
+# vue 后台管理系统
 
 ## 项目搭建
 
-> 开发环境要求：`node16+`
+### 使用 vite 搭建项目
 
-### 安装 vite
+`npm create vite@latest vue-ts-admin -- --template vue-ts`
 
-官方文档：https://cn.vitejs.dev/guide/#scaffolding-your-first-vite-project
+注意点：
 
-### 初始化一个 vue3 + ts 的项目
-
-```bash
-npm create vite@latest app-name -- --template vue-ts
-```
+1. vite 对 node 版本要要求，要 16 或 18
+2. 命令行中的`vue-ts-admin`是文件名，`-- --template`是 npm7.++的要求，`vue-ts`是模板
