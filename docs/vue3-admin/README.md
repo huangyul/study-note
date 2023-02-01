@@ -34,7 +34,7 @@ huksy 可以方便我们使用 git hook 钩子
 
 1. 在`package.json`添加脚本`"prepare": "husky install"`，该脚本会在 npm install 后执行，会在项目中生成.huksy 文件
 2. 配置钩子: `husky add <file> [cmd]`  
-   2.1 例如 `husky add .husky/pre-commit npm run test `，配置好后以后每次 commit 前，都会执行`npm run test`这个脚本（前提是 package.json 中有配置 test 脚本的执行内容）
+   1. 例如 `husky add .husky/pre-commit npm run test `，配置好后以后每次 commit 前，都会执行`npm run test`这个脚本（前提是 package.json 中有配置 test 脚本的执行内容）
 
 #### 使用 commitlint 规范提交内容
 
