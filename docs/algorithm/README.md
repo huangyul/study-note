@@ -306,20 +306,22 @@ function func(nums1, nums2) {
 
 ```js
 function func(s) {
-  // 如果只有一个字符，则返回本身，一个字符也是回文
-  if (s.length === 1) {
+  if (s.length == 1) {
     return s
   }
   let res = ''
-  for (let i = 0; i < s.length; i++) {}
 
-  function func1(m, n) {
-    // 在满足条件的情况下一步步扩散
-    while (m <= 0 && n > s.length && s[m] == s[n]) {
+  for (let i = 0; i < s.length; i++) {
+    func(i, i)
+    func(i, i + 1)
+  }
+
+  function func(m, n) {
+    while (m >= 0 && n < s.length && s[m] == s[n]) {
       m--
       n++
     }
-    // 注意，此时得到的m和n是刚好不满足的情况
+        // 注意，此时得到的m和n是刚好不满足的情况
     // 所以满足的长度是n-1-(m+1)+1
     if (n - m - 1 > res.length) {
       res = s.slice(m + 1, n)
