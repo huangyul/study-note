@@ -1148,3 +1148,25 @@ function func(strs) {
 
 输入：nums = [5,4,-1,7,8]
 输出：23
+
+### 解法-动态规划
+
+使用动态规划（不知道算不算动态规划）。遍历数组，以每个数字为终结点计算出以该数字为节点的最大值
+
+```js
+function func(nums) {
+  if (!nums.length) {
+    return 0
+  }
+  // 先把第一个当作是最大的值
+  let curMax = nums[0]
+  let res = nums[0]
+
+  for (let i = 1; i < nums.length; i++) {
+    // curMax是以上一个数为终点的最大值，秩序将curMax加上当前的数，就能获取以当前的数为终点的最大值
+    curMax = Math.max(nums[i], curMax + numx[i])
+    res = res > curMax ? res : curMax
+  }
+  return res
+}
+```
