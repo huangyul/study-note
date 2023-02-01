@@ -48,11 +48,30 @@ module.exports = {
 }
 ```
 
-使用 husky 的 commit-msg 钩子调用 commitlint   
+使用 husky 的 commit-msg 钩子调用 commitlint  
 `npx husky add .huksy/commit-msg npx --no-install commitlint --edit "$1"`
 
-### 使用czg快速创建提交模板
+### 使用 czg 快速创建提交模板
 
 `npx i czg -D`
 
-在package.json中配置脚本 `"commit": "git add . && npx czg"`
+在 package.json 中配置脚本 `"commit": "git add . && npx czg"`
+
+### 使用 lint-staged
+
+可以只 lint 每次提交的代码，不需要全部 lint，节省时间，减少不必要的代码冲突
+
+`yarn add lint-staged -D`
+
+在 package.json 中配置规则
+
+```json
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "prettier --write"
+    ],
+    "*.vue": [
+      "prettier --write"
+    ]
+  }
+```
