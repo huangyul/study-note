@@ -75,3 +75,6 @@ module.exports = {
     ]
   }
 ```
+
+结合husky使用
+```npx husky add .husky/pre-commit "npm run lint:lint-staged"```
