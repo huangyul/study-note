@@ -33,7 +33,7 @@ huksy 可以方便我们使用 git hook 钩子
 > 适合 husky 6.0 以上的版本，旧版本不适用
 
 1. 在`package.json`添加脚本`"prepare": "husky install"`，该脚本会在 npm install 后执行，会在项目中生成.huksy 文件
-2. 配置钩子: `husky add <file> [cmd]`  
+2. 配置钩子: `husky add <file> [cmd]`
    1. 例如 `husky add .husky/pre-commit npm run test `，配置好后以后每次 commit 前，都会执行`npm run test`这个脚本（前提是 package.json 中有配置 test 脚本的执行内容）
 
 #### 使用 commitlint 规范提交内容
@@ -76,5 +76,40 @@ module.exports = {
   }
 ```
 
-结合husky使用
-```npx husky add .husky/pre-commit "npm run lint:lint-staged"```
+结合 husky 使用
+`npx husky add .husky/pre-commit "npm run lint:lint-staged"`
+
+### Vite Config
+
+#### 配置路径别名 alias
+
+```ts
+import {resolve} from 'path'
+
+// 定义一个方法
+const pathResolve = (dir: string): string => {
+  return resolve(__dirname, string)
+}
+
+{
+  // ...
+  resolve: {
+    alias: {
+      '@': resolve('./src'),
+      '@/img': resolve('./src/img'),
+      '@/components': resolve('./src/components')
+    }
+  }
+}
+```
+
+vite.config.ts配置好后，也要配置tsconfig.js，否则使用的时候会报找不到
+
+```json
+{
+  "baseUrl": ".",
+  "paths": {
+    "@/*": ["src/*"]
+  }
+}
+```

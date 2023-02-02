@@ -25,24 +25,20 @@ function generateListNode(arr) {
  */
 //  输入：nums = ['eat', 'tea', 'tan', 'ate', 'nat', 'bat']
 //  输出：[["bat"],["nat","tan"],["ate","eat","tea"]]
-function func(s) {
-  if (s.length == 1) return s
-  let res = ''
-  for (let i = 0; i < s.length; i++) {
-    let l = i - 1
-    let r = i + 1
-    if (s[i] === s[l] && res.length < 2) res = s.slice(l, i + 1)
-    if (s[i] === s[r] && res.length < 2) res = s.slice(i, r + 1)
-    while (l >= 0 && r < s.length && s[l] == s[r]) {
-      l--
-      r++
-      if (r - l - 1 > res.length) {
-        res = s.slice(l + 1, r)
-      }
-    }
+function func(nums) {
+  // 以每一个数为终点算出可能的最大值
+  // 下一个数为终点的最大值就是上一个数的最大值加当前的数
+  if(!nums.length) {
+    return 0
+  }
+  let curMax = nums[0]
+  let res = nums[0]
+  for(let i = 1; i < nums.length; i++) {
+    curMax = Math.max(curMax + nums[i], nums[i])
+    res = Math.max(curMax, res)
   }
   return res
 }
 
-const res = func('abad')
+const res = func([])
 console.log(res)
