@@ -1209,3 +1209,45 @@ function func(nums) {
   return end === i
 }
 ```
+
+## 合并区间
+
+> 中等
+
+### 题目描述
+
+以数组 intervals 表示若干个区间的集合，其中单个区间为 intervals[i] = [starti, endi] 。请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
+
+#### 输出示例
+
+输入：intervals = [[1,3],[2,6],[8,10],[15,18]]
+输出：[[1,6],[8,10],[15,18]]
+解释：区间 [1,3] 和 [2,6] 重叠, 将它们合并为 [1,6].
+
+输入：intervals = [[1,4],[4,5]]
+输出：[[1,5]]
+解释：区间 [1,4] 和 [4,5] 可被视为重叠区间。
+
+### 解法
+
+先将内部的数组排序，然后遍历比较，当前数组的第一位与上一个数组的第二位大小，如果发现当前数组包含上一个数组，则合并两个数组，取交集
+
+```js
+function func(nums) {
+  // 先将数组排序，这样只需遍历一轮即可
+  nums.sort((a, b) => a[0] - b[0])
+  let res = []
+  let prev = nums[0]
+  for(let i = 1; i < nums.length; i++) {
+    let cur = nums[i]
+    if(prev[1] >= cur[0]) {
+      prev[1] = Math.max(prev[1], cur[1])
+    } else {
+      res.push(prev)
+      prev = cur
+    }
+  }
+  res.push(prev)
+  return res
+}
+```

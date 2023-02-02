@@ -25,15 +25,27 @@ function generateListNode(arr) {
  */
 //  输入：nums = ['eat', 'tea', 'tan', 'ate', 'nat', 'bat']
 //  输出：[["bat"],["nat","tan"],["ate","eat","tea"]]
-function func(nums) {
-  let end = nums.length - 1
-  for (let i = nums.length - 2; i >= 0; i--) {
-    if (end - i <= nums[i]) {
-      end = i
+function func(intervals) {
+  let res = []
+  intervals = intervals.sort((a, b) => a[0] - b[0])
+  let prev = intervals[0]
+  for(let i = 1; i < intervals.length;i++) {
+    let cur = intervals[i]
+    if(prev[1] >= cur[0]) {
+      prev[1] = Math.max(prev[1], cur[1])
+    } else {
+      res.push(prev)
+      prev = cur
     }
   }
-  return end === 0
+  res.push(prev)
+  return res
 }
 
-const res = func([2, 3, 1, 1, 4])
+const res = func([
+  [1, 3],
+  [2, 6],
+  [8, 10],
+  [15, 18],
+])
 console.log(res)
