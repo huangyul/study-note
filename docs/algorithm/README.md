@@ -1238,9 +1238,9 @@ function func(nums) {
   nums.sort((a, b) => a[0] - b[0])
   let res = []
   let prev = nums[0]
-  for(let i = 1; i < nums.length; i++) {
+  for (let i = 1; i < nums.length; i++) {
     let cur = nums[i]
-    if(prev[1] >= cur[0]) {
+    if (prev[1] >= cur[0]) {
       prev[1] = Math.max(prev[1], cur[1])
     } else {
       res.push(prev)
@@ -1258,7 +1258,7 @@ function func(nums) {
 
 ### 题目描述
 
-一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。(m是垂直方向，n是水平方向)
+一个机器人位于一个 m x n 网格的左上角 （起始点在下图中标记为 “Start” ）。(m 是垂直方向，n 是水平方向)
 
 机器人每次只能向下或者向右移动一步。机器人试图达到网格的右下角（在下图中标记为 “Finish” ）。
 
@@ -1273,6 +1273,47 @@ function func(nums) {
 输出：3
 解释：
 从左上角开始，总共有 3 条路径可以到达右下角。
+
 1. 向右 -> 向下 -> 向下
 2. 向下 -> 向下 -> 向右
 3. 向下 -> 向右 -> 向下
+
+### 解法
+
+假如是 3\*7 的格子，实际要走的步数如下
+
+1 1 1 1 1 1 1
+1 2 3 4 5 6 7
+1 3 6 10 15 21 28
+
+总结有两点：
+
+1. 边界都为 1
+2. 因为只能向右或向下走一步，所以每一格都是左一和上一的和
+
+```js
+function func(m, n) {
+  // 先做出一个m * n的二维数组
+  const dp = Array(m)
+    .fill()
+    .map(() => Array(n))
+
+  // 将所有边界填1
+  for (let i = 0; i < m; i++) {
+    db[i][0] = 1
+  }
+  for (let i = 0; i < n; i++) {
+    dp[0][i] = 1
+  }
+
+  // 计算除了边界外的每一格
+  for (let i = 1; i < m; i++) {
+    for (let j = 1; j < n; j++) {
+      dp[i][k] = dp[i - 1][j] + dp[i][j - 1]
+    }
+  }
+
+  // 返回最后一格
+  return dp[m - 1][n - 2]
+}
+```
