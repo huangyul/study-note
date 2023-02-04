@@ -24,15 +24,23 @@ function generateListNode(arr) {
  * 下面才是正式代码编写的开始
  */
 function func(nums) {
-  let end = nums.length - 1
-
-  for (let i = end - 1; i >= 0; i--) {
-    if (end - i <= nums[i]) {
-      end = i
+  let start = -1
+  let end = nums.length
+  let cur = 0
+  while (cur < end) {
+    if (nums[cur] === 0) {
+      ;[nums[cur], nums[start + 1]] = [nums[start + 1], nums[cur]]
+      cur++
+      start++
+    } else if (nums[cur] === 2) {
+      ;[nums[cur], nums[end - 1]] = [nums[end - 1], nums[cur]]
+      end--
+    } else {
+      cur++
     }
   }
-  return end === 0
+  return nums
 }
 
-const res = func([2, 0, 0, 1, 4])
+const res = func([2, 0, 1])
 console.log(res)

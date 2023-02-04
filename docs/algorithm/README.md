@@ -1421,3 +1421,52 @@ function func(n) {
   return dp[n - 1]
 }
 ```
+
+## 颜色分类
+
+### 题目描述
+
+给定一个包含红色、白色和蓝色、共 n 个元素的数组 nums ，原地对它们进行排序，使得相同颜色的元素相邻，并按照红色、白色、蓝色顺序排列。
+
+我们使用整数 0、 1 和 2 分别表示红色、白色和蓝色。
+
+必须在不使用库内置的 sort 函数的情况下解决这个问题。
+
+#### 输出示例
+
+输入：nums = [2,0,2,1,1,0]
+输出：[0,0,1,1,2,2]
+
+输入：nums = [2,0,1]
+输出：[0,1,2]
+
+### 解法-双指针（三指针）
+
+定义三个指针，活动指针 cur，头指针 start，尾指针 end
+
+遍历处理
+
+1. 当前的数为 0 时，直接推到头指针的下一位，头指针和活动指针都+1
+2. 当前的数等于 2 时，直接推到尾指针的下一位，尾指针-1
+3. 当前的数为 1 时不处理，活动指针+1
+
+```js
+function func(nums) {
+  let start = -1
+  let end = nums.length
+  let cur = 0
+  while (cur < end) {
+    if (nums[cur] === 0) {
+      ;[nums[cur], nums[start + 1]] = [nums[start + 1], nums[cur]]
+      cur++
+      start++
+    } else if (nums[cur] === 2) {
+      ;[nums[cur], nums[end - 1]] = [nums[end - 1], nums[cur]]
+      end--
+    } else {
+      cur++
+    }
+  }
+  return nums
+}
+```
