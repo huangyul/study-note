@@ -28,16 +28,13 @@ function func(nums) {
 
   function dfs(index, list) {
     res.push([...list])
-
     for (let i = index; i < nums.length; i++) {
       list.push(nums[i])
       dfs(i + 1, list)
-      list.pop() // 回溯
+      list.pop()
     }
   }
-
   dfs(0, [])
-
   return res
 }
 
