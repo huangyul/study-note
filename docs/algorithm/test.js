@@ -23,23 +23,22 @@ function generateListNode(arr) {
  * 上面是ListNode链表类 generateListNode(arr)
  * 下面才是正式代码编写的开始
  */
-function func(nums) {
-  const res = []
+let start,
+  flag = false
 
-  function dfs(index, list) {
-    res.push([...list])
-
-    for (let i = index; i < nums.length; i++) {
-      list.push(nums[i])
-      dfs(i + 1, list)
-      list.pop() // 回溯
-    }
+function func(n) {
+  if (!flag) {
+    flag = true
+    start = Date.now()
   }
-
-  dfs(0, [])
-
-  return res
+  if (n <= 2) return n
+  let dp = [1, 2]
+  for (let i = 2; i < n; i++) {
+    dp[i] = dp[i - 1] + dp[i - 2]
+  }
+  return dp[n - 1]
 }
 
-const res = func([1, 2, 3])
+const res = func(55)
+console.log(Date.now() - start)
 console.log(res)
