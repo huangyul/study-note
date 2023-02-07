@@ -1512,3 +1512,82 @@ function func(nums) {
   return res
 }
 ```
+
+## 单词搜索
+
+> 中等
+
+### 问题描述
+
+给定一个 m x n 二维字符网格 board 和一个字符串单词 word 。如果 word 存在于网格中，返回 true ；否则，返回 false 。
+
+单词必须按照字母顺序，通过相邻的单元格内的字母构成，其中“相邻”单元格是那些水平相邻或垂直相邻的单元格。同一个单元格内的字母不允许被重复使用。
+
+#### 输出示例
+
+输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCCED"
+输出：true
+
+输入：board = [["A","B","C","E"],["S","F","C","S"],["A","D","E","E"]], word = "ABCB"
+输出：false
+
+### 解法-回溯法
+
+思路：
+
+1. 先构造一个跟矩阵一样的二维数组，用来记录
+2. 找到第一个符合 word 的位置，从该位置出发，分别从上下左右去判断是否符合的
+3. 构建一个方法，判断当前位置的上下左右是否继续满足条件，注意，当不满足条件的时候，要回溯，回退到上一步
+
+```js
+function func(board, word) {
+  const m = board.length
+  const n = board[0].length
+  const used = new Array(m) // 二维矩阵used，存放bool值
+  for (let i = 0; i < m; i++) {
+    used[i] = new Array(n)
+  }
+  // canFind 判断当前点是否是目标路径上的点
+  const canFind = (row, col, i) => {
+    // row col 当前点的坐标，i当前考察的word字符索引
+    if (i == word.length) {
+      // 递归的出口 i越界了就返回true
+      return true
+    }
+    if (row < 0 || row >= m || col < 0 || col >= n) {
+      // 当前点越界 返回false
+      return false
+    }
+    if (used[row][col] || board[row][col] != word[i]) {
+      // 当前点已经访问过，或，非目标点
+      return false
+    }
+    // 排除掉所有false的情况，当前点暂时没毛病，可以继续递归考察
+    used[row][col] = true // 记录一下当前点被访问了
+    // canFindRest：基于当前选择的点[row,col]，能否找到剩余字符的路径。
+    const canFindRest =
+      canFind(row + 1, col, i + 1) ||
+      canFind(row - 1, col, i + 1) ||
+      canFind(row, col + 1, i + 1) ||
+      canFind(row, col - 1, i + 1)
+
+    if (canFindRest) {
+      // 基于当前点[row,col]，可以为剩下的字符找到路径
+      return true
+    }
+    used[row][col] = false // 不能为剩下字符找到路径，返回false，撤销当前点的访问状态
+    return false
+  }
+
+  for (let i = 0; i < m; i++) {
+    // 遍历找起点，作为递归入口
+    for (let j = 0; j < n; j++) {
+      if (board[i][j] == word[0] && canFind(i, j, 0)) {
+        // 找到起点且递归结果为真，找到目标路径
+        return true
+      }
+    }
+  }
+  return false // 怎么样都没有返回true，则返回false
+}
+```
