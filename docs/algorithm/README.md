@@ -1630,3 +1630,27 @@ function func(root) {
   return res
 }
 ```
+
+### 迭代的方法
+
+自定义一个栈，不断的从左子树开始找，直到找到尽头，再把栈里的取出来
+
+```js
+function func(root) {
+  let res= []
+  let stack = []
+  while(stack.length > 0 || root!= null) {
+    // 如果当前节点不为null，则一直往左找下去，并使用栈存放
+    if(root!=null) {
+      stach.push(root)
+      root = root.left
+    } else {
+      // 当走到尽头，就将栈的按顺序去除，并尝试去找右节点
+      let temp = stack.pop()
+      res.push(temp.val)
+      root = temp.right
+    }
+  }
+}
+
+```
