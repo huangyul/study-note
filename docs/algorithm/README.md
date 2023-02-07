@@ -1591,3 +1591,42 @@ function func(board, word) {
   return false // 怎么样都没有返回true，则返回false
 }
 ```
+
+## 二叉树的中序遍历
+
+> 简单
+
+### 题目描述
+
+给定一个二叉树的根节点 root ，返回 它的 中序 遍历 。
+
+#### 输出示例
+
+输入：root = [1,null,2,3]
+输出：[1,3,2]
+
+### 解法
+
+#### 递归
+
+记住三个关键
+
+- 前序遍历：打印 - 左 - 右
+- 中序遍历：左 - 打印 - 右
+- 后序遍历：左 - 右 - 打印
+
+```js
+function func(root) {
+  let res = []
+  function func2(root) {
+    if (!root) {
+      return
+    }
+    func2(root.left)
+    res.push(root.data) // .val
+    func2(root.right)
+  }
+  func2(root)
+  return res
+}
+```
