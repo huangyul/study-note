@@ -39,11 +39,17 @@ class Tree {
  * 下面才是正式代码编写的开始
  */
 
-function func(tree) {
-  const root = new Tree()
-  
+function func(n) {
+  const dp = new Array(n + 1).fill(0)
+  dp[0] = 1
+  dp[1] = 1
+  for (let i = 2; i < n; i++) {
+    for (let j = 0; j < i - 1; j++) {
+      dp[i] += dp[j] * dp[i - j - 1]
+    }
+  }
+  return dp[n]
 }
 
-const res = func(
-)
+const res = func(3)
 console.log(res)
