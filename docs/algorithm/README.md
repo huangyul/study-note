@@ -1716,3 +1716,31 @@ function func(n) {
 输入：root = [5,1,4,null,null,3,6]
 输出：false
 解释：根节点的值是 5 ，但是右子节点的值是 4 。
+
+### 解法
+
+使用中序遍历，可以将二叉搜索树转换为数组，再判断数组是否递增
+
+```js
+function func(root) {
+  // 定义一个数组用来辅助用
+  let arr = []
+  // 使用中序遍历二叉树，生成数组
+  const buildArr = (root) => {
+    if(root) {
+      buildArr(root.left) 
+      arr.push(root.val)
+      buildArr(root.right)
+    }
+  }
+  buildArr(root)
+  // 看看生成的数组是否每一项都小于后一项
+  for(let i = 0; i < arr.length; i++) {
+    if(arr[i] <= arr[i - 1]) {
+      return false
+    }
+  }
+  return true
+}
+
+```

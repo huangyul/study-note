@@ -25,12 +25,41 @@ function generateListNode(arr) {
 /**
  * 二叉树
  */
-class Tree {
-  constructor(data, left, right) {
-    this.data = data
-    this.left = left
-    this.right = right
-    this.count = 1
+class node {
+  constructor(val) {
+    this.key = val
+    this.left = null
+    this.right = null
+  }
+}
+class binaryTree {
+  constructor() {
+    this.root = null
+  }
+
+  insert(val) {
+    let newNode = new node(val)
+    if (this.root === null) {
+      this.root = newNode
+    } else {
+      this.insertNode(this.root, newNode)
+    }
+  }
+
+  insertNode(root, curNode) {
+    if (root.key > curNode.key) {
+      if (root.left === null) {
+        root.left = curNode
+      } else {
+        this.insertNode(root.left, curNode)
+      }
+    } else {
+      if (root.right === null) {
+        root.right = curNode
+      } else {
+        this.insertNode(root.right, curNode)
+      }
+    }
   }
 }
 
