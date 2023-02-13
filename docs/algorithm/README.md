@@ -1727,20 +1727,65 @@ function func(root) {
   let arr = []
   // 使用中序遍历二叉树，生成数组
   const buildArr = (root) => {
-    if(root) {
-      buildArr(root.left) 
+    if (root) {
+      buildArr(root.left)
       arr.push(root.val)
       buildArr(root.right)
     }
   }
   buildArr(root)
   // 看看生成的数组是否每一项都小于后一项
-  for(let i = 0; i < arr.length; i++) {
-    if(arr[i] <= arr[i - 1]) {
+  for (let i = 0; i < arr.length; i++) {
+    if (arr[i] <= arr[i - 1]) {
       return false
     }
   }
   return true
 }
+```
 
+## 101.对称二叉树
+
+> 简单
+
+### 题目描述
+
+给你一个二叉树的根节点 root ， 检查它是否轴对称。
+
+#### 输出实例
+
+输入：root = [1,2,2,3,4,4,3]
+输出：true
+
+输入：root = [1,2,2,null,3,null,3]
+输出：false
+
+### 解法-递归
+
+```js
+function func(root) {
+  //使用递归遍历左右子树 递归三部曲
+  // 1. 确定递归的参数 root.left root.right和返回值true false
+  const compareNode = function (left, right) {
+    //2. 确定终止条件 空的情况
+    if (
+      (left === null && right !== null) ||
+      (left !== null && right === null)
+    ) {
+      return false
+    } else if (left === null && right === null) {
+      return true
+    } else if (left.val !== right.val) {
+      return false
+    }
+    //3. 确定单层递归逻辑
+    let outSide = compareNode(left.left, right.right)
+    let inSide = compareNode(left.right, right.left)
+    return outSide && inSide
+  }
+  if (root === null) {
+    return true
+  }
+  return compareNode(root.left, root.right)
+}
 ```
