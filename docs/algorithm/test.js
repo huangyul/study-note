@@ -61,24 +61,18 @@ const createTree = (arr) => {
  */
 
 function func(root) {
-  let res = []
-  let queue = [] // 队列
-  if (root === null) {
-    return res
-  }
-  // 将整个二叉树推进队列，以后每次遍历队列的长度，就只会遍历同一层的值
+  let res = 0
+  let queue = []
+  if (root === null) return 0
   queue.push(root)
-  while (queue.length !== 0) {
-    let curLevel = [] // 用来存储同一层的值
-    let len = queue.length // 因为后面会新推入值，所以要先将长度（同一层的长度）存起来
+  while (queue.length != 0) {
+    let len = queue.length
     for (let i = 0; i < len; i++) {
-      let node = queue.shift() // 从头取出第一个
-      curLevel.push(node.val)
-      // 如果取出的值有左子树或右子树，推入队列中，用于下一轮遍历，注意先进先出
+      let node = queue.shift()
       node.left && queue.push(node.left)
       node.right && queue.push(node.right)
     }
-    res.push(curLevel)
+    res++
   }
   return res
 }
