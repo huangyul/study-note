@@ -1912,3 +1912,22 @@ function func(root) {
 输入：prices = [7,6,4,3,1]
 输出：0
 解释：在这种情况下, 没有交易完成, 所以最大利润为 0。
+
+### 解法-贪心算法
+
+```js
+function maxProfit(prices) {
+  // 定义一个最大利润
+  let maxProfit = 0
+  // 定义一个最小价格
+  let minPrice = Infinity
+  for (let i = 0; i < prices.length; i++) {
+    if (minPrice > prices[i]) {
+      minPrice = prices[i]
+    } else if (maxProfit < prices[i] - minPrice) {
+      maxProfit = prices[i] = minPrice
+    }
+  }
+  return maxProfit
+}
+```

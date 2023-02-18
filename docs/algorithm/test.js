@@ -60,22 +60,18 @@ const createTree = (arr) => {
  * 下面才是正式代码编写的开始
  */
 
-function func(root) {
-  let res = 0
-  let queue = []
-  if (root === null) return 0
-  queue.push(root)
-  while (queue.length != 0) {
-    let len = queue.length
-    for (let i = 0; i < len; i++) {
-      let node = queue.shift()
-      node.left && queue.push(node.left)
-      node.right && queue.push(node.right)
+function func(prices) {
+  let minPrice = Infinity
+  let maxPrice = 0
+  for (let i = 0; i < prices.length; i++) {
+    if (prices[i] < minPrice) {
+      minPrice = prices[i]
+    } else if (prices[i] - minPrice > maxPrice) {
+      maxPrice = prices[i] - minPrice
     }
-    res++
   }
-  return res
+  return maxPrice
 }
 
-const res = func(createTree([3, 9, 20, null, null, 15, 7]))
+const res = func([7, 1, 5, 3, 6, 4])
 console.log(res)
