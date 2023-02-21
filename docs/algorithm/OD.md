@@ -119,3 +119,21 @@ void async funtion() {
 所以样例的输出为：
 1
 2
+
+### 解题思路
+
+先将数组排序，然后使用Set去重
+
+```js
+void async function () {
+  let arr = []
+  while(line = await readline()) {
+    arr.push(line)
+  }
+  arr.splice(0, 1)
+  arr.sort((a, b) => a - b)
+  arr.forEach(i => {
+    console.log(i)
+  })
+}
+```
