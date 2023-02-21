@@ -57,10 +57,29 @@ void (async function () {
 ### 示例
 
 输入：
-hello nowcoder
+ABCabc
+A
 输出：
-8
-说明：
-最后一个单词为 nowcoder，长度为 8
+2
 
 ### 解题思路
+
+将字符串和字符都转成全小写（或全大写），然后记录出现的次数
+
+```js
+void async funtion() {
+  const arr = []
+  while(line = await readline()) {
+    arr.push(line)
+  }
+  let str = arr[0].toLowerCase()
+  let target = arr[1].toLowerCase()
+  let count = 0
+  for(let i = 0; i < str.length; i++) {
+    if(target == str[i]) {
+      count++
+    }
+  }
+  console.log(count)
+}()
+```
