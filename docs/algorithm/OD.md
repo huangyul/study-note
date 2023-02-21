@@ -160,3 +160,18 @@ void async function () {
 abc
 输出：
 abc00000
+
+### 解题思路
+
+先对字符串进行补零操作
+
+```js
+void async function () {
+  while ((line = await readline())) {
+    line += '0000000'
+    for (let i = 8; i < line.length; i += 8) {
+      console.log(line.slice(i - 8, i))
+    }
+  }
+}
+```
