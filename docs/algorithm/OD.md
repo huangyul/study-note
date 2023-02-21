@@ -227,4 +227,18 @@ console.log(num.toString(10))
 输出：
 2 2 3 3 5
 
-### 
+### 解题思路
+
+```js
+let n = await readline()
+let i,
+  res = []
+for (i = 2; i * i <= n; i++) {
+  while (n % i === 0) {
+    res.push(i)
+    n /= i
+  }
+}
+if (n > 1) res.push(n)
+console.log(res.join(' '))
+```
