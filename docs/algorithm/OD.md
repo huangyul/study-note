@@ -205,3 +205,6 @@ parseInt()和toString()
 const num = await readline()
 console.log(num.toString(10))
 ```
+
+## 质数因子
+
