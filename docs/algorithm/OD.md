@@ -122,18 +122,41 @@ void async funtion() {
 
 ### 解题思路
 
-先将数组排序，然后使用Set去重
+先将数组排序，然后使用 Set 去重
 
 ```js
 void async function () {
   let arr = []
-  while(line = await readline()) {
+  while ((line = await readline())) {
     arr.push(line)
   }
   arr.splice(0, 1)
   arr.sort((a, b) => a - b)
-  arr.forEach(i => {
+  arr.forEach((i) => {
     console.log(i)
   })
 }
 ```
+
+## 字符串分隔
+
+### 描述
+
+•输入一个字符串，请按长度为 8 拆分每个输入字符串并进行输出；
+
+•长度不是 8 整数倍的字符串请在后面补数字 0，空字符串不处理。
+
+### 输入描述：
+
+连续输入字符串(每个字符串长度小于等于 100)
+
+### 输出描述：
+
+依次输出所有分割后的长度为 8 的新字符串
+
+### 示例
+
+输入：
+abc
+输出：
+abc00000
