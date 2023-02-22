@@ -275,3 +275,16 @@ console.log(res.join(' '))
 2
 说明：
 0.499<0.5，2.499 向下取整为 2
+
+### 解题思路
+
+round: 四舍五入
+ceil：向上取整
+floor：向下取整
+toFixed：四舍五入保留小数位
+parseInt：数值取整
+
+```js
+const num = await readline()
+console.log(Math.round(num))
+```
