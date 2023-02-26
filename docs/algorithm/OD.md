@@ -138,6 +138,19 @@ void async function () {
 }
 ```
 
+### 解题思路二
+
+使用indexOf判断元素是否是第一个出现的
+
+```js
+function uniqueAndSort(arr) {
+  const uniqueArr = arr.filter((item, index, array) => array.indexOf(item) === index)
+  return uniqueArr.sort((a, b) => a - b)
+}
+```
+
+
+
 ## 字符串分隔
 
 ### 描述
