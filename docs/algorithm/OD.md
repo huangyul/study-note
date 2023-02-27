@@ -393,7 +393,68 @@ while ((line = await readline())) {
 37689
 
 ### 解法
-可以先将整数转换为字符串，然后再将字符串转换为数组，倒序遍历数组，将每个元素加入一个 Set 中，由于 Set 不允许有重复元素，因此最终得到的就是不含重复数字的新整数。
-```js
 
+可以先将整数转换为字符串，然后再将字符串转换为数组，倒序遍历数组，将每个元素加入一个 Set 中，由于 Set 不允许有重复元素，因此最终得到的就是不含重复数字的新整数。
+
+```js
+let arr = line.toString().split('').reverse()
+console.log(parseInt([...new Set(arr)].join('')))
+```
+
+## 字符个数统计
+
+### 描述
+
+编写一个函数，计算字符串中含有的不同字符的个数。字符在 ASCII 码范围内( 0~127 ，包括 0 和 127 )，换行表示结束符，不算在字符里。不在范围内的不作统计。多个相同的字符只计算一次
+例如，对于字符串 abaca 而言，有 a、b、c 三种不同的字符，因此输出 3 。
+
+### 输入描述：
+
+输入一行没有空格的字符串。
+
+### 输出描述：
+
+输出 输入字符串 中范围在(0~127，包括 0 和 127)字符的种数。
+
+### 示例 1
+
+输入：
+abc
+输出：
+3
+
+### 示例 2
+
+输入：
+aaa
+输出：
+1
+
+### 解法1
+
+使用map
+
+```js
+    let map = new Map()
+    while(line = await readline()){
+        line.split("").forEach(str => {
+            if(!map.has(str)) {
+                map.set(str, true)
+            }
+        })
+        console.log(map.size)
+    }
+```
+
+### 解法二
+
+使用set
+
+```js
+let set = new Set()
+while(line = await readline()) {
+  for(let i = 0; i < line.length; i++) {
+    let 
+  }
+}
 ```
