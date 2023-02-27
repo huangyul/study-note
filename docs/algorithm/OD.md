@@ -430,31 +430,70 @@ aaa
 输出：
 1
 
-### 解法1
+### 解法 1
 
-使用map
+使用 map
 
 ```js
-    let map = new Map()
-    while(line = await readline()){
-        line.split("").forEach(str => {
-            if(!map.has(str)) {
-                map.set(str, true)
-            }
-        })
-        console.log(map.size)
+let map = new Map()
+while ((line = await readline())) {
+  line.split('').forEach((str) => {
+    if (!map.has(str)) {
+      map.set(str, true)
     }
+  })
+  console.log(map.size)
+}
 ```
 
 ### 解法二
 
-使用set
+使用 set
 
 ```js
 let set = new Set()
-while(line = await readline()) {
-  for(let i = 0; i < line.length; i++) {
-    let 
+while ((line = await readline())) {
+  for (let i = 0; i < line.length; i++) {
+    let code = line.charCodeAt(i)
+    if (code >= 0 && code <= 127 && line[i] != '/n') {
+      set.add(line[i])
+    }
   }
+  return set.size
 }
+```
+
+## 数字颠倒
+
+### 描述
+
+输入一个整数，将这个整数以字符串的形式逆序输出
+程序不考虑负数的情况，若数字含有 0，则逆序形式也含有 0，如输入为 100，则输出为 001
+
+### 输入描述：
+
+输入一个 int 整数
+
+### 输出描述：
+
+将这个整数以字符串的形式逆序输出
+
+### 示例 1
+
+输入：
+1516000
+输出：
+0006151
+
+### 示例 2
+
+输入：
+0
+输出：
+0
+
+### 解法
+
+```js
+console.log(String(line).split('').reverse().join(''))
 ```
