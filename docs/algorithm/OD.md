@@ -140,11 +140,13 @@ void async function () {
 
 ### 解题思路二
 
-使用indexOf判断元素是否是第一个出现的
+使用 indexOf 判断元素是否是第一个出现的
 
 ```js
 function uniqueAndSort(arr) {
-  const uniqueArr = arr.filter((item, index, array) => array.indexOf(item) === index)
+  const uniqueArr = arr.filter(
+    (item, index, array) => array.indexOf(item) === index
+  )
   return uniqueArr.sort((a, b) => a - b)
 }
 ```
@@ -298,4 +300,72 @@ parseInt：数值取整
 ```js
 const num = await readline()
 console.log(Math.round(num))
+```
+
+## 合并表记录
+
+### 描述
+
+数据表记录包含表索引 index 和数值 value（int 范围的正整数），请对表索引相同的记录进行合并，即将相同索引的数值进行求和运算，输出按照 index 值升序进行输出。
+
+### 输入描述
+
+先输入键值对的个数 n（1 <= n <= 500）
+接下来 n 行每行输入成对的 index 和 value 值，以空格隔开
+
+### 输出描述
+
+输出合并后的键值对（多行）
+
+### 示例 1
+
+输入：
+4
+0 1
+0 2
+1 2
+3 4
+输出：
+0 3
+1 2
+3 4
+复制
+
+### 示例 2
+
+输入：
+3
+0 1
+0 2
+8 9
+输出：
+0 3
+8 9
+
+### 解题
+
+使用一个对象存储，判断有相同的 key 就将 value 相加，最后排序后输出
+
+```js
+let obj = {}
+while ((line = await readline())) {
+  let obj = {}
+  while ((line = await readline())) {
+    let [key, value] = line.split(' ')
+    key = parseInt(key)
+    value = parseInt(value)
+    if (value) {
+      if (obj.hasOwnProperty(key)) {
+        obj[key] += value
+      } else {
+        obj[key] = value
+      }
+    }
+  }
+  Object.keys(obj)
+    .sort((a, b) => a - b)
+    .forEach((key) => {
+      console.log(`${key} ${obj[key]}`)
+    })
+}
 ```

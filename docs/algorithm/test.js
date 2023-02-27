@@ -76,11 +76,6 @@ function func(prices) {
 // const res = func([7, 1, 5, 3, 6, 4])
 // console.log(res)
 
-
-function uniqueAndSort(arr) {
-  const uniqueArr = arr.filter((item, index, array) => array.indexOf(item) === index);
-  return uniqueArr.sort((a, b) => a - b);
-}
-
-const arr = [3, 5, 1, 6, 2, 5, 3, 8, 1];
-console.log(uniqueAndSort(arr)); // [1, 2, 3, 5, 6, 8]
+const str = 'h b'
+const [a, b] = str.split(' ')
+console.log(a, b)
