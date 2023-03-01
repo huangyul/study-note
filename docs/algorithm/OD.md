@@ -555,3 +555,17 @@ to
 too
 two
 up
+
+### 解法
+
+使用localeCompare()
+
+```js
+let arr = []
+while((line = await readline())) {
+  arr.push(line)
+}
+arr.splice(0, 1)
+arr.sort()
+console.log(arr.join('\n'))
+```
