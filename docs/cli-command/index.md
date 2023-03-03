@@ -111,3 +111,11 @@ cp -t sourcefile targetfile
 ```
 
 - `-r`：如果是目录，可以递归所有的内容一并复制
+
+### mv
+
+移动文件或目录
+
+```bash
+mv sourcefile targetfile
+```
