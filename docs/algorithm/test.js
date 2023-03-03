@@ -60,22 +60,26 @@ const createTree = (arr) => {
  * 下面才是正式代码编写的开始
  */
 
-function func(root) {
-  let res = 0
-  let queue = []
-  if (root === null) return 0
-  queue.push(root)
-  while (queue.length != 0) {
-    let len = queue.length
-    for (let i = 0; i < len; i++) {
-      let node = queue.shift()
-      node.left && queue.push(node.left)
-      node.right && queue.push(node.right)
+function func(n) {
+  const memo = new Array(n + 1)
+
+  const recur = (n) => {
+    if (n == 0 || n == 1) {
+      return 1
     }
-    res++
+    if (memo[n]) {
+      return memo[n]
+    }
+    let count = 0
+    for (let i = 0; i <= n - 1; i++) {
+      count += recur(i) * recur(n - 1 - i)
+    }
+    memo[n] = count
+    return count
   }
-  return res
+
+  return recur(n)
 }
 
-const res = func(createTree([3, 9, 20, null, null, 15, 7]))
+const res = func(2)
 console.log(res)
