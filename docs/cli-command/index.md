@@ -25,3 +25,37 @@ ls -l
 cd xxx
 cd .. # 返回上一级
 ```
+
+### pwd
+
+打印当前工作目录的**绝对路径**
+
+```bash
+pwd
+```
+
+### mkdir
+
+创建一个空目录
+
+```bash
+mkdir vue-demo
+```
+
+### rmdir
+
+删除指定目录
+
+```bash
+rmdir vue-demo
+```
+
+### df
+
+磁盘的使用情况
+
+```bash
+df
+df -h
+df --total
+```
