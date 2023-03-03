@@ -92,3 +92,22 @@ rm -rf node_module
 
 - `-r`：recursive 递归删除所有层级内容
 - `-f`：无需逐一询问确认，强制删除
+
+### find
+
+对指定目录查找文件，参数前为指定目录
+
+```bash
+find . -name "*.vue"
+```
+
+### cp
+
+复制文件或目录
+
+```bash
+cp sourcefile targetfile
+cp -t sourcefile targetfile
+```
+
+- `-r`：如果是目录，可以递归所有的内容一并复制
