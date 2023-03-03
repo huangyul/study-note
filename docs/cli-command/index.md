@@ -70,3 +70,25 @@ df --total
 ```bash
 du
 ```
+
+## 文件操作
+
+### touch
+
+创建文件
+
+```bash
+touch index.html
+```
+
+### rm
+
+删除文件或目录
+
+```bash
+rm index.html
+rm -rf node_module
+```
+
+- `-r`：recursive 递归删除所有层级内容
+- `-f`：无需逐一询问确认，强制删除
