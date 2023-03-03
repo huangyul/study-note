@@ -119,3 +119,26 @@ cp -t sourcefile targetfile
 ```bash
 mv sourcefile targetfile
 ```
+
+## 查看文档
+
+### cat
+
+用于打印指定文件内容到标准输出
+
+```bash
+cat index.txt
+```
+
+### tail
+
+把文件最尾部的内容显示出来
+
+```bash
+tail index.log
+tail -fn 100 index.log
+```
+
+- 第一个是默认显示 10 条尾部日志
+- `-f`：实时查看内容
+- `-n`：指定总行数
