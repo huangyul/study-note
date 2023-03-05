@@ -678,30 +678,31 @@ ABC;AKL;DA1;
 
 ```js
 let arr = await readline()
-arr = arr.split(";")
-arr = arr.filter(i => /^[AWDS][0-9]{1,2}$/.test(i))
-let x,y
-for(let i = 0; i < arr.length; i++) {
+arr = arr.split(';')
+arr = arr.filter((i) => /^[AWDS][0-9]{1,2}$/.test(i))
+let x, y
+for (let i = 0; i < arr.length; i++) {
   const cur = arr[i]
   const distance = cur.slice(1)
   const direction = cur[0]
-        switch (direction) {
-            case "A": {
-                x -= distance;
-                break;
-            }
-            case "D": {
-                x += distance;
-                break;
-            }
-            case "W": {
-                y += distance;
-                break;
-            }
-            case "S": {
-                y -= distance;
-                break;
-            }
-        }
+  switch (direction) {
+    case 'A': {
+      x -= distance
+      break
+    }
+    case 'D': {
+      x += distance
+      break
+    }
+    case 'W': {
+      y += distance
+      break
+    }
+    case 'S': {
+      y -= distance
+      break
+    }
+  }
+  console.log(`${x},${y}`)
 }
 ```
