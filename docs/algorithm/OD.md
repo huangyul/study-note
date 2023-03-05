@@ -649,3 +649,59 @@ let str = await readline()
 str = str.split(' ')
 console.log(str[str.length - 1].length)
 ```
+
+## 标移动
+
+### 开发一个坐标计算工具， A 表示向左移动，D 表示向右移动，W 表示向上移动，S 表示向下移动。从（0,0）点开始移动，从输入字符串里面读取一些坐标，并将最终输入结果输出到输出文件里面。
+
+### 输入：
+
+合法坐标为 A(或者 D 或者 W 或者 S) + 数字（两位以内）
+坐标之间以;分隔。
+非法坐标点需要进行丢弃。如 AA10; A1A; $%$; YAD; 等。
+
+### 示例 1
+
+输入：
+A10;S20;W10;D30;X;A1A;B10A11;;A10;
+输出：
+10,-10
+
+### 示例 2
+
+输入：
+ABC;AKL;DA1;
+输出：
+0,0
+
+### 解法
+
+```js
+let arr = await readline()
+arr = arr.split(";")
+arr = arr.filter(i => /^[AWDS][0-9]{1,2}$/.test(i))
+let x,y
+for(let i = 0; i < arr.length; i++) {
+  const cur = arr[i]
+  const distance = cur.slice(1)
+  const direction = cur[0]
+        switch (direction) {
+            case "A": {
+                x -= distance;
+                break;
+            }
+            case "D": {
+                x += distance;
+                break;
+            }
+            case "W": {
+                y += distance;
+                break;
+            }
+            case "S": {
+                y -= distance;
+                break;
+            }
+        }
+}
+```
