@@ -73,9 +73,16 @@ function func(prices) {
   return maxPrice
 }
 
+function countOne(n) {
+  let count = 0;
+  while (n !== 0) {
+      count += n & 1;
+      n >>= 1;
+  }
+  return count;
+}
+
 // const res = func([7, 1, 5, 3, 6, 4])
 // console.log(res)
 
-const str = 'h b'
-const [a, b] = str.split(' ')
-console.log(a, b)
+console.log(countOne(5))
