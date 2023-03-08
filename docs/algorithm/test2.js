@@ -1,31 +1,17 @@
-function func(str) {
-  const map = {
-      2: /[abc]/g,
-      3: /[def]/g,
-      4: /[ghi]/g,
-      5: /[jkl]/g,
-      6: /[mno]/g,
-      7: /[pqrs]/g,
-      8: /[tuv]/g,
-      9: /[wxyz]/g,
-      0: /0/g,
-      1: /1/g,
-  };
-
-  let transform = str.replace(/[\W_]gi/, "");
-
-  for (let key in map) {
-      transform = transform.replace(map[key], key);
+function calculateSodas(n) {
+  if (n <= 1) {
+    return 0 // 只有一个空瓶的情况特殊处理
   }
-
-  transform = transform.toLowerCase().replace(/[a-z]/g, function (char) {
-      if (char === "z") {
-          return "a";
-      } else {
-          return String.fromCharCode(char.charCodeAt(0) + 1);
-      }
-  });
-  console.log(transform);
+  let totalSodas = 0
+  while (n >= 3) {
+    const exchangedBottles = Math.floor(n / 3) * 3 // 可以兑换的空瓶子数
+    totalSodas += exchangedBottles / 3 // 增加兑换的汽水瓶数
+    n = exchangedBottles / 3 + (n % 3) // 更新当前剩余的空瓶数
+  }
+  if (n === 2) {
+    totalSodas += 1 // 最后剩下两个空瓶可以向老板借一个再兑换一瓶汽水
+  }
+  return totalSodas
 }
 
-func('YUANzhi1987')
+console.log(calculateSodas(10))
