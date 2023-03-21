@@ -181,8 +181,8 @@ var e int // 动态类型，根据操作系统来定义
 
 #### 浮点数
 
-1. float32 32位浮点数
-2. float64 64位浮点数
+1. float32 32 位浮点数
+2. float64 64 位浮点数
 
 #### 定义
 
@@ -192,7 +192,7 @@ f1 = 3
 f1 = 3.13
 ```
 
-### byte类型
+### byte 类型
 
 本质上就是`unit8`，主要用于存放字符，相当于`char`
 
@@ -218,4 +218,35 @@ f1 = 3.13
 ```go
 var s string
 s = "huang"
+```
+
+## 数据类型转换
+
+### int 和 float 直接转
+
+直接用就行
+
+```go
+f := 5.0
+b := int(f)
+```
+
+注意：
+
+- 浮点类型转整型，会丢小数点
+
+### string
+
+字符转整型
+strconv.Atoi(str, )
+整型转字符串
+strconv.ItoA(int)
+
+```go
+var istr string = "32"
+myint, err := strconv.Atoi(istr)
+if err != nil {
+fmt.Println("convert error")
+}
+fmt.Println(myint)
 ```
