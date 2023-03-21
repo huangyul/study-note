@@ -85,3 +85,15 @@ function func(root) {
 
 const res = func(createTree([3, 9, 20, null, null, 15, 7]))
 console.log(res)
+
+
+const arr = [
+  {id: 1, value: 1},
+  {id: 2, value: 2},
+  {id: 3, value: 3},
+  {id: 4, value: 4},
+  {id: 5, value: 1},
+  {id: 6, value: 1},
+  {id: 7, value: 1},
+  {id: 8, value: 1},
+]
