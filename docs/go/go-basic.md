@@ -64,3 +64,7 @@ func main() {
 ```go
 var user1, user2, user3 string = "huang", 1, "ss"
 ```
+
+### 0 值特性
+
+定义了 `int`，没有赋值，就是 `0`
