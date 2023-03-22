@@ -250,3 +250,23 @@ fmt.Println("convert error")
 }
 fmt.Println(myint)
 ```
+
+### 其他转换的方法
+
+#### string 转基础类型
+
+```go
+// 指定是float32 或 float64
+strconv.parseFloat("3.23", 64)
+// 以几进制  int几
+strconv.parseInt("4", 10, 8)
+// "true" "1" 会转换为true
+strconv.parseBool("true")
+```
+
+#### 基础类型转 string
+
+```go
+strconv.FormatBool(true)
+strconv.FormatFloat(3.123)
+```
