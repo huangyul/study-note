@@ -360,3 +360,13 @@ fmt.Println(a == b)
 
 `Strings.Trim(str, " ")`
 `TrimLeft  TrimRight`
+
+## 条件语句
+
+```go
+if true {
+fmt.Println("true")
+} else {
+fmt.Println("false")
+}
+```
