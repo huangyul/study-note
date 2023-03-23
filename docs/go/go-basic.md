@@ -330,6 +330,8 @@ fmt.Println(a == b)
 
 ### 字符串的长度
 
+`len(str)`
+
 ### 字符串查询子串出现字数
 
 `Strings.Count(str, str1)`
@@ -371,7 +373,7 @@ fmt.Println("false")
 }
 ```
 
-## for循环
+## for 循环
 
 ```go
 for i := 0; i < 10; i++ {
@@ -390,4 +392,30 @@ for i <= 3 {
 	for index, value := range name {
 		fmt.Printf("%d ,%c\r\n", index, value)
 	}
+```
+
+## 数组
+
+**golang 提供了以下几种数据结构**
+
+- 数组
+- 切片(slice)
+- map
+- list
+
+### 定义
+
+```go
+var arr []int
+arr[0] = 1
+```
+
+数组长度不同时，会被定义为一种类型，所以不同长度的数组不能相互赋值，不灵活
+
+### 初始化
+
+```go
+var arr = [3]string{"2", "3", "4"}
+var arr = [3]string{2: "sss"}
+var arr3 = [...]string{"a","b","c"}
 ```
