@@ -308,3 +308,12 @@ builder.WriteString(strconv.Itoa(age))
 re := builder.String()
 fmt.Println(re) //用户名haung年龄30
 ```
+
+## 字符串比较
+
+```go
+// 对比是否相同
+a := "hello"
+b := "hello"
+fmt.Println(a == b)
+```
