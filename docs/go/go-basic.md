@@ -317,3 +317,46 @@ a := "hello"
 b := "hello"
 fmt.Println(a == b)
 ```
+
+## 字符串常用操作方法
+
+### 是否包含
+
+```go
+	name := "huang yaojie"
+	name1 := "huang"
+	fmt.Println(strings.Contains(name, name1))
+```
+
+### 字符串的长度
+
+### 字符串查询子串出现字数
+
+`Strings.Count(str, str1)`
+
+### 分割字符串
+
+`Strings.Split(str, '-')`
+
+### 字符串是否包含前，后缀
+
+`Strings.HasPrefix(str, "i")`
+`Strings.HasSuffix(Str, "i")`
+
+### 查询子串出现的位置
+
+`Strings.Index(str, "h")`
+
+### 替换
+
+`Strings.Replace(str, "target", "newStr", n)`
+
+### 大小写转换
+
+`Strings.ToLower(str)`
+`Strings.ToUpper(str)`
+
+### 去掉特殊字符（左右两边）
+
+`Strings.Trim(str, " ")`
+`TrimLeft  TrimRight`
