@@ -419,3 +419,16 @@ var arr = [3]string{"2", "3", "4"}
 var arr = [3]string{2: "sss"}
 var arr3 = [...]string{"a","b","c"}
 ```
+
+### 数组的比较
+
+长度相同的数组才能比较
+
+### 多维数组
+
+```go
+var arr [2][2]int
+arr[0] = [2]int{1, 2}
+arr[1] = [2]int{2, 2}
+fmt.Println(arr)
+```
