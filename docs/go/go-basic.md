@@ -283,3 +283,14 @@ strconv.FormatFloat(3.123)
 `"go\"hh\"go"`
 
 就是处理特殊符号
+
+## 格式化输出
+
+```go
+username := "username"
+age := 12
+out := "hello" + " " + username
+fmt.Printf("用户名：%s,年龄:%d,say: %s", username, age, out)
+// 返回一个字符串
+str := fmt.Sprintf("用户名：%s,年龄:%d,say: %s", username, age, out)
+```
