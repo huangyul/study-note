@@ -370,3 +370,15 @@ fmt.Println("true")
 fmt.Println("false")
 }
 ```
+
+## for循环
+
+```go
+for i := 0; i < 10; i++ {
+fmt.Println(i)
+}
+
+for i <= 3 {
+  // do something
+}
+```
