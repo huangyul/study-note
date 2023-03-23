@@ -294,3 +294,17 @@ fmt.Printf("用户名：%s,年龄:%d,say: %s", username, age, out)
 // 返回一个字符串
 str := fmt.Sprintf("用户名：%s,年龄:%d,say: %s", username, age, out)
 ```
+
+## 高性能字符串拼接
+
+```go
+username := "haung"
+age := 30
+var builder strings.Builder
+builder.WriteString("用户名")
+builder.WriteString(username)
+builder.WriteString("年龄")
+builder.WriteString(strconv.Itoa(age))
+re := builder.String()
+fmt.Println(re) //用户名haung年龄30
+```
