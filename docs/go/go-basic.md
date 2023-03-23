@@ -382,3 +382,12 @@ for i <= 3 {
   // do something
 }
 ```
+
+## forrange
+
+```go
+	name := "huang"
+	for index, value := range name {
+		fmt.Printf("%d ,%c\r\n", index, value)
+	}
+```
