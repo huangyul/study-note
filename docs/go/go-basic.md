@@ -470,7 +470,7 @@ fmt.Println(list)
 第二种方式
 
 ```go
-list1 := []int{1, 2, 3, 4, 5} 
+list1 := []int{1, 2, 3, 4, 5}
 ```
 
 第三种
@@ -497,6 +497,30 @@ list[start:end]
 ```
 
 说明：
-1. 如果有start，没有end，表明从start到结尾的所有数据
-2. 如果只有end，没有start，表明从0到end的所有数据
+
+1. 如果有 start，没有 end，表明从 start 到结尾的所有数据
+2. 如果只有 end，没有 start，表明从 0 到 end 的所有数据
 3. 如果两个都没有，就是全部获取
+
+### 如何删除元素
+
+```go
+list := []int{1, 2, 3, 4, 5}
+// 现在要删除3
+newList := append(list[:2], list[3:]...)
+fmt.Println(newList) // 1 2 4 5
+```
+
+原理就是先取再拼接
+
+### 如何复制
+
+```go
+list := []int{1,2,3,4,5}
+// 浅拷贝
+list1 := list[:]
+list2 := list
+// 拷贝（深拷贝）
+var list3 = make([]int, len(list))
+copy(list1, list3)
+```
