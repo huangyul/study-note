@@ -432,3 +432,52 @@ arr[0] = [2]int{1, 2}
 arr[1] = [2]int{2, 2}
 fmt.Println(arr)
 ```
+
+## 切片
+
+> 非常重要和常用，可以理解成其他语言动态的 array
+
+### 切片的定义
+
+```go
+var course []string
+```
+
+### 添加数据
+
+```go
+var course []int
+// 注意要注意，一定要接收返回值
+course = append(course, 222)
+```
+
+### 初始化的方式
+
+1. 从数组中直接创建
+2. 使用 string
+3. make
+
+第一种方式
+
+```go
+// 先定义一个数组
+course := []int{1, 2, 3, 4, 5}
+// 使用[],左闭右开
+list := course[0:2] // 1,2
+fmt.Println(list)
+```
+
+第二种方式
+
+```go
+list1 := []int{1, 2, 3, 4, 5} 
+```
+
+第三种
+
+```go
+// 第一个参数是类型，第二个是容量
+list1 := make([]int, 3)
+```
+
+如果不适用make创建带有容量的，必须使用append来推入元素，并且要接收返回值
