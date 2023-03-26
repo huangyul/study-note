@@ -615,3 +615,9 @@ fmt.Println("not find")
 fmt.Println(d)
 }
 ```
+
+### 删除
+
+```go
+delete(courseMap, "go")
+```
