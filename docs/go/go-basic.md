@@ -565,7 +565,7 @@ slice 在函数参数传递是值传递，但又有引用传递的效果
 
 ## Map
 
-key-value的键值组合，主要用于查询
+key-value 的键值组合，主要用于查询
 
 ### 初始化和赋值
 
@@ -586,13 +586,32 @@ fmt.Println(courseMap1["go"])
 courseMap1["go2"] = "go2"
 ```
 
-注意：map必须要初始化，否则会报错 var myMap = map[string]string
+注意：map 必须要初始化，否则会报错 var myMap = map[string]string
 
-### Map遍历
+### Map 遍历
 
 ```go
 courseMap := map[string]string{"go": "go", "aa": "aa"}
 for key, value := range courseMap {
 fmt.Println(key, value)
+}
+```
+
+### 获取 map 里面的元素
+
+不能通过`map["xxx"]`判断，因为没有时也为空
+
+```go
+courseMap := map[string]string{"go": "go", "aa": "aa"}
+d, ok := courseMap["go"]
+if !ok {
+fmt.Println("没有该key")
+}
+fmt.Println(d)
+
+if d, ok := courseMap["go"]; !ok {
+fmt.Println("not find")
+} else {
+fmt.Println(d)
 }
 ```
