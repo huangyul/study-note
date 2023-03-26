@@ -562,3 +562,26 @@ slice 在函数参数传递是值传递，但又有引用传递的效果
 	fmt.Println(s2)  //[77 5 6 88 88 88 88 77]
 	fmt.Println(arr) //[1 2 3 99 5 6 88 88 88 88]
 ```
+
+## Map
+
+key-value的键值组合，主要用于查询
+
+### 初始化和赋值
+
+```go
+// 初始化
+var courseMap map[string]string
+var courseMap1 = map[string]string{
+"go": "go",
+}
+courseMap2 := map[string]string{
+"go": "go",
+}
+courseMap3 := make(map[string]string, 3)
+fmt.Println(courseMap, courseMap1, courseMap2)
+// 取值
+fmt.Println(courseMap1["go"])
+// 设置值
+courseMap1["go2"] = "go2"
+```
