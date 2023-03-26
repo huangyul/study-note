@@ -585,3 +585,14 @@ fmt.Println(courseMap1["go"])
 // 设置值
 courseMap1["go2"] = "go2"
 ```
+
+注意：map必须要初始化，否则会报错 var myMap = map[string]string
+
+### Map遍历
+
+```go
+courseMap := map[string]string{"go": "go", "aa": "aa"}
+for key, value := range courseMap {
+fmt.Println(key, value)
+}
+```
