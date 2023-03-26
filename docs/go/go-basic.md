@@ -621,3 +621,10 @@ fmt.Println(d)
 ```go
 delete(courseMap, "go")
 ```
+
+## list
+
+链表
+
+- 空间要求不是连续的，而slice要求内存空间是连续的
+- 但每一个都包含一个指针，会造成一点空间浪费
