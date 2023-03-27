@@ -715,3 +715,17 @@ func main() {
 	fmt.Printf("ret = %d\r\n", ret) // 11
 }
 ```
+
+### 捕获错误
+
+```go
+func A() (int, error) {
+	return 0, errors.New("this is an error")
+}
+
+func main() {
+	if _, err := A(); err != nil {
+		fmt.Println(err)
+	}
+}
+```
