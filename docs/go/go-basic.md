@@ -687,3 +687,31 @@ func main() {
 	}
 }
 ```
+
+### defer
+
+相当于 finally，在一些操作，比如链接数据库，打开文件等，最后都去操作某些事
+
+```go
+var mu sync.Mutex
+mu.Lock()
+defer mu.Unlock() // defer后面的代码会放在函数retur之前执行
+```
+
+多个`defer`相当于栈的先进后出，后面的`defer`会先执行
+
+defer 可以修改函数的输出
+
+```go
+func deferReturn() (ret int) {
+	defer func() {
+		ret++
+	}()
+	return 10
+}
+
+func main() {
+	ret := deferReturn()
+	fmt.Printf("ret = %d\r\n", ret) // 11
+}
+```
