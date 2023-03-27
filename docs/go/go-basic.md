@@ -668,3 +668,22 @@ func add(myfunc func(int) int) int {
   return myfunc()
 }
 ```
+
+### 闭包
+
+```go
+func autoAddOne() func() int {
+	local := 0
+	return func() int {
+		local += 1
+		return local
+	}
+}
+
+func main() {
+	var f = autoAddOne()
+	for i := 1; i < 5; i++ {
+		fmt.Println(f())
+	}
+}
+```
