@@ -730,9 +730,9 @@ func main() {
 }
 ```
 
-### panic和recover
+### panic 和 recover
 
-使用panic，会导致程序退出，但不推荐使用
+使用 panic，会导致程序退出，但不推荐使用
 
 ```go
 func A() (int, error) {
@@ -744,7 +744,7 @@ func A() (int, error) {
 
 比如服务想要启动，必须要依赖服务准备好，比如日志文件，`mysql`能链接通，才能链接，如果启动中有不满足的，主动调用`panic`
 
-代码有错误时，会主动调用`panic`方法，recover可以捕获`panic`
+代码有错误时，会主动调用`panic`方法，recover 可以捕获`panic`
 
 ```go
 defer func() {
@@ -756,6 +756,33 @@ var names map[string]string // 故意没有初始化，会报错
 fmt.Println("panic", names)
 ```
 
-1. defer 需要放在panic之前定义，另外recover只有在defer调用函数中才会生效
-2. recover处理异常后，逻辑并不会恢复到panic那个点
-3. 多个defer会形成栈，后定义defer会新执行
+1. defer 需要放在 panic 之前定义，另外 recover 只有在 defer 调用函数中才会生效
+2. recover 处理异常后，逻辑并不会恢复到 panic 那个点
+3. 多个 defer 会形成栈，后定义 defer 会新执行
+
+## 结构体
+
+### type 关键字
+
+1. 用来定义结构体
+2. 定义接口
+3. 定义类型别名
+4. 类型定义
+5. 类型判断
+
+```go
+// 类型别名
+type MyInt = int
+var i MyInt = 12 // 本质还是int
+
+// 类型定义
+type MyInt int
+var i MyInt = 12 // 类型已经真的是MyInt了
+
+// 类型判断
+var a interface{} = "abc"
+switch a.(type) {
+  case string:
+    fmt.Println("字符串")
+}
+```
