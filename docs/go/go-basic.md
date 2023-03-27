@@ -626,5 +626,19 @@ delete(courseMap, "go")
 
 链表
 
-- 空间要求不是连续的，而slice要求内存空间是连续的
+- 空间要求不是连续的，而 slice 要求内存空间是连续的
 - 但每一个都包含一个指针，会造成一点空间浪费
+
+### 基本用法
+
+```go
+var myList list.List
+myList := list.New()
+// 放入值
+myList.PushBack("go")
+myList.PushBack("grpc")
+// 遍历打印
+for i := myList.Front(); i != nil; i = i.Next() {
+fmt.Println(i.Value)
+}
+```
