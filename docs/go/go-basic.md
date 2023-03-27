@@ -642,3 +642,21 @@ for i := myList.Front(); i != nil; i = i.Next() {
 fmt.Println(i.Value)
 }
 ```
+
+## 函数
+
+### 函数是第一等公民
+
+1. 函数本身可以当作变量
+2. 函数包含匿名函数，闭包
+3. 函数可以满足接口
+
+### 函数本身可以当作变量
+
+### 可变参数
+
+```go
+func add(items ...int) int {
+  return len(items)
+}
+```
