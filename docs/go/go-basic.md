@@ -660,3 +660,11 @@ func add(items ...int) int {
   return len(items)
 }
 ```
+
+### 一等公民的特性
+
+```go
+func add(myfunc func(int) int) int {
+  return myfunc()
+}
+```
