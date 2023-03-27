@@ -786,3 +786,26 @@ switch a.(type) {
     fmt.Println("字符串")
 }
 ```
+
+### 定义及初始化
+
+```go
+type Person struct {
+	name    string
+	age     int
+	address string
+}
+
+func main() {
+	p1 := Person{
+		"huang",
+		23,
+		"地址",
+	}
+	p2 := Person{
+		name:    "huang",
+		age:     33,
+		address: "地址",
+	}
+}
+```
