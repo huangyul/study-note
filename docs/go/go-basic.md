@@ -729,3 +729,33 @@ func main() {
 	}
 }
 ```
+
+### panic和recover
+
+使用panic，会导致程序退出，但不推荐使用
+
+```go
+func A() (int, error) {
+	panic("this is an panic") // 导出程序退出，后面不执行
+	fmt.Println("this is a func")
+	return 0, errors.New("this is an error")
+}
+```
+
+比如服务想要启动，必须要依赖服务准备好，比如日志文件，`mysql`能链接通，才能链接，如果启动中有不满足的，主动调用`panic`
+
+代码有错误时，会主动调用`panic`方法，recover可以捕获`panic`
+
+```go
+defer func() {
+if r := recover(); r != nil {
+fmt.Println("recover if A: ", r)
+}
+}()
+var names map[string]string // 故意没有初始化，会报错
+fmt.Println("panic", names)
+```
+
+1. defer 需要放在panic之前定义，另外recover只有在defer调用函数中才会生效
+2. recover处理异常后，逻辑并不会恢复到panic那个点
+3. 多个defer会形成栈，后定义defer会新执行
