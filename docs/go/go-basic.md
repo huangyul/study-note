@@ -929,3 +929,20 @@ func main() {
 ```
 
 在错误写法中，把 a，b 的地址传了进去，进行交互，注意函数传参是值传递，在函数内部交换了两个地址对外部没什么影响，真正需要的是将两个地址中的值进行交换
+
+### nil
+
+代表某些数据类型的零值，不同数据类型的零值是不一样的
+
+- bool false
+- numbers 0
+- string ""
+- pointer nil 指针
+- slice nil
+- map nil
+- channel,interface,func nil
+- struct 默认值是具体字段的默认值
+
+### 判断nil
+
+`== nil`
