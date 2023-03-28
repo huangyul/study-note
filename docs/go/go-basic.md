@@ -1089,3 +1089,13 @@ func (s SreadWrite) RW() {
 4. 匿名导入，单纯只想导入，不想用，一般是初始化的时候用
 
 ### go.mod
+
+#### go get
+
+```bash
+go get github.com/xxx/xx
+```
+
+#### go mod tidy
+
+清空未使用的包，并下载未下载的依赖
