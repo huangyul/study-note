@@ -847,6 +847,18 @@ func main() {
 
 	fmt.Println(stu2.name)
 }
+```
 
+### 结构体定义方法
+
+```go
+type Person struct {
+	name string
+	age  int
+}
+
+func (p Person) sayHi() {
+	fmt.Printf("name: %s", p.name)
+}
 
 ```
