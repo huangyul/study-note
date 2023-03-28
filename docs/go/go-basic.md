@@ -812,4 +812,41 @@ func main() {
 
 ### 匿名结构体
 
- 
+### 结构体嵌套
+
+```go
+type Person struct {
+	name string
+	age  int
+}
+
+type Student struct {
+	p     Person
+	score float32
+}
+
+type Student2 struct {
+	Person
+	score int
+}
+
+func main() {
+	stu1 := Student{
+		Person{
+			"huang",
+			18,
+		},
+		9.99,
+	}
+	fmt.Println(stu1.p.age)
+
+	stu2 := Student2{Person{
+		"huang", 18,
+	}, 8,
+	}
+
+	fmt.Println(stu2.name)
+}
+
+
+```
