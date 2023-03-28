@@ -1087,3 +1087,5 @@ func (s SreadWrite) RW() {
 2. 可以使用别名 import u "xxx/xxx/xx"
 3. import . "xx/xx/xx"将内容全部导入，可以不用加前缀使用，但是尽量少用！！
 4. 匿名导入，单纯只想导入，不想用，一般是初始化的时候用
+
+### go.mod
