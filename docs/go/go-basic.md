@@ -1017,3 +1017,22 @@ func add(a, b interface{})int {
   return ai + bi
 }
 ```
+
+### 通过switch语句进行类型判断
+
+```go
+func add(a, b interface{}) interface{} {
+	switch a.(type) {
+	case int:
+		ai, _ := a.(int)
+		bi, _ := b.(int)
+		return ai + bi
+	case int32:
+		ai, _ := a.(int32)
+		bi, _ := b.(int32)
+		return ai + bi
+	default:
+		panic("not supported type")
+	}
+}
+```
