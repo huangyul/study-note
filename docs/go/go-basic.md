@@ -1036,3 +1036,41 @@ func add(a, b interface{}) interface{} {
 	}
 }
 ```
+
+### 接口嵌套
+
+也就是继承
+
+```go
+type MyWriter interface {
+	Write()
+}
+
+type MyReader interface {
+	Read()
+}
+
+type MyRW interface {
+	MyWriter
+	MyReader
+	RW()
+}
+
+type SreadWrite struct {
+}
+
+func (s SreadWrite) Write() {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (s SreadWrite) Read() {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (s SreadWrite) RW() {
+	//TODO implement me
+	panic("implement me")
+}
+```
