@@ -1018,7 +1018,7 @@ func add(a, b interface{})int {
 }
 ```
 
-### 通过switch语句进行类型判断
+### 通过 switch 语句进行类型判断
 
 ```go
 func add(a, b interface{}) interface{} {
@@ -1074,3 +1074,9 @@ func (s SreadWrite) RW() {
 	panic("implement me")
 }
 ```
+
+## 包
+
+1. 同一个目录下，所有源码的 package 都要一样
+2. 同一目录下，可以直接引用其他文件的内容
+3. 不同目录需要 import
