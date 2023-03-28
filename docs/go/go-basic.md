@@ -1006,3 +1006,14 @@ func main() {
 }
 
 ```
+
+### 动态类型传参
+
+```go
+func add(a, b interface{})int {
+  // 断言为int
+  ai, _ := a.(int)
+  bi, _ := b.(int)
+  return ai + bi
+}
+```
