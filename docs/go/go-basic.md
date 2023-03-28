@@ -904,3 +904,28 @@ p := &Person{}
 p := new(Person)
 // new方法会返回地址
 ```
+
+### 交换指针的值
+
+```go
+// 错误写法
+func swap(a, b *int) {
+  a, b = b, a
+}
+
+func swap(a, b *int) {
+	t := *a // 获取a的值
+	*a = *b
+	*b = t
+}
+
+func main() {
+	a := 1
+	b := 2
+	swap(&a, &b)
+	fmt.Println(a, b)
+}
+
+```
+
+在错误写法中，把 a，b 的地址传了进去，进行交互，注意函数传参是值传递，在函数内部交换了两个地址对外部没什么影响，真正需要的是将两个地址中的值进行交换
