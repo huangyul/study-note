@@ -862,3 +862,33 @@ func (p Person) sayHi() {
 }
 
 ```
+
+## 指针
+
+```go
+type Person struct {
+	name string
+}
+
+// 接收指针
+func change(p *Person) {
+	p.name = "333"
+}
+
+func main() {
+	p1 := Person{
+		"999",
+	}
+	// 这里就要传地址
+	change(&p1)
+	fmt.Println(p1.name)
+}
+```
+
+### 指针的定义
+
+```go
+var p0 *int
+```
+
+**golang 不能对指针进行运算**
