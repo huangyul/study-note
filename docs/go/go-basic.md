@@ -943,7 +943,7 @@ func main() {
 - channel,interface,func nil
 - struct 默认值是具体字段的默认值
 
-### 判断nil
+### 判断 nil
 
 `== nil`
 
@@ -976,6 +976,33 @@ func (pd *pskDuck) Walk() {
 func main() {
 	var d Duck = &pskDuck{}
 	d.Walk()
+}
+
+```
+
+### 多接口实现
+
+```go
+type Type1 interface {
+	type1()
+}
+type Type2 interface {
+	type2()
+}
+type Type3 struct {
+}
+
+func (t *Type3) type1() {
+	fmt.Println("type1")
+}
+func (t *Type3) type2() {
+	fmt.Println("type2")
+}
+func main() {
+	var t Type1 = &Type3{}
+	t.type1()
+	var t2 Type2 = &Type3{}
+	t2.type2()
 }
 
 ```
