@@ -952,3 +952,30 @@ func main() {
 ### 鸭子类型
 
 走起路来丫丫叫的就是鸭子，是一种形容，强调事物的外部行为（暴露的方法），而不是内部的结构（属性）
+
+### 定义接口
+
+```go
+type Duck interface {
+	Gaga()
+
+	Walk()
+}
+
+type pskDuck struct {
+	legs int
+}
+
+func (pd *pskDuck) Gaga() {
+	fmt.Println("gaga")
+}
+
+func (pd *pskDuck) Walk() {
+	fmt.Println("walking")
+}
+func main() {
+	var d Duck = &pskDuck{}
+	d.Walk()
+}
+
+```
