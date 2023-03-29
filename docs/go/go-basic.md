@@ -1246,10 +1246,9 @@ go 的并发是依赖 GMP 调度
 
 通过处理器去安排 goroutine 的执行，使用合适的算法去分配到现有的线程上，这样就可以避免线程的切换，也不会创建过多的线程耗费内存；当某一个 goroutine 有 http 请求、循环等耗时长的过程时，会被挂起，把下一个 goroutine 通过处理器分发到线程去执行
 
-
 ### waitgroup
 
-子的goroutine如何通知主的goroutine自己结束了，主的goroutine如果知道子的goroutine已经结束
+子的 goroutine 如何通知主的 goroutine 自己结束了，主的 goroutine 如果知道子的 goroutine 已经结束
 
 ```go
 	var wg sync.WaitGroup
@@ -1269,5 +1268,61 @@ wg.Wait()
 fmt.Println("all goroutine done")
 ```
 
-1. waitgroup主要用于等待异步goroutine执行完
-2. 每Add一次，都要执行一次Done
+1. waitgroup 主要用于等待异步 goroutine 执行完
+2. 每 Add 一次，都要执行一次 Done
+
+### 全局变量的原子操作
+
+锁：goroutine 对共享资源的竞争，也就是使用了公用的变量
+
+理解资源冲突：
+
+比如一个简单的操作：`a+=1`，要执行该代码实际上需要三步，1.取出 a 的值，2.计算 a+1，3.重新写入 a 的值；因为用了多协程，所以执行`a+=1`的过程实际上不是最小的原子操作（还是可以拆开的，就是可以拆开成三步），这个时候比如有两个协程，一个 A 刚执行到取出 a 的值，另外一个协程 B 也执行取出 a 的值，此时 B 取出 a 的值并不是 A 执行后 a 的值，并且也无法确定哪个协程先结束，无法确定最后 a 的值是谁写入的
+
+```go
+var a int = 0
+var wg sync.WaitGroup
+var lock sync.Mutex
+
+func add() {
+	defer wg.Done()
+	for i := 0; i < 100000; i++ {
+    // 将资源锁住，此时只能我访问
+		lock.Lock()
+		a += 1
+    // 释放资源的锁
+		lock.Unlock()
+	}
+}
+
+func sub() {
+	defer wg.Done()
+	for i := 0; i < 100000; i++ {
+		lock.Lock()
+		a -= 1
+		lock.Unlock()
+	}
+}
+
+func main() {
+	wg.Add(2)
+	go add()
+	go sub()
+	wg.Wait()
+	fmt.Println(a)
+}
+
+```
+
+注意点：
+
+1. 必须使用同一个锁，所以不能赋值使用
+
+如果资源冲突是简单的 int32 类型，还可以使用 atomic，性能会更高
+
+```go
+atomic.AddInt32(&a, 1)
+//lock.Lock()
+//a += 1
+//lock.Unlock()
+```
