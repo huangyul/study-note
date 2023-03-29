@@ -1271,7 +1271,7 @@ fmt.Println("all goroutine done")
 1. waitgroup 主要用于等待异步 goroutine 执行完
 2. 每 Add 一次，都要执行一次 Done
 
-### 全局变量的原子操作
+### mutex atomic 全局变量的原子操作
 
 锁：goroutine 对共享资源的竞争，也就是使用了公用的变量
 
