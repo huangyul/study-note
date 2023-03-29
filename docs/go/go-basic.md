@@ -1227,7 +1227,7 @@ func main() {
     // 这里这样做的目的是，里面的函数调用了外面作用域的变量，形成了闭包，再加上函数现在是异步执行，无法确定里面函数的时机，会造成i值的不确定，此时将i传入可避免不必要的问题
     go func(i int) {
       fmt.Println(i)
-    }
+    }(i)
   }
 }
 ```
@@ -1245,3 +1245,29 @@ go 的并发是依赖 GMP 调度
 - P 是处理器
 
 通过处理器去安排 goroutine 的执行，使用合适的算法去分配到现有的线程上，这样就可以避免线程的切换，也不会创建过多的线程耗费内存；当某一个 goroutine 有 http 请求、循环等耗时长的过程时，会被挂起，把下一个 goroutine 通过处理器分发到线程去执行
+
+
+### waitgroup
+
+子的goroutine如何通知主的goroutine自己结束了，主的goroutine如果知道子的goroutine已经结束
+
+```go
+	var wg sync.WaitGroup
+// 要监听多少个goroutine
+wg.Add(100)
+for i := 0; i < 100; i++ {
+go func(i int) {
+	// 每次一个goroutine执行完，都要执行一下done
+	defer wg.Done()
+	fmt.Println(i)
+}(i)
+}
+
+// 等待goroutine执行完，才执行下面的代码，将异步变为同步
+wg.Wait()
+
+fmt.Println("all goroutine done")
+```
+
+1. waitgroup主要用于等待异步goroutine执行完
+2. 每Add一次，都要执行一次Done
