@@ -1138,3 +1138,24 @@ go get -u=patch  升级到最新的修订版
 #### 注释规范
 
 跟其他语言一样
+
+## 单元测试
+
+### 用例
+
+使用`go test`命令执行测试，约定如下：
+1. 以`_test.go`为后缀的源码文件都会被`go test`运行到
+2. `go build`不会将测试文件打包到可执行文件中
+3. test文件里面有4类
+   1. Test开头的，是功能测试
+   2. Benchmark开头的，是性能测试
+   3. example 模糊测试
+   
+```go
+func TestAdd(t *testing.T) {
+	re := add(1, 5)
+	if re != 3 {
+		t.Errorf("expect %d, actual %d", 3, re)
+	}
+}
+```
