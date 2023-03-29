@@ -1168,3 +1168,24 @@ if testing.Short() {
 		t.Skip("")
 	}
 ```
+
+### 基于表格驱动测试
+
+快速的写一堆数据进行测试
+
+```go
+var dataset = []struct {
+a   int
+b   int
+out int
+}{
+{1, 1, 2}, {1, 2, 4}, {2, 0, 4},
+}
+
+for _, value := range dataset {
+re := add(value.a, value.b)
+if re != value.out {
+t.Errorf("expect: %d, actual: %d", value.out, re)
+}
+}
+```
