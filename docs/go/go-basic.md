@@ -1195,5 +1195,14 @@ t.Errorf("expect: %d, actual: %d", value.out, re)
 要测试核心的函数
 
 ```go
-
+func BenchmarkAdd(bb *testing.B) {
+	a := 123
+	b := 456
+	c := 579
+	for i := 0; i < bb.N; i++ {
+		if actual := add(a, b); actual != c {
+			fmt.Printf("expect %d, actual %d", c, actual)
+		}
+	}
+}
 ```
