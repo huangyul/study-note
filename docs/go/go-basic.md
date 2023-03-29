@@ -1105,3 +1105,10 @@ go get github.com/xxx/xx
 #### go mod tidy
 
 清空未使用的包，并下载未下载的依赖
+
+#### go get -u
+
+升级到最新的版本
+
+
+go get -u=patch  升级到最新的修订版
