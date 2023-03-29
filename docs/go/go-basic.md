@@ -1326,3 +1326,24 @@ atomic.AddInt32(&a, 1)
 //a += 1
 //lock.Unlock()
 ```
+
+### RWMutex 读写锁
+
+锁本质上是将并行的代码串行化了，使用 lock 肯定会影响性能，所以尽量避免使用 lock
+即使设置锁，也要尽量保证并行
+如何保证？
+
+1. 读数据协程之间应该并发
+2. 读和写之间应该串行
+
+```go
+var rwlock sync.RWMutex
+
+rwlock.Lock() // 加写锁，此时阻止了读和写操作
+// do something
+rwlock.UnLock()
+
+rwlock.RLock() // 加读锁，读锁不会阻止别人读
+rwlock.UnLock()
+
+```
