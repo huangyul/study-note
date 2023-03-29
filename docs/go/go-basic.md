@@ -1110,8 +1110,7 @@ go get github.com/xxx/xx
 
 升级到最新的版本
 
-
-go get -u=patch  升级到最新的修订版
+go get -u=patch 升级到最新的修订版
 
 ## 编码规范
 
@@ -1129,11 +1128,11 @@ go get -u=patch  升级到最新的修订版
 3. 变量名
    1. 驼峰：userName un
 4. 结构体命名
-   1. 驼峰：UserName（导出）  不导出小写
+   1. 驼峰：UserName（导出） 不导出小写
 5. 接口命名
    1. 和结构体差不多
 6. 常量命名
-   1. 全部大写，如果多个单词，采用蛇形  APP_VERSION
+   1. 全部大写，如果多个单词，采用蛇形 APP_VERSION
 
 #### 注释规范
 
@@ -1144,13 +1143,14 @@ go get -u=patch  升级到最新的修订版
 ### 用例
 
 使用`go test`命令执行测试，约定如下：
+
 1. 以`_test.go`为后缀的源码文件都会被`go test`运行到
 2. `go build`不会将测试文件打包到可执行文件中
-3. test文件里面有4类
-   1. Test开头的，是功能测试
-   2. Benchmark开头的，是性能测试
+3. test 文件里面有 4 类
+   1. Test 开头的，是功能测试
+   2. Benchmark 开头的，是性能测试
    3. example 模糊测试
-   
+
 ```go
 func TestAdd(t *testing.T) {
 	re := add(1, 5)
@@ -1158,4 +1158,13 @@ func TestAdd(t *testing.T) {
 		t.Errorf("expect %d, actual %d", 3, re)
 	}
 }
+```
+
+### 跳过耗时的单元测试
+
+```go
+if testing.Short() {
+		// 如果时间长，就跳过这个测试
+		t.Skip("")
+	}
 ```
