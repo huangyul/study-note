@@ -1189,3 +1189,11 @@ t.Errorf("expect: %d, actual: %d", value.out, re)
 }
 }
 ```
+
+### 性能测试
+
+要测试核心的函数
+
+```go
+
+```
