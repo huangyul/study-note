@@ -1347,3 +1347,17 @@ rwlock.RLock() // 加读锁，读锁不会阻止别人读
 rwlock.UnLock()
 
 ```
+
+### goroutine之间的通信 channnel
+
+> 不要通过共享内存来通信，而是通过通信来实现内存共享
+
+```go
+// 创建channel
+var msg chan string
+msg = make(chan string, 1) // channel的初始化值如果为0，放值就会阻塞
+// 往channel放值
+msg <- "huang" // 放值到channel
+data := <-msg  // 从channel取值
+fmt.Println(data)
+```
