@@ -1397,3 +1397,23 @@ msg := make(chan int, 2)
 
 1. 对 channel 进行取值，当没有值时会阻塞，所以需要使用 close 关闭 channel
 2. 关闭后的 channel 不能再放值，当还能取值（虽然不知道有什么用）
+
+### 单项 channel
+
+一般 channel 是双向的，但是 channel 作为参数使用时，希望是单向使用
+
+```go
+	//var ch chan<- int // 单向channel，只能写入int的数据
+	//var ch2 <-chan int // 只能读取int的数据的channel
+	c := make(chan int, 3)
+	var write chan<- int = c // 只能写
+	var read <-chan int = c  // 只能读
+	write <- 1               // 没问题
+	<-read                   // 没问题
+```
+
+简单应用
+
+```go
+
+```
