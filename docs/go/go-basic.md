@@ -1415,5 +1415,27 @@ msg := make(chan int, 2)
 简单应用
 
 ```go
+func producer(out chan<- int) {
+	for i := 0; i < 100; i++ {
+		out <- i
+	}
+	wg.Done()
+	close(out)
+}
 
+func consumer(in <-chan int) {
+	for data := range in {
+		fmt.Println(data)
+	}
+	wg.Done()
+}
+
+func main() {
+	c := make(chan int)
+	wg.Add(2)
+	go producer(c) // 自动转换
+	go consumer(c)
+	wg.Wait()
+
+}
 ```
