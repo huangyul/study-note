@@ -1439,3 +1439,47 @@ func main() {
 
 }
 ```
+
+### 使用 channel 交替打印
+
+一个 goroutine 打印数字，一个 goroutine 打印字母
+
+```go
+// 定义两个无缓存channel
+var ch1, ch2 = make(chan bool), make(chan bool)
+
+func printNum() {
+	i := 1
+	for {
+		<-ch1
+		fmt.Printf("%d%d", i, i+1)
+		i += 2
+		ch2 <- true
+	}
+
+}
+
+func printLetter() {
+	str := "abcdefghijklmnopqrstuvwxyz"
+	i := 0
+	for {
+		<-ch2
+		if i >= len(str) {
+			return
+		}
+		fmt.Printf("%s%s", strings.ToUpper(string(str[i])), strings.ToUpper(string(str[i+1])))
+		i += 2
+		ch1 <- true
+	}
+}
+
+func main() {
+	go printNum()
+	go printLetter()
+	// 打印数字的先执行
+	ch1 <- true
+
+	time.Sleep(time.Second * 20)
+}
+
+```
