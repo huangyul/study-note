@@ -1524,3 +1524,39 @@ func main() {
 
 }
 ```
+
+### context
+
+使用 context 解决 goroutine 的信息传递
+
+```go
+var wg sync.WaitGroup
+
+func cupInfo(ctx context.Context) {
+	defer wg.Done()
+	for {
+		select {
+		case <-ctx.Done():
+			fmt.Println("over")
+			return
+		default:
+			time.Sleep(time.Second * 2)
+			fmt.Println("cpu info")
+		}
+
+	}
+}
+
+func main() {
+	ctx, cancel := context.WithCancel(context.Background())
+	wg.Add(1)
+	go cupInfo(ctx)
+	time.Sleep(time.Second * 6)
+	// 由父方法取消监听
+	cancel()
+	wg.Wait()
+	fmt.Println("success")
+
+}
+
+```
