@@ -1483,3 +1483,44 @@ func main() {
 }
 
 ```
+
+### select 监控 goroutine 执行
+
+select 类似于 switch case，select 功能和 linux 里面提供的 io 的 select，poll，epoll 差不多，主要作用于多个 channel
+
+```go
+func g1(ch chan struct{}) {
+	time.Sleep(time.Second * 3)
+	ch <- struct{}{}
+}
+func g2(ch chan struct{}) {
+	time.Sleep(time.Second * 4)
+	ch <- struct{}{}
+}
+
+func main() {
+	ch1 := make(chan struct{})
+	ch2 := make(chan struct{})
+	go g1(ch1)
+	go g2(ch2)
+
+	// 定一个时间器，当达到设置的时间时，里面的channel会返回，可以用于防止函数被阻塞
+	timer := time.NewTimer(time.Second * 2)
+
+	// 1. 某一个分支就绪了就执行该分支
+	// 2. 如果两个都就绪了，随机执行，防止两个分支都一值就绪，只执行第一个的情况
+	for {
+		select {
+		case <-ch1:
+			fmt.Println("g1 done")
+		case <-ch2:
+			fmt.Println("g2 done")
+		// 防止阻塞，当定义的时间到了，该channel就会被写入值，此时拿到值就执行自己的逻辑，不等了
+		case <-timer.C:
+			fmt.Println("default")
+			return
+		}
+	}
+
+}
+```
