@@ -1348,7 +1348,7 @@ rwlock.UnLock()
 
 ```
 
-### goroutine之间的通信 channnel
+### goroutine 之间的通信 channnel
 
 > 不要通过共享内存来通信，而是通过通信来实现内存共享
 
@@ -1366,10 +1366,34 @@ fmt.Println(data)
 
 适用场景：
 
-- 无缓冲适用于 通知， B要第一时间知道A是否已经完成
+- 无缓冲适用于 通知， B 要第一时间知道 A 是否已经完成
 - 有缓冲适用于消费者和生产者之间的通信
 
 ```go
 // n = 0就是无缓冲，大于零就是有缓冲
 msg := make(chan string, n)
 ```
+
+### 使用 for range 对 channel 进行遍历
+
+```go
+msg := make(chan int, 2)
+
+	go func() {
+		for data := range msg {
+			fmt.Println(data)
+		}
+		fmt.Println("all done")
+	}()
+
+	msg <- 1
+	msg <- 2
+	// 关闭channel
+	close(msg)
+	time.Sleep(1000)
+```
+
+注意：
+
+1. 对 channel 进行取值，当没有值时会阻塞，所以需要使用 close 关闭 channel
+2. 关闭后的 channel 不能再放值，当还能取值（虽然不知道有什么用）
