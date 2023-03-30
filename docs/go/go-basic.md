@@ -1361,3 +1361,15 @@ msg <- "huang" // 放值到channel
 data := <-msg  // 从channel取值
 fmt.Println(data)
 ```
+
+### 有缓冲和无缓冲 channel
+
+适用场景：
+
+- 无缓冲适用于 通知， B要第一时间知道A是否已经完成
+- 有缓冲适用于消费者和生产者之间的通信
+
+```go
+// n = 0就是无缓冲，大于零就是有缓冲
+msg := make(chan string, n)
+```
