@@ -1529,6 +1529,8 @@ func main() {
 
 使用 context 解决 goroutine 的信息传递
 
+#### 主函数取消
+
 ```go
 var wg sync.WaitGroup
 
@@ -1559,4 +1561,29 @@ func main() {
 
 }
 
+```
+
+#### 主动超时取消
+
+```go
+ctx, _ := context.WithTimeout(context.Background(), 6*time.Second)
+
+go func(ctx)
+```
+
+#### 按时取消
+
+```go
+WithDeadline()
+```
+
+#### WithValue
+
+通过 ctx 传值进去
+
+```go
+// 父进程
+	fmt.Println("traceid: %s\r\n", ctx.Value("traceid"))
+// 子进程
+	fmt.Println("traceid: %s\r\n", ctx.Value("traceid"))
 ```
