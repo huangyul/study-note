@@ -14,3 +14,6 @@
       3. 配置阿里云镜像（非常重要）https://cr.console.aliyun.com/cn-shenzhen/instances/mirrors
    2. 安装 docker-compose
       1. 安装安装网上的教程会失败，使用以下这个https://blog.csdn.net/hrd535523596/article/details/129785651
+7. 使用docker安装mysql
+   1. 拉取镜像 docker pull mysql:5.7
+   2. 启动docker run -p 3306:3306 --name mymysal -v $PWD/conf:/etc/mysql/conf.d -v$PWD/logs:/logs -v $PWD/data:/var/lib/mysql -e MYSQL_ROOT_PASSWORD=123456 -d mysql:5.7
