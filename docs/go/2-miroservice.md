@@ -43,3 +43,55 @@
 客户端，客户端存根，服务端，服务端存根
 
 存根可以理解为就是抽取出通用的方法，比如地址的处理，数据的处理等
+
+## go 开发 rpc
+
+server 端
+
+```go
+import (
+	"net"
+	"net/rpc"
+)
+
+type HelloService struct{}
+
+func (s *HelloService) Hello(request string, reply *string) error {
+	*reply = "hello, " + request
+	return nil
+}
+
+func main() {
+	// 1. 实例化一个server
+	listener, _ := net.Listen("tcp", ":1234")
+	// 2. 注册处理逻辑 handler
+	_ = rpc.RegisterName("HelloService", &HelloService{})
+	// 3. 启动服务
+	conn, _ := listener.Accept() // 当接收到请求
+	rpc.ServeConn(conn)          // 交给rpc处理
+}
+
+```
+
+client 端
+
+```go
+func main() {
+	// 1. 建立链接
+	client, err := rpc.Dial("tcp", "localhost:1234")
+	if err != nil {
+		panic("链接失败")
+	}
+	// 2. 调用函数
+	var reply = new(string)
+	err = client.Call("HelloService.Hello", "huang", reply)
+	if err != nil {
+		fmt.Println(err)
+		panic("调用失败")
+	}
+	fmt.Println(*reply)
+}
+
+```
+
+这里的 client 端有个问题，要调用远程方法的时候，需要使用 client.call("methods")，这不太像调用本地的方法
