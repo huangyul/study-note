@@ -99,3 +99,11 @@ func main() {
 ### 替换 rpc 的序列化协议为 json
 
 微服务是可以使用不同语言的，那就意味着，要求网络协议、数据的序列化协议都一致即可
+
+## grpc
+
+### 环境搭建
+
+安装工具：
+https://github.com/protocolbuffers/protobuf/releases
+
