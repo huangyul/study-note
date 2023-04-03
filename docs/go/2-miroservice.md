@@ -111,8 +111,27 @@ https://github.com/protocolbuffers/protobuf/releases
 
 ```go install github.com/golang/protobuf/protoc-gen-go
 
+```
+
 ### protobuf
 
 Protocol Buffers（简称 protobuf）是一种由 Google 开发的二进制数据交换格式，被广泛用于分布式系统中的数据交换。protobuf 具有高效、可扩展和跨平台等特点，同时也提供了多种语言的支持。
 
+将 proto 文件生成 go 文件
+
+1. 新建 xxx.proto
+2. 执行 protoc -I . xxx.proto --go_out=plugins=grpc:.
+
+```go
+// 定义数据
+req := __.HelloRequest{
+Name: "huang",
+Age:  18,
+}
+// 加密数据，变成二进制切片
+rsp, _ := proto.Marshal(&req)
+// 解密数据
+newReq := __.HelloRequest{}
+_ = proto.Unmarshal(rsp, &newReq)
+fmt.Println(newReq.Name, newReq.Age)
 ```
