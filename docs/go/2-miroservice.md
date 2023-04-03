@@ -107,3 +107,12 @@ func main() {
 安装工具：
 https://github.com/protocolbuffers/protobuf/releases
 
+在项目中执行
+
+```go install github.com/golang/protobuf/protoc-gen-go
+
+### protobuf
+
+Protocol Buffers（简称 protobuf）是一种由 Google 开发的二进制数据交换格式，被广泛用于分布式系统中的数据交换。protobuf 具有高效、可扩展和跨平台等特点，同时也提供了多种语言的支持。
+
+```
