@@ -151,6 +151,7 @@ fmt.Sprintf("%s, %d", name, age)
 
 数组和别的语言的数组差不多，语法
 是：[cap]type
+
 1. 初始化要指定长度（或者叫做容量）
 2. 直接初始化
 3. arr[i]的形式访问元素
@@ -161,3 +162,23 @@ a1 := [3]int{9,8,7}
 a1[0] // 访问元素
 len(a1)
 ```
+
+### 切片
+
+切片,语法：[]type
+
+1. 直接初始化
+2. make 初始化:make([]type, length, capacity)
+3. arr[i] 的形式访问元素
+4. append 追加元素
+5. len 获取元素数量
+6. cap 获取切片容容量
+7. 推荐写法：s1 := make([]type, 0,cap)
+
+#### 子切片
+
+数组和切片都可以通过`[start:end]` 的形式来获取
+子切片：
+1. ` arr[start:end]`，获得[start, end)之间的元素
+2. `arr[:end]`，获得[0, end) 之间的元素
+3. `arr[start:]`，获得[start, len(arr))之间的元素
