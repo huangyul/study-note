@@ -70,3 +70,24 @@ println(utf8.RuncCountInString("你好")) // 输出 2
 是，golang 没有 char 类型。rune 不是数字，
 也不是 char，也不是 byte！
 - 实际中不太常用
+
+### bool,int,unit,float
+
+- bool: true, false
+- int8, int16, int32, int64, int
+- uint8, uint16, uint32, uint64, uint
+- float32, float64
+
+### byte
+
+- 本质是unit8
+- 对应的操作包在bytes上
+
+### 总结
+
+- golang 的数字类型明确标注了长度、有无符号
+- golang 不会帮你做类型转换，类型不同无法通过编译。也因此，string 只能和string 拼接
+- golang 有一个很特殊的 rune 类型，接近一般语言的 char 或者 character 的概念，非面试情况下，可以
+理解为 “
+rune = 字符”
+- string 遇事不决找 strings 
