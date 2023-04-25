@@ -14,3 +14,14 @@ func main() {
   print("hello, go")
 }
 ```
+
+## 包声明
+
+- 语法形式：pacakge xxx
+- 字母和下划线都支持
+- 可以和文件夹不同名字
+- 同一文件夹下的声明一致
+
+```go
+package main
+```
