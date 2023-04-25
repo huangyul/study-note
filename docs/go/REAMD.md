@@ -60,3 +60,13 @@ println(utf8.RuncCountInString("你好")) // 输出 2
   - 大小写转换
   - 子字符串相关
   - 相等
+
+### rune
+
+- rune，直观理解，就是字符
+- rune 不是 byte!
+- rune 本质是 int32，一个 rune 四个字节
+- rune 在很多语言里面是没有的，与之对应的
+是，golang 没有 char 类型。rune 不是数字，
+也不是 char，也不是 byte！
+- 实际中不太常用
