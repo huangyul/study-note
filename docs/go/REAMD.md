@@ -67,8 +67,8 @@ println(utf8.RuncCountInString("你好")) // 输出 2
 - rune 不是 byte!
 - rune 本质是 int32，一个 rune 四个字节
 - rune 在很多语言里面是没有的，与之对应的
-是，golang 没有 char 类型。rune 不是数字，
-也不是 char，也不是 byte！
+  是，golang 没有 char 类型。rune 不是数字，
+  也不是 char，也不是 byte！
 - 实际中不太常用
 
 ### bool,int,unit,float
@@ -80,18 +80,17 @@ println(utf8.RuncCountInString("你好")) // 输出 2
 
 ### byte
 
-- 本质是unit8
-- 对应的操作包在bytes上
+- 本质是 unit8
+- 对应的操作包在 bytes 上
 
 ### 总结
 
 - golang 的数字类型明确标注了长度、有无符号
-- golang 不会帮你做类型转换，类型不同无法通过编译。也因此，string 只能和string 拼接
+- golang 不会帮你做类型转换，类型不同无法通过编译。也因此，string 只能和 string 拼接
 - golang 有一个很特殊的 rune 类型，接近一般语言的 char 或者 character 的概念，非面试情况下，可以
-理解为 “
-rune = 字符”
-- string 遇事不决找 strings 
-
+  理解为 “
+  rune = 字符”
+- string 遇事不决找 strings
 
 ## 变量
 
@@ -131,3 +130,17 @@ func Func1(name string, age int) (int, error) {
 - golang 支持多返回值，这是一个很大的不同点
 - golang 方法的作用域和变量作用域一样，通过大小写控制
 - golang 的返回值是可以有名字的，可以通过给予名字让调用方清楚知道你返回的是什么
+
+## fmt 格式化输出
+
+- 掌握常用的：%s, %d, %v, %+v, %#v
+- 不仅仅是 `fmt`的调用，所有格式化字符串
+  的 API 都可以用
+- 因为 golang 字符串拼接只能在 string 之间，
+  所以这个包非常常用
+
+```go
+name := "huang"
+age := 12
+fmt.Sprintf("%s, %d", name, age)
+```
