@@ -91,3 +91,19 @@ println(utf8.RuncCountInString("你好")) // 输出 2
 理解为 “
 rune = 字符”
 - string 遇事不决找 strings 
+
+
+## 变量
+
+### 声明
+
+#### var
+
+- 语法：`var name type = value`
+- 可以声明局部变量，包变量，块变量
+- 首字符是否大写控制了访问性
+- 支持类型推断
+
+#### :=
+
+- 只能用于局部变量，即方法内部
