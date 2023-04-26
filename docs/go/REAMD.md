@@ -247,3 +247,12 @@ type Server interface {
 	Start(address string) error
 }
 ```
+
+###### 结构体
+
+```go 
+type Person struct {
+	Name string
+	age  int
+}
+```
