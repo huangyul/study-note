@@ -179,6 +179,51 @@ len(a1)
 
 数组和切片都可以通过`[start:end]` 的形式来获取
 子切片：
+
 1. ` arr[start:end]`，获得[start, end)之间的元素
 2. `arr[:end]`，获得[0, end) 之间的元素
 3. `arr[start:]`，获得[start, len(arr))之间的元素
+
+## http 库
+
+### Request
+
+###### Body
+
+只能读一次
+
+```go
+func handler(w http.ResponseWriter, r *http.Request) {
+  body := r.Body
+}
+
+```
+
+###### GetBody
+
+原则上可以读多次，但是原生的 http.Request 里面，这个是 nil
+
+###### Query
+
+查询参数
+
+```go
+func handlerQuery(w http.ResponseWriter, r *http.Request) {
+	values := r.URL.Query()
+	fmt.Fprintf(w, "query is %v\n", values)
+}
+
+```
+
+###### URL
+
+包含路径方面的所有信息和一些很有用的操作，但只有 path 是肯定存在的
+
+###### Form
+
+使用 Form 之前要先调用 parseForm
+
+```go
+err := r.ParseForm
+form := r.Form
+```
