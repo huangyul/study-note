@@ -318,3 +318,41 @@ func (h *httpSever) Start(address string) error {
 ```
 
 快捷键 `alt + insert`
+
+## Http Server
+
+### Http Server
+
+```go
+type Server interface {
+	Route(pattern string, handleFunc http.HandlerFunc)
+	Start(address string) error
+}
+
+type httpSever struct {
+	Name string
+}
+
+func (h *httpSever) Route(pattern string, handleFunc http.HandlerFunc) {
+	http.HandleFunc(pattern, handleFunc)
+}
+
+func (h *httpSever) Start(address string) error {
+	return http.ListenAndServe(address, nil)
+}
+
+func NewServer(name string) Server {
+	return &httpSever{}
+}
+
+func queryParams(w http.ResponseWriter, r *http.Request) {
+	fmt.Fprintf(w, "query is %v", r.URL.Query())
+}
+
+func main() {
+	server := NewServer("test-server")
+	server.Route("/query", queryParams)
+	server.Start(":8080")
+}
+
+```
