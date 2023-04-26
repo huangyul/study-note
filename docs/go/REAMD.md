@@ -250,7 +250,7 @@ type Server interface {
 
 ###### 结构体
 
-```go 
+```go
 type Person struct {
 	Name string
 	age  int
@@ -271,3 +271,50 @@ duck3 := new(ToyDuck)  // 也是指针
 person := Person{Name: "huang", age: 2}
 ```
 
+### 方法接收器
+
+- 给结构体定义方法
+- 一定要创建实例才可以调用
+
+```go
+type User struct {
+  Name string
+  Age int
+}
+// 结构体接收
+func (u User) changeName(name string) {
+  u.Name = name
+}
+// 指针接收
+func (u *User) changeAge(age int) {
+  u.Age = age
+}
+```
+
+### 结构体实现接口
+
+鸭子类型：有该行为（就是有方法），那就是同类型
+
+```go
+type Server interface {
+	Route(pattern string, handleFunc http.HandlerFunc)
+	Start(address string) error
+}
+
+type httpSever struct {
+	Name string
+}
+
+func (h *httpSever) Route(pattern string, handleFunc http.HandlerFunc) {
+	//TODO implement me
+	panic("implement me")
+}
+
+func (h *httpSever) Start(address string) error {
+	//TODO implement me
+	panic("implement me")
+}
+
+```
+
+快捷键 `alt + insert`
