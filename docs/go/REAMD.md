@@ -256,3 +256,18 @@ type Person struct {
 	age  int
 }
 ```
+
+### 初始化
+
+```go
+duck1 := &ToyDuck{}
+duck2 := ToyDuck{}
+duck3 := new(ToyDuck)  // 也是指针
+```
+
+#### 赋值
+
+```go
+person := Person{Name: "huang", age: 2}
+```
+
