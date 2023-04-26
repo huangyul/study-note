@@ -227,3 +227,23 @@ func handlerQuery(w http.ResponseWriter, r *http.Request) {
 err := r.ParseForm
 form := r.Form
 ```
+
+## type 定义
+
+有四种方式：
+
+1. type name interface {}
+2. type name struct {}
+3. type name otherType
+4. type name = oterType
+
+###### 接口
+
+里面只能有方法，是一组行为的抽象；尽量使用接口来实现面向接口编程
+
+```go
+type Server interface {
+	Route(pattern string, handleFunc http.HandlerFunc)
+	Start(address string) error
+}
+```
