@@ -38,3 +38,34 @@ func TestReverseString(t *testing.T) {
 	}
 	fmt.Println(s)
 }
+
+// Offer05
+func TestReplaceSpace(t *testing.T) {
+	s := []byte("we are family.")
+	count := 0
+	for _, c := range s {
+		if c == ' ' {
+			count++
+		}
+	}
+
+	newLen := len(s) + count*2
+	newS := make([]byte, newLen)
+
+	i := len(s) - 1
+	j := newLen - 1
+
+	for i >= 0 {
+		if s[i] == ' ' {
+			newS[j] = '0'
+			newS[j-1] = '2'
+			newS[j-2] = '%'
+			j -= 3
+		} else {
+			newS[j] = s[i]
+			j--
+		}
+		i--
+	}
+	fmt.Println(string(newS))
+}
