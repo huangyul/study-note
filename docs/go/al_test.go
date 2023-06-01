@@ -2,6 +2,7 @@ package go_test
 
 import (
 	"fmt"
+	"strings"
 	"testing"
 )
 
@@ -68,4 +69,23 @@ func TestReplaceSpace(t *testing.T) {
 		i--
 	}
 	fmt.Println(string(newS))
+}
+
+// No.151
+func TestReverseWord(t *testing.T) {
+	s := "the sky is blue"
+	words := strings.Fields(s)
+
+	i := 0
+	j := len(words) - 1
+	for i < j {
+		temp := words[i]
+		words[i] = words[j]
+		words[j] = temp
+
+		i++
+		j--
+	}
+
+	fmt.Println(strings.Join(words, " "))
 }
