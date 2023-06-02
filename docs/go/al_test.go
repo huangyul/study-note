@@ -153,3 +153,21 @@ func TestRemoveNthFromEnd(t *testing.T) {
 	fmt.Println(dummy.Next)
 
 }
+
+// No.160
+func TestGetIntersectionNode(t *testing.T) {
+	var pA, pB = headA, headB
+	for pA != pB {
+		if pA != nil {
+			pA = pA.Next
+		} else {
+			pA = headB
+		}
+		if pB != nil {
+			pB = pB.Next
+		} else {
+			pB = headA
+		}
+	}
+	return pA
+}
