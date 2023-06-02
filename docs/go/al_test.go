@@ -120,3 +120,36 @@ func TestReverseList(t *testing.T) {
 
 	fmt.Println(prev)
 }
+
+// No.19
+func TestRemoveNthFromEnd(t *testing.T) {
+	head := &ListNode{Val: 1}
+	node2 := &ListNode{Val: 2}
+	node3 := &ListNode{Val: 3}
+	node4 := &ListNode{Val: 4}
+	node5 := &ListNode{Val: 5}
+
+	head.Next = node2
+	node2.Next = node3
+	node3.Next = node4
+	node4.Next = node5
+
+	dummy := &ListNode{Val: 0, Next: head}
+
+	n := 2
+
+	slow := dummy
+	fast := dummy
+	for i := 0; i < n+1; i++ {
+		fast = fast.Next
+	}
+
+	for fast != nil {
+		slow = slow.Next
+		fast = fast.Next
+	}
+	slow.Next = slow.Next.Next
+
+	fmt.Println(dummy.Next)
+
+}
