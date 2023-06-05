@@ -2,6 +2,7 @@ package go_test
 
 import (
 	"fmt"
+	"sort"
 	"strings"
 	"testing"
 )
@@ -155,22 +156,22 @@ func TestRemoveNthFromEnd(t *testing.T) {
 }
 
 // No.160
-func TestGetIntersectionNode(t *testing.T) {
-	var pA, pB = headA, headB
-	for pA != pB {
-		if pA != nil {
-			pA = pA.Next
-		} else {
-			pA = headB
-		}
-		if pB != nil {
-			pB = pB.Next
-		} else {
-			pB = headA
-		}
-	}
-	return pA
-}
+// func TestGetIntersectionNode(t *testing.T) {
+// 	var pA, pB = headA, headB
+// 	for pA != pB {
+// 		if pA != nil {
+// 			pA = pA.Next
+// 		} else {
+// 			pA = headB
+// 		}
+// 		if pB != nil {
+// 			pB = pB.Next
+// 		} else {
+// 			pB = headA
+// 		}
+// 	}
+// 	return pA
+// }
 
 /* 6.5 */
 // No.142
@@ -196,8 +197,42 @@ func TestDetectCycle(t *testing.T) {
 				slow = slow.Next
 				fast = fast.Next
 			}
-			return slow
+			fmt.Println(slow)
 		}
 	}
-	return nil
+	fmt.Println(nil)
+}
+
+// No.15
+func TestThreeSum(t *testing.T) {
+	nums := []int{-1, 0, 1, 2, -1, -4}
+
+	sort.Ints(nums)
+
+	res := [][]int{}
+	for i := 0; i < len(nums)-2; i++ {
+		if i > 0 && nums[i] == nums[i-1] {
+			continue
+		}
+		left, right := i+1, len(nums)-1
+		for left < right {
+			sum := nums[left] + nums[right] + nums[i]
+			if sum == 0 {
+				res = append(res, []int{nums[i], nums[left], nums[right]})
+				for left < right && nums[left] == nums[left+1] {
+					left++
+				}
+				for left < right && nums[right] == nums[right-1] {
+					right--
+				}
+				left++
+				right--
+			} else if sum < 0 {
+				left++
+			} else {
+				right--
+			}
+		}
+	}
+	fmt.Println(res)
 }
