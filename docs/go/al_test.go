@@ -302,3 +302,18 @@ func TestIsValue(t *testing.T) {
 	}
 	fmt.Println(true)
 }
+
+// NO.1047
+func TestRemoveDuplicates(t *testing.T) {
+	s := "abbaca"
+	stack := []byte{}
+
+	for _, c := range s {
+		if len(stack) > 0 && stack[len(stack)-1] == byte(c) {
+			stack = stack[:len(stack)-1]
+		} else {
+			stack = append(stack, byte(c))
+		}
+	}
+	fmt.Println("Stack: ", stack)
+}
