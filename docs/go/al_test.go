@@ -278,3 +278,27 @@ func TestFourSum(t *testing.T) {
 	}
 	fmt.Println(res)
 }
+
+/* 6.12 */
+// No.20
+func TestIsValue(t *testing.T) {
+	s := "[[]}]"
+	stack := make([]rune, 0)
+	signMap := map[string]rune{
+		"[": ']',
+		"(": ')',
+		"{": '}',
+	}
+	for _, char := range s {
+		if char == '(' || char == '{' || char == '[' {
+			stack = append(stack, char)
+		} else {
+			if len(stack) == 0 || char != signMap[string(stack[len(stack)-1])] {
+				fmt.Println("false")
+			} else {
+				stack = stack[0 : len(stack)-1]
+			}
+		}
+	}
+	fmt.Println(true)
+}
