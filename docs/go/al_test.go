@@ -351,3 +351,33 @@ func TestEvalRPN(t *testing.T) {
 
 	fmt.Println(stack)
 }
+
+// No.239
+func TestMaxSlidingWindow(t *testing.T) {
+	nums := []int{1, 3, -1, -3, 5, 3, 6, 7}
+	k := 3
+	n := len(nums)
+	result := make([]int, 0)
+	deque := make([]int, 0)
+
+	for i := 0; i < n; i++ {
+		// 移除滑动窗口外的元素
+		if len(deque) > 0 && deque[0] == i-k {
+			deque = deque[1:]
+		}
+
+		// 保持 deque 递减顺序
+		for len(deque) > 0 && nums[i] >= nums[deque[len(deque)-1]] {
+			deque = deque[:len(deque)-1]
+		}
+
+		deque = append(deque, i)
+
+		// 添加窗口中的最大值到结果中
+		if i >= k-1 {
+			result = append(result, nums[deque[0]])
+		}
+	}
+
+	fmt.Println(result)
+}
