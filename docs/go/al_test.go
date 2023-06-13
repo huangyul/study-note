@@ -3,6 +3,7 @@ package go_test
 import (
 	"fmt"
 	"sort"
+	"strconv"
 	"strings"
 	"testing"
 )
@@ -316,4 +317,37 @@ func TestRemoveDuplicates(t *testing.T) {
 		}
 	}
 	fmt.Println("Stack: ", stack)
+}
+
+/* 6.13 */
+// No.150
+func TestEvalRPN(t *testing.T) {
+	tokens := []string{"2", "1", "+", "3", "*"}
+
+	stack := []int{}
+
+	for _, token := range tokens {
+		if token == "+" || token == "-" || token == "*" || token == "/" {
+			n1 := stack[len(stack)-1]
+			n2 := stack[len(stack)-2]
+			sum := 0
+			switch token {
+			case "+":
+				sum = n1 + n2
+			case "-":
+				sum = n2 - n1
+			case "*":
+				sum = n1 * n2
+			case "/":
+				sum = n2 / n1
+			}
+			stack = stack[:len(stack)-2]
+			stack = append(stack, sum)
+		} else {
+			num, _ := strconv.Atoi(token)
+			stack = append(stack, num)
+		}
+	}
+
+	fmt.Println(stack)
 }
