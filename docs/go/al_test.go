@@ -386,20 +386,20 @@ func TestMaxSlidingWindow(t *testing.T) {
 /* 6.15 */
 // No.347
 func topKFrequent(nums []int, k int) []int {
-	ans_map := map[int]int{}
+	num_map := map[int]int{}
 	ans := []int{}
 	for _, val := range nums {
-		ans_map[val]++
+		num_map[val]++
 	}
-	for key, _ := range ans_map {
+	for key, _ := range num_map {
 		ans = append(ans, key)
 	}
 	sort.Slice(ans, func(a, b int) bool {
-		return ans_map[ans[a]] > ans_map[ans[b]]
+		return num_map[ans[a]] > num_map[ans[b]]
 	})
 	return ans[:k]
 }
 func TestTopKFrequent(t *testing.T) {
-	res := topKFrequent([]int{1, 1, 2, 3, 4, 5, 6, 6, 6}, 1)
-	assert.Equal(t, res, []int{6})
+	res := topKFrequent([]int{1, 1, 2, 3, 4, 5, 6, 6, 6}, 2)
+	assert.Equal(t, res, []int{6, 1})
 }
