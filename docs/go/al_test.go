@@ -403,3 +403,10 @@ func TestTopKFrequent(t *testing.T) {
 	res := topKFrequent([]int{1, 1, 2, 3, 4, 5, 6, 6, 6}, 2)
 	assert.Equal(t, res, []int{6, 1})
 }
+
+func TestRange(t *testing.T) {
+	str := "huang"
+	for index, value := range str {
+		fmt.Println(index, string(value))
+	}
+}
