@@ -2,6 +2,7 @@ package go_test
 
 import (
 	"fmt"
+	"github.com/stretchr/testify/assert"
 	"sort"
 	"strconv"
 	"strings"
@@ -380,4 +381,25 @@ func TestMaxSlidingWindow(t *testing.T) {
 	}
 
 	fmt.Println(result)
+}
+
+/* 6.15 */
+// No.347
+func topKFrequent(nums []int, k int) []int {
+	ans_map := map[int]int{}
+	ans := []int{}
+	for _, val := range nums {
+		ans_map[val]++
+	}
+	for key, _ := range ans_map {
+		ans = append(ans, key)
+	}
+	sort.Slice(ans, func(a, b int) bool {
+		return ans_map[ans[a]] > ans_map[ans[b]]
+	})
+	return ans[:k]
+}
+func TestTopKFrequent(t *testing.T) {
+	res := topKFrequent([]int{1, 1, 2, 3, 4, 5, 6, 6, 6}, 1)
+	assert.Equal(t, res, []int{6})
 }
