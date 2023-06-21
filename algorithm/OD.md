@@ -877,4 +877,31 @@ function calculateSodas(n) {
 console.log(calculateSodas(10))
 ```
 
+## 前序遍历
 
+```js
+function preorderTravelsal() {
+  // 前序遍历：中->左->右
+  if (!root) {
+    return [];
+  }
+
+  var stack = [root];
+  var result = [];
+
+  while (stack.length > 0) {
+    var node = stack.pop();
+    result.push(node.val);
+
+    // 因为栈先进后出的特点，所以要先推入右节点
+    if (node.right) {
+      stack.push(node.right);
+    }
+    if (node.left) {
+      stack.push(node.left);
+    }
+  }
+
+  return result;
+}
+```

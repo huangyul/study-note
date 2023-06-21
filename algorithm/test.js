@@ -83,17 +83,35 @@ function func(root) {
     return count
   }
 
-const res = func(createTree([3, 9, 20, null, null, 15, 7]))
-console.log(res)
+  const res1 = func(createTree([3, 9, 20, null, null, 15, 7]))
+  console.log(res1)
+}
 
+// no.144
+function preorderTraversal() {
+  const root = createTree([1, 2, 4, 1])
+  console.log('root')
+  console.log(root)
 
-const arr = [
-  {id: 1, value: 1},
-  {id: 2, value: 2},
-  {id: 3, value: 3},
-  {id: 4, value: 4},
-  {id: 5, value: 1},
-  {id: 6, value: 1},
-  {id: 7, value: 1},
-  {id: 8, value: 1},
-]
+  if (!root) return []
+
+  const stack = [root]
+  const res = []
+
+  while (stack.length > 0) {
+    const node = stack.pop()
+    res.push(node.val)
+
+    if (node.right) {
+      stack.push(node.right)
+    }
+
+    if (node.left) {
+      stack.push(node.left)
+    }
+  }
+  console.log(res)
+}
+
+preorderTraversal()
+
