@@ -70,3 +70,5 @@ const p = newFunc(Person, 'huang')
 
 console.log(p.n) // huang
 ```
+
+## 继承
