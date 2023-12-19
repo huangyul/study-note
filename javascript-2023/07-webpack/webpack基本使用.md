@@ -168,3 +168,32 @@ webpack配置
   }
 }
 ```
+
+## 自定义loader
+
+- loader机制规范要暴露一个函数
+- 输入为上一个loader处理的结果
+- 输出为该loader处理完的结果
+
+```js
+// markdown-loader
+const marked = require('marked')
+
+module.exports = source => {
+  const html = marked(source)
+
+  // 第一种方式
+  // return `export defualt ${json.stringify(html)}`
+
+  // 第二种方式，直接返回html，然后交给html-loader处理
+  return html
+  // webpack配置
+  {
+    test: /.md$/,
+    use: [
+      'html-loader',
+      './markdown-loader.js'
+    ]
+  }
+}
+```
