@@ -131,3 +131,40 @@ import './main.css'
 }
 ```
 这里只是配置了使用url-loader，当大小超出10kb时，就自动调用file-loader
+
+## 处理es 2015
+
+安装依赖
+
+```bash
+pnpm add babel-loader @babel/core @babel/preset-env -D
+```
+
+webpack配置
+
+```js
+{
+  test: /.js$/,
+  use: {
+    loader: 'babel-loader',
+    options: {
+      presets: ['@babel/preset-env']
+    }
+  }
+}
+
+## 处理html
+
+使用`html-loader`
+
+```js
+{
+  test: /.html$/,
+  use: {
+    loader: 'html-loader',
+    options: {
+      attrs: ['img:src', 'a:href'] // 定义处理那些属性
+    }
+  }
+}
+```
