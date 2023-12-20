@@ -224,3 +224,42 @@ const {CleanWebpackPlugin} = require('clean-webpack-plugin')
     })
   ]
 ```
+
+### 复制资源文件
+
+copy-webpack-plugin
+
+```js
+new CopyWebpackPlugin({
+  patterns: [
+    {from: 'public', to: 'public'}
+  ]
+})
+```
+
+### 开发一个插件
+
+原理：使用**钩子机制**，往节点中挂载任务即可
+
+必须是一个函数或者是包含一个apply方法的对象
+
+```js
+class MyPlugin {
+  apply(compiler) {
+    // 在emit钩子中注册一个方法，名字是myplugin
+    compiler.hooks.emit.tap('MyPlugin', compilation => {
+      // 遍历所有要输出的文件
+      for (const name in compilation.assets) {
+        if(name.endsWith('js')) {
+          const content = compilation.assets[name].source()
+          const withoutComments = content.replace(/\/\*\**\*\//g, '')
+          compilation.assets[name] = {
+            source: () => withoutComments,
+            size: () => withoutComments.length
+          }
+        }
+      }
+    })
+  }
+}
+```
