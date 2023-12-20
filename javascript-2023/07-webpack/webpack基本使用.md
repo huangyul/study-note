@@ -197,3 +197,30 @@ module.exports = source => {
   }
 }
 ```
+
+## 插件 plugin
+
+### 自动清除输出目录
+
+`clean-webpack-plugin`
+
+```js
+const {CleanWebpackPlugin} = require('clean-webpack-plugin')
+
+{
+  plugins: [new CleanWebpackPlugin()]
+}
+```
+
+### 自动生成html
+
+`html-webpack-plugin`
+
+```js
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: "./index.html", // 指定使用的模板
+      title: '333' // 定义变量可用于替换模板文件中的<%= xxx %>的变量
+    })
+  ]
+```
