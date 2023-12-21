@@ -338,3 +338,92 @@ module.hot.accpet('./module', () => {
 ```
 
 其实`webpack`没有通用的方法是处理`js`的热更新问题
+
+## 生产环境优化
+
+### 不同环境
+
+在不同环境用不同的配置
+
+#### 方法一
+
+```js
+module.exports = (env, args) => {
+  // 这里写共同的配置
+  const config = {}
+
+  // 如果是生产环境
+  if(env.production) {
+    config.mode = 'production'
+  }
+
+  return config
+}
+```
+
+#### 方法二
+
+做不同的环境配置，然后通过`webpack-merge`来合并配置
+
+例如在`webpack.common.js`中写好基础的配置
+
+在`webpack.prod.js`写生产环境的配置
+
+```js
+const merge = require('webpack-merge')
+const common = require('webpack.common.js')
+const config = merge(common, {
+  mode: 'production'
+})
+```
+
+## webpack拓展
+
+### definePlugin
+
+可以使用webpack注释一些常用
+
+```js
+// webpack.config.js
+const webpack = require('webpack')
+{
+  plugins: [
+    new webpack.DefinePlugin({
+      API_BASE_URL: JSON.stringify('http://api.example.com')
+    }),
+  ]
+}
+// 其他的js文件中可以直接使用
+console.log(API_BASE_URL)
+```
+
+### Tree Shaking
+
+> 生产环境会自动开启
+
+将没有引用到的代码去掉
+
+手动开启
+
+```js
+{
+  optimization: {
+    usedExports: true,
+    minimize: true,
+  } 
+}
+```
+
+### 合并模块
+
+> 生产环境默认打开
+
+将所有模块尽可能的合并到一个方法中，减少代码体制并提高运行效率
+
+```js
+{
+  optimization: {
+    concatenateModules: ture,
+  }
+}
+```
