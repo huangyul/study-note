@@ -263,3 +263,78 @@ class MyPlugin {
   }
 }
 ```
+
+## 本地dev
+
+### 自动编译
+
+监听文件变化，自动运行打包任务
+
+```bash
+webpack --watch
+```
+
+### dev server
+
+安装 webpack-dev-server
+
+#### dev server静态资源访问
+
+使用contentBase
+```js
+devServer: {
+  static: path.join(__dirname, 'public')
+},
+```
+
+### 代理API
+
+```js
+devServer: {
+  proxy: {
+    '/api': {
+      target: 'https://api.github.com',
+      pathRewrite: {
+        '^/api': ''
+      },
+      // 不使用localhost
+      changeOrgin: true,
+    }
+  }
+}
+```
+### 配置source map
+
+```js
+{
+  devtool: 'source-map'
+}
+```
+
+### HMR
+
+模块热替换
+
+开启：
+```js
+devServer: {
+  hot: true
+}
+```
+
+`HMR`可以自动处理样式，但是无法自动处理`js`，要通过`HMR`的`api`去处理
+
+例如：
+在`main`中引用的`moduleA`，可以去处理`moduleA`发生改变时的情形
+```js
+// 模块的路径；处理函数
+module.hot.accpet('./module', () => {
+  // 保留上次的状态
+  const value = moduleA.innerHTML
+  document.removeChild(moduleA)
+  const newElement = moduleACreate()
+  document.appendChild(newElement)
+})
+```
+
+其实`webpack`没有通用的方法是处理`js`的热更新问题
