@@ -427,3 +427,138 @@ console.log(API_BASE_URL)
   }
 }
 ```
+
+### 代码分割
+
+主要使用多入口打包，然后再将共同部分提取出来
+
+```js
+const { CleanWebpackPlugin } = require('clean-webpack-plugin')
+const HTMLWebpcakPlugin = require('html-webpack-plugin')
+module.exports = {
+  mode: 'none',
+  entry: {
+    index: './src/index.js',
+    home: './src/home.js'
+  },
+  output: {
+    filename: '[name].bundle.js'
+  },
+  optimization: {
+    splitChunks: {
+      chunks: 'all' // 提取公共模块
+    }
+  },
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          'css-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new CleanWebpackPlugin(),
+    new HTMLWebpcakPlugin({
+      title: 'home',
+      template: './src/home.html',
+      filename: 'home.html',
+      chunks: ['home'] // 定义只使用哪个chunks
+    }),
+    new HTMLWebpcakPlugin({
+      title: 'index',
+      template: './src/index.html',
+      filename: 'index.html',
+      chunks: ['index']
+    }),
+  ]
+}
+
+```
+
+### 动态导入
+
+动态导入的模块会被自动分包
+
+使用esmode中自带的import可以实现动态导入（vue路由的懒加载）
+
+```js
+import('./xx.js').then({default} => {
+  // do something
+})
+```
+
+### 魔法注释
+
+给文件命名；其中相同名字的会被打包到一起
+
+```js
+import(/* webpackChunkName: 'post' */'./xx.js').then({default} => {
+  // do something
+})
+```
+
+### 将css代码提取出单个文件
+
+mini-css-extact-plugin
+
+```js
+
+{
+  module: {
+    rules: [
+        {
+          test: /.css$/,
+          use: [
+            // 'style-loader',
+            MiniCssExtractPlugin.loader,
+            'css-loader']
+        },
+    ]
+  }
+  plugins: [
+    new MiniCssExtachPlugin()
+  ]
+}
+```
+
+之前的`style-loader`是为了将`css`嵌入到`html`，现在使用插件将`css`单独提取出来，就不再需要使用了，使用插件提供的`loader`替代
+
+### 压缩输出的css文件和js文件
+
+optimize-css-assets-webpack-plugin
+
+terser-webpack-plugin
+
+```js
+{
+  optimization: {
+    minimizaer: {
+      new TerserWebpackPlugin(),
+      new OptimizeCssAssetsWebpackPlugin()
+    }
+  }
+}
+```
+
+这里两个插件不放到`plugins`数组中，是因为没必要在每次执行`webpack`都压缩文件；而放到`minimizer`中，可以在开启了`minimizer`才压缩文件（生产模式默认开启）
+
+### 输出文件hash
+
+在生产模式下，文件名使用hash，防止客户端缓存问题
+
+三种模式：
+- hash：任意文件发生改变，所有文件的hash都会发生改变
+- chunkhash：同一chunk发生改变，hash才发生改变
+- contenthash：文件级别的hash
+
+```js
+{
+  output: {
+    file: '[name]-[contenthash:8].bundle.js' // 控制hash为8位
+  }
+}
+```
